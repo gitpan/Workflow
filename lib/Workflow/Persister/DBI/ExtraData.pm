@@ -1,13 +1,13 @@
 package Workflow::Persister::DBI::ExtraData;
 
-# $Id: ExtraData.pm,v 1.3 2004/03/08 04:56:09 cwinters Exp $
+# $Id: ExtraData.pm,v 1.4 2004/09/13 02:04:16 cwinters Exp $
 
 use strict;
 use base qw( Workflow::Persister::DBI );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( configuration_error persist_error );
 
-$Workflow::Persister::DBI::ExtraData::VERSION  = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Persister::DBI::ExtraData::VERSION  = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
 
 my @FIELDS = qw( table data_field context_key );
 __PACKAGE__->mk_accessors( @FIELDS );
@@ -43,16 +43,18 @@ sub init {
         my $context_key = $params->{extra_context_key} || $data_field;
         $self->context_key( $context_key );
     }
-    $log->info( "Configured extra data fetch with: ",
-                join( '; ', $self->table, $data_field,
-                            $self->context_key ) );
+    $log->is_info &&
+        $log->info( "Configured extra data fetch with: ",
+                    join( '; ', $self->table, $data_field,
+                                $self->context_key ) );
 }
 
 sub fetch_extra_workflow_data {
     my ( $self, $wf ) = @_;
     my $log = get_logger();
 
-    $log->debug( "Fetching extra workflow data for '", $wf->id, "'" );
+    $log->is_debug &&
+        $log->debug( "Fetching extra workflow data for '", $wf->id, "'" );
 
     my $sql = q{
        SELECT %s FROM %s
@@ -63,8 +65,10 @@ sub fetch_extra_workflow_data {
                                ? join( ', ', @{ $data_field } )
                                : $data_field;
     $sql = sprintf( $sql, $select_data_fields, $self->table );
-    $log->debug( "Using SQL\n$sql" );
-    $log->debug( "Bind parameters: ", $wf->id );
+    $log->is_debug &&
+        $log->debug( "Using SQL\n$sql" );
+    $log->is_debug &&
+        $log->debug( "Bind parameters: ", $wf->id );
 
     my ( $sth );
     eval {
@@ -76,24 +80,25 @@ sub fetch_extra_workflow_data {
                       $self->table, ": $@";
     }
     else {
-        $log->debug( "Prepared/executed extra data fetch ok" );
+        $log->is_debug &&
+            $log->debug( "Prepared/executed extra data fetch ok" );
         my $row = $sth->fetchrow_arrayref;
         if ( ref $data_field ) {
             for ( my $i = 0; $i < scalar @{ $data_field }; $i++ ) {
                 $wf->context->param( $data_field->[ $i ], $row->[ $i ] );
-                $log->info(
-                    sprintf( "Set data from %s.%s into context key %s ok",
-                             $self->table, $data_field->[$i], $data_field->[$i] )
-                );
+                $log->is_info &&
+                    $log->info(
+                        sprintf( "Set data from %s.%s into context key %s ok",
+                                 $self->table, $data_field->[$i], $data_field->[$i] ) );
             }
         }
         else {
             my $value = $row->[0];
             $wf->context->param( $self->context_key, $value );
-            $log->info(
-                sprintf( "Set data from %s.%s into context key %s ok",
-                         $self->table, $self->data_field, $self->context_key )
-            );
+            $log->is_info &&
+                $log->info(
+                    sprintf( "Set data from %s.%s into context key %s ok",
+                             $self->table, $self->data_field, $self->context_key ) );
         }
     }
 }

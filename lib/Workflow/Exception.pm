@@ -1,6 +1,6 @@
 package Workflow::Exception;
 
-# $Id: Exception.pm,v 1.6 2004/05/14 05:13:52 cwinters Exp $
+# $Id: Exception.pm,v 1.7 2004/09/13 02:05:38 cwinters Exp $
 
 use strict;
 
@@ -35,7 +35,7 @@ my %TYPE_CLASSES = (
     workflow_error      => 'Workflow::Exception',
 );
 
-$Workflow::Exception::VERSION   = sprintf("%d.%02d", q$Revision: 1.6 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Exception::VERSION   = sprintf("%d.%02d", q$Revision: 1.7 $ =~ /(\d+)\.(\d+)/);
 @Workflow::Exception::ISA       = qw( Exporter Exception::Class::Base );
 @Workflow::Exception::EXPORT_OK = keys %TYPE_CLASSES;
 
@@ -46,7 +46,9 @@ sub _mythrow {
     my ( $msg, %params ) = _massage( @_ );
     my $log = get_logger();
     my ( $pkg, $line ) = (caller)[0,2];
-    $log->error( "$type exception thrown from [$pkg: $line]: $msg" );
+    my ( $prev_pkg, $prev_line ) = (caller(1))[0,2];
+    $log->error( "$type exception thrown from [$pkg: $line; before: ",
+                 "$prev_pkg: $prev_line]: $msg" );
     goto &Exception::Class::Base::throw( $TYPE_CLASSES{ $type },
                                          message => $msg, %params );
 }
@@ -162,7 +164,7 @@ makes for very readable code:
                 "frightfully wrong: $@",
                 { foo => 'bar' };
 
-=head1 DECLARED EXCEPTION CLASSES
+=head1 SHORTCUTS
 
 B<Workflow::Exception> - import using C<workflow_error>
 

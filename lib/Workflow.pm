@@ -1,6 +1,6 @@
 package Workflow;
 
-# $Id: Workflow.pm,v 1.14 2004/05/24 21:15:40 cwinters Exp $
+# $Id: Workflow.pm,v 1.15 2004/09/12 20:48:57 cwinters Exp $
 
 use strict;
 
@@ -13,7 +13,7 @@ use Workflow::Factory   qw( FACTORY );
 my @FIELDS = qw( id description last_update state type );
 __PACKAGE__->mk_accessors( @FIELDS );
 
-$Workflow::VERSION  = sprintf("%d.%02d", q$Revision: 1.14 $ =~ /(\d+)\.(\d+)/);
+$Workflow::VERSION  = sprintf("%d.%02d", q$Revision: 1.15 $ =~ /(\d+)\.(\d+)/);
 
 use constant NO_CHANGE_VALUE => 'NOCHANGE';
 
@@ -268,10 +268,12 @@ Workflow - Simple, flexible system to implement workflows
  # Defines validators available to the actions
  my $validator_conf = 'validator.xml';
  
- FACTORY->add_config_from_file( workflow   => $workflow_conf,
-                                action     => $action_conf,
-                                condition  => $condition_conf,
-                                validator  => $validator_conf );
+ FACTORY->add_config_from_file(
+     workflow   => $workflow_conf,
+     action     => $action_conf,
+     condition  => $condition_conf,
+     validator  => $validator_conf
+ );
  
  # Instantiate a new workflow...
  my $workflow = FACTORY->create_workflow( 'myworkflow' );
