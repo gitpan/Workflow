@@ -1,5 +1,16 @@
 Revision history for Perl extension Workflow
 
+0.05  Thu Sep 30 23:11:01 EDT 2004
+
+  Workflow::Persister::DBI
+
+      - Trying to fetch a workflow with a non-existent ID didn't work
+      properly, returning an empty workflow object (which blew up when
+      you tried to call a method on it) instead of undef (as
+      documented). Thanks to Martin Winkler <mw@arsnavigandi.de> for
+      pointing the problem out.
+
+
 0.04  Sun Sep 12 22:17:48 EDT 2004
 
   eg (example application):

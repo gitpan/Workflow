@@ -3,7 +3,7 @@
 # $Id: persister_dbi.t,v 1.6 2004/05/25 00:16:26 cwinters Exp $
 
 use strict;
-use constant NUM_TESTS => 40;
+use constant NUM_TESTS => 41;
 use Test::More;
 
 chdir 't' if ( -d 't' );
@@ -23,11 +23,11 @@ my $NOW       = DateTime->now->strftime( $DATE_FORMAT );
 
 require_ok( 'Workflow::Persister::DBI' );
 
-my @persisters = (
-    { name           => 'TestPersister',
-      class          => 'Workflow::Persister::DBI',
-      dsn            => 'DBI:Mock:' }
-);
+my @persisters = ({
+    name  => 'TestPersister',
+    class => 'Workflow::Persister::DBI',
+    dsn   => 'DBI:Mock:',
+});
 
 my $factory = Workflow::Factory->instance;
 $factory->add_config( persister => \@persisters );
@@ -95,9 +95,7 @@ my ( $wf );
     );
 
     my $link_create = $history->[1];
-
     my $wf_update = $history->[2];
-
     my $hst_update = $history->[3];
     my $history_desc = "New ticket created of type '$ticket_info{type}' " .
                        "and subject '$ticket_info{subject}'";
@@ -125,3 +123,12 @@ my ( $wf );
 }
 
 
+{
+    # Seed the resultset with an empty row...
+
+    $handle->{mock_add_resultset} = [];
+    my $wf = $factory->fetch_workflow( 'Ticket', 42 );
+    is( $wf, undef,
+        'Trying to fetch non-existent workflow returns undef' );
+
+}
