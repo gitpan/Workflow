@@ -1,17 +1,13 @@
 # -*-perl-*-
 
-# $Id: persister_file.t,v 1.4 2004/05/22 05:42:00 cwinters Exp $
+# $Id: persister_file.t,v 1.6 2004/05/25 00:19:21 cwinters Exp $
 
 use strict;
-
-BEGIN {
-	chdir 't' if -d 't';
-	unshift @INC, '../blib/lib', '../lib';
-}
-
 use File::Path            qw( rmtree );
 use File::Spec::Functions qw( catdir curdir rel2abs );
 use Test::More  tests => 19;
+
+chdir 't' if ( -d 't' );
 
 require TestUtil;
 require Workflow::Factory;

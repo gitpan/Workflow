@@ -1,9 +1,9 @@
 # -*-perl-*-
 
-# $Id: factory.t,v 1.2 2004/03/08 04:46:47 cwinters Exp $
+# $Id: factory.t,v 1.3 2004/05/24 21:17:15 cwinters Exp $
 
 use strict;
-use Test::More  tests => 4;
+use Test::More  tests => 5;
 
 use Log::Log4perl qw( :easy );
 Log::Log4perl->easy_init({ level => $WARN,
@@ -20,3 +20,8 @@ is( $other_factory, $factory,
 my $factory_new = eval { Workflow::Factory->new() };
 is( ref( $@ ), 'Workflow::Exception',
     'Call to new() throws proper exception' );
+
+my $i_factory = Workflow::Factory->import( 'FACTORY' );
+is( $i_factory, $factory,
+    'Imported factory returns the same object' );
+

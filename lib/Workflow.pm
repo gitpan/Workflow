@@ -1,6 +1,6 @@
 package Workflow;
 
-# $Id: Workflow.pm,v 1.13 2004/05/14 05:13:52 cwinters Exp $
+# $Id: Workflow.pm,v 1.14 2004/05/24 21:15:40 cwinters Exp $
 
 use strict;
 
@@ -13,7 +13,7 @@ use Workflow::Factory   qw( FACTORY );
 my @FIELDS = qw( id description last_update state type );
 __PACKAGE__->mk_accessors( @FIELDS );
 
-$Workflow::VERSION  = sprintf("%d.%02d", q$Revision: 1.13 $ =~ /(\d+)\.(\d+)/);
+$Workflow::VERSION  = sprintf("%d.%02d", q$Revision: 1.14 $ =~ /(\d+)\.(\d+)/);
 
 use constant NO_CHANGE_VALUE => 'NOCHANGE';
 
@@ -716,3 +716,5 @@ Chris Winters E<lt>chris@cwinters.comE<gt>
 Dietmar Hanisch E<lt>Dietmar.Hanisch@Bertelsmann.deE<gt> - Provided
 most of the good ideas for the module and an excellent example of
 everyday usage.
+
+Jim Smith E<lt>jgsmith@tamu.eduE<gt> - Contributed patches and ideas.

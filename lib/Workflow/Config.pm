@@ -1,13 +1,13 @@
 package Workflow::Config;
 
-# $Id: Config.pm,v 1.5 2004/05/14 05:13:52 cwinters Exp $
+# $Id: Config.pm,v 1.7 2004/05/25 00:13:03 cwinters Exp $
 
 use strict;
 use Data::Dumper        qw( Dumper );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( configuration_error );
 
-$Workflow::Config::VERSION  = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Config::VERSION  = sprintf("%d.%02d", q$Revision: 1.7 $ =~ /(\d+)\.(\d+)/);
 
 # Make for shorter calls...
 sub new { return bless( {}, $_[0] ) }
@@ -24,32 +24,49 @@ sub get_valid_config_types {
 }
 
 sub parse {
-    my ( $class, $type, @files ) = @_;
+    my ( $class, $type, @items ) = @_;
     my $log = get_logger();
     unless ( $class->is_valid_config_type( $type ) ) {
         configuration_error "When parsing a configuration file the ",
                             "configuration type (first argument) must be ",
                             "one of: ", join( ', ', $class->get_valid_config_types );
     }
-    my @config_files = _expand_refs( @files );
-    return () unless ( scalar @config_files );
+    my @config_items = _expand_refs( @items );
+    return () unless ( scalar @config_items );
     my @config = ();
-    foreach my $file ( @config_files ) {
-        my ( $file_type ) = $file =~ /\.(\w+)$/;
-        $log->info( "'$type' config file '$file' is type '$file_type'" );
-        my ( $this_config );
-        if ( $file_type eq 'perl' ) {
-            $this_config = $class->_translate_perl( $type, $file );
+    foreach my $item ( @config_items ) {
+        my ( $file_type, $file_name );
+        my $method;
+
+        # $item is a scalar ref with config contents...
+
+        if ( ref $item ) {
+            $file_type = 'perl';
+            $file_type = 'xml' if ( $$item =~ m/^\s*</ && $$item =~ m/>\s*$/ );
+            $method = '_translate_' . $file_type;
+            $file_name = '[scalar ref]';
         }
-        elsif ( $file_type eq 'xml' ) {
-            $this_config = $class->_translate_xml( $type, $file );
+
+        # $item is a filename...
+        else {
+            ( $file_type ) = $item =~ /\.(\w+)$/;
+            $method = '_translate_' . $file_type . '_file';
+            $file_name = $item;
+        }
+        $log->is_info &&
+            $log->info( "'$type' config file '$file_name' is type '$file_type'" );
+
+        my ( $this_config );
+        if ( $class->can( $method ) ) {
+            $this_config = $class->$method( $type, $item );
         }
         else {
             configuration_error "Do not know how to parse configuration ",
-                                "type '$type' from file '$file' of ",
+                                "type '$type' from file '$item' of ",
                                 "type '$file_type'";
         }
-        $log->info( "Parsed file '$file' ok" );
+        $log->is_info &&
+            $log->info( "Parsed file '$file_name' ok" );
         if ( ref $this_config->{ $type } eq 'ARRAY' ) {
             $log->debug( "Adding multiple configurations for '$type'" );
             push @config, @{ $this_config->{ $type } };
@@ -66,13 +83,13 @@ sub _expand_refs {
     my @all = ();
     foreach my $item ( @items ) {
         next unless ( $item );
-        push @all, ( ref $item ) ? @{ $item } : $item;
+        push @all, ( ref $item eq 'ARRAY' ) ? @{ $item } : $item;
     }
     return @all;
 }
 
 
-sub _translate_perl {
+sub _translate_perl_file {
     my ( $class, $type, $file ) = @_;
     my $log = get_logger();
 
@@ -81,13 +98,22 @@ sub _translate_perl {
         || configuration_error "Cannot read file '$file': $!";
     my $config = <CONF>;
     close( CONF );
+    my $data = $class->_translate_perl( $type, $config, $file );
+    $log->is_debug &&
+        $log->debug( "Translated '$type' '$file' into: ", Dumper( $data ) );
+    return $data;
+}
+
+sub _translate_perl {
+    my ( $class, $type, $config, $file ) = @_;
+    my $log = get_logger();
+
     no strict 'vars';
     my $data = eval $config;
     if ( $@ ) {
         configuration_error "Cannot evaluate perl data structure ",
                             "in '$file': $@";
     }
-    $log->debug( "Translated '$type' '$file' into: ", Dumper( $data ) );
     return $data;
 }
 
@@ -117,8 +143,19 @@ my %XML_OPTIONS = (
 
 my $XML_REQUIRED = 0;
 
-sub _translate_xml {
+sub _translate_xml_file {
     my ( $class, $type, $file ) = @_;
+    my $log = get_logger();
+    my $config = $class->_translate_xml( $type, $file, $file );
+    $log->is_debug &&
+        $log->debug( "Translated '$type' '$file' into: ", Dumper( $config ) );
+    return $config;
+}
+
+# $config can either be a filename or scalar ref with file contents
+
+sub _translate_xml {
+    my( $class, $type, $config, $file ) = @_;
     my $log = get_logger();
     unless ( $XML_REQUIRED ) {
         require XML::Simple;
@@ -127,9 +164,8 @@ sub _translate_xml {
     };
 
     my $options = $XML_OPTIONS{ $type } || {};
-    my $config = XMLin( $file, %{ $options } );
-    $log->debug( "Translated '$type' '$file' into: ", Dumper( $config ) );
-    return $config;
+    my $data = XMLin( $config, %{ $options } );
+    return $data;
 }
 
 1;
@@ -142,8 +178,15 @@ Workflow::Config - Parse configuration files for the workflow components
 
 =head1 SYNOPSIS
 
+ # Reference multiple files
+ 
  my @config = Workflow::Config->parse(
                     'action', 'workflow_action.xml', 'other_actions.xml' );
+ 
+ # Read in one of the file contents from somewhere else
+ my $xml_contents = read_contents_from_db( 'other_actions.xml' );
+ my @config = Workflow::Config->parse(
+                    'action', 'workflow_action.xml', \$xml_contents );
 
 =head1 DESCRIPTION
 
@@ -154,12 +197,17 @@ files but there was too much deeply nested information. Sorry.)
 
 =head1 CLASS METHODS
 
-B<parse( $config_type, @files )>
+B<parse( $config_type, @items )>
 
-Parse each file in C<@files> to a hash reference based on the
+Parse each item in C<@items> to a hash reference based on the
 configuration type C<$config_type> which must pass the
-C<is_valid_config_type()> test. Each file must end with 'perl' or
-'xml' and will be parsed appropriately.
+C<is_valid_config_type()> test. An 'item' is either a filename or a
+scalar reference with the contents of a file. (You can mix and match as seen in the L<SYNOPSIS>.)
+
+If you are using filenames each must end with 'perl' or 'xml' and will
+be parsed appropriately. If you are using references with the content
+we do a best-guess to figure out what type of content you are passing
+us.
 
 Throws an exception if you pass one or more invalid configuration
 types, if I do not know what configuration parser to use (file ends in
