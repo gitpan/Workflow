@@ -1,13 +1,13 @@
 package App::Action::TicketUpdate;
 
-# $Id: TicketUpdate.pm,v 1.3 2004/09/12 17:01:24 cwinters Exp $
+# $Id: TicketUpdate.pm,v 1.4 2004/10/11 22:22:26 cwinters Exp $
 
 use strict;
 use base qw( Workflow::Action );
 use Log::Log4perl qw( get_logger );
 use Workflow::History;
 
-$App::Action::TicketUpdate::VERSION  = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
+$App::Action::TicketUpdate::VERSION  = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
 
 sub execute {
     my ( $self, $wf ) = @_;
@@ -23,7 +23,6 @@ sub execute {
             action      => 'Ticket update',
             description => sprintf( 'Ticket updated by %s', $current_user ),
             user        => $current_user,
-            state       => $wf->state,
         })
     );
     $log->info( "History record added to workflow ok" );

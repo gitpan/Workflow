@@ -1,6 +1,6 @@
 package Workflow;
 
-# $Id: Workflow.pm,v 1.15 2004/09/12 20:48:57 cwinters Exp $
+# $Id: Workflow.pm,v 1.18 2004/10/12 05:10:06 cwinters Exp $
 
 use strict;
 
@@ -13,7 +13,7 @@ use Workflow::Factory   qw( FACTORY );
 my @FIELDS = qw( id description last_update state type );
 __PACKAGE__->mk_accessors( @FIELDS );
 
-$Workflow::VERSION  = sprintf("%d.%02d", q$Revision: 1.15 $ =~ /(\d+)\.(\d+)/);
+$Workflow::VERSION  = sprintf("%d.%02d", q$Revision: 1.18 $ =~ /(\d+)\.(\d+)/);
 
 use constant NO_CHANGE_VALUE => 'NOCHANGE';
 
@@ -66,29 +66,33 @@ sub execute_action {
 
     my $action = $self->_get_action( $action_name );
 
-    # Set the state to the new workflow state for the action(s) to use
-    # for reporting, etc. If an error occurs we have the old state to
-    # reset the workflow
+    # Need this in case we encounter an exception after we store the
+    # new state
 
     my $old_state = $self->state;
-    my $new_state = $self->_get_next_state( $action_name );
-    if ( $new_state and $new_state ne NO_CHANGE_VALUE ) {
-        $log->info( "Setting new state '$new_state' before action executes" );
-        $self->state( $new_state );
-    }
+    my ( $new_state, $action_return );
 
     eval {
         $action->validate( $self );
-        $log->debug( "Action validated ok" );
-        $action->execute( $self );
-        $log->debug( "Action executed ok" );
+        $log->is_debug && $log->debug( "Action validated ok" );
+        $action_return = $action->execute( $self );
+        $log->is_debug && $log->debug( "Action executed ok" );
 
-        # this will save the workflow histories as well; if it fails
-        # we should have some means for the factory to rollback other
-        # transactions...
+        $new_state = $self->_get_next_state( $action_name, $action_return );
+        if ( $new_state ne NO_CHANGE_VALUE ) {
+            $log->is_info &&
+                $log->info( "Set new state '$new_state' after action executed" );
+            $self->state( $new_state );
+        }
+
+        # this will save the workflow histories as well as modify the
+        # state of the workflow history to reflect the NEW state of
+        # the workflow; if it fails we should have some means for the
+        # factory to rollback other transactions...
 
         FACTORY->save_workflow( $self );
-        $log->info( "Saved workflow with possible new state ok" );
+        $log->is_info &&
+            $log->info( "Saved workflow with possible new state ok" );
     };
 
     # If there's an exception, reset the state to the original one and
@@ -97,7 +101,8 @@ sub execute_action {
     if ( $@ ) {
         my $error = $@;
         $log->error( "Caught exception from action: $error" );
-        $log->info( "Resetting workflow to old state '$old_state'" );
+        $log->is_info &&
+            $log->info( "Ensuring that workflow is at old state '$old_state'" );
         $self->state( $old_state );
 
         # Don't use 'workflow_error' here since $error should already
@@ -106,6 +111,13 @@ sub execute_action {
         die $error;
     }
 
+    my $new_state_obj = $self->_get_workflow_state;
+    if ( $new_state_obj->autorun ) {
+        $log->is_info &&
+            $log->info( "State '$new_state' marked to be run ",
+                        "automatically; executing that state/action..." );
+        $self->_auto_execute_state( $new_state_obj );
+    }
     return $self->state;
 }
 
@@ -238,11 +250,20 @@ sub _set_workflow_state {
 
 
 sub _get_next_state {
-    my ( $self, $action_name ) = @_;
+    my ( $self, $action_name, $action_return ) = @_;
     my $wf_state = $self->_get_workflow_state;
-    return $wf_state->get_next_state( $action_name );
+    return $wf_state->get_next_state( $action_name, $action_return );
 }
 
+sub _auto_execute_state {
+    my ( $self, $wf_state ) = @_;
+    $log ||= get_logger();
+    my $action_name = $wf_state->get_autorun_action_name;
+    $log->is_debug &&
+        $log->debug( "Found action '$action_name' to execute in ",
+                     "autorun state ", $wf_state->state );
+    $self->execute_action( $action_name );
+}
 
 1;
 
@@ -259,15 +280,76 @@ Workflow - Simple, flexible system to implement workflows
  # Defines a workflow of type 'myworkflow'
  my $workflow_conf  = 'workflow.xml';
  
+ # contents of 'workflow.xml'
+ <workflow>
+     <type>myworkflow</type>
+     <state name="INITIAL">
+         <action name="upload file" resulting_state="uploaded" />
+     </state>
+     <state name="uploaded" autorun="yes">
+         <action name="verify file" resulting_state="annotate">
+              <!-- everyone other than 'CWINTERS' must verify -->
+              <condition test="$context->{user} ne 'CWINTERS'" />
+         </action>
+         <action name="null" resulting_state="annotated">
+              <condition test="$context->{user} eq 'CWINTERS'" />
+         </action>
+     </state>
+     <state name="verify file">
+         <action name="annotate">
+             <condition name="can_annotate" />
+         </action>
+     </state>
+     <state name="annotated">
+         <action name="null" resulting_state="finished" />
+     </state>
+     <state name="finished" />
+ </workflow>
+ 
  # Defines actions available to the workflow
  my $action_conf    = 'action.xml';
  
+ # contents of 'action.xml'
+ <actions>
+
+     <action name="upload file" class="MyApp::Action::Upload">
+         <field name="path" label="File Path"
+                description="Path to file" is_required="yes" />
+     </action>
+
+     <action name="verify file" class="MyApp::Action::Verify">
+         <validator name="filesize_cap">
+             <arg>$file_size</arg>
+         </validator>
+     </action>
+
+     <action name="annotate"    class="MyApp::Action::Annotate" />
+
+     <action name="null"        class="Workflow::Action::Null" />
+
+ </action>
+
  # Defines conditions available to the workflow
  my $condition_conf = 'condition.xml';
  
+ # contents of 'condition.xml'
+ <conditions>
+     <condition name="can_annotate"
+                class="MyApp::Condition::CanAnnotate" />
+ </conditions>
+
  # Defines validators available to the actions
  my $validator_conf = 'validator.xml';
  
+ # contents of 'validator.xml'
+ <validators>
+     <validator name="filesize_cap" class="MyApp::Validator::FileSizeCap">
+         <param name="max_size" value="20M" />
+     </validator>
+ </validators>
+
+ # Stock the factory with the configurations; we can add more later if
+ # we want
  FACTORY->add_config_from_file(
      workflow   => $workflow_conf,
      action     => $action_conf,
@@ -283,10 +365,11 @@ Workflow - Simple, flexible system to implement workflows
  # Display available actions...
  print "Available actions: ", $workflow->get_current_actions, "\n";
  
- # Get the data needed for action 'FOO' (assumed to be available in
- # the current state) and display the fieldname and description
- 
- print "Action 'Foo' requires the following fields:\n";
+ # Get the data needed for action 'upload file' (assumed to be
+ # available in the current state) and display the fieldname and
+ # description
+  
+ print "Action 'upload file' requires the following fields:\n";
  foreach my $field ( $workflow->get_action_fields( 'FOO' ) ) {
      print $field->name, ": ", $field->description,
            "(Required? ", $field->is_required, ")\n";
@@ -298,10 +381,10 @@ Workflow - Simple, flexible system to implement workflows
  my $context = $workflow->context;
  $context->param( current_user => $user );
  $context->param( sections => \@sections );
- $context->param( news => $news );
+ $context->param( path => $path_to_file );
  
  # Execute one of them
- $workflow->execute_action( 'FOO' );
+ $workflow->execute_action( 'upload file' );
  
  print "New state: ", $workflow->state, "\n";
  
@@ -311,6 +394,8 @@ Workflow - Simple, flexible system to implement workflows
  print "Current state: ", $workflow->state, "\n";
 
 =head1 DESCRIPTION
+
+This documentation is for version '0.10' of the Workflow module.
 
 =head2 Overview
 
@@ -364,7 +449,7 @@ states, how to move from one state to another, and under what
 conditions you can change states.
 
 This is represented by the L<Workflow> object. You normally do not
-need to subclass this object and customize it.
+need to subclass this object for customization.
 
 =item *
 
@@ -412,13 +497,13 @@ this distribution uses a fairly common application to illustrate: the
 trouble ticket.
 
 When you create a workflow you have one action available to you:
-create a new ticket ('TIX_NEW'). The workflow has a state 'INITIAL'
-when it is first created, but this is just a bootstrapping exercise
-since the workflow must always be in some state.
+create a new ticket ('create issue'). The workflow has a state
+'INITIAL' when it is first created, but this is just a bootstrapping
+exercise since the workflow must always be in some state.
 
-The workflow action 'TIX_NEW' has a property 'resulting_state', which
-just means: if you execute me properly the workflow will be in the new
-state 'TIX_CREATED'.
+The workflow action 'create issue' has a property 'resulting_state',
+which just means: if you execute me properly the workflow will be in
+the new state 'CREATED'.
 
 All this talk of 'states' and 'transitions' can be confusing, but just
 match them to what happens in real life -- you move from one action to
@@ -453,8 +538,8 @@ workflow and asking it what actions we can execute right now:
 We can also interrogate the workflow about what fields are necessary
 to execute a particular action:
 
- print "To execute the action 'TIX_NEW' you must provide:\n\n";
- my @fields = $wf->get_action_fields( 'TIX_NEW' );
+ print "To execute the action 'create issue' you must provide:\n\n";
+ my @fields = $wf->get_action_fields( 'create issue' );
  foreach my $field ( @fields ) {
      print $field->name, " (Required? ", $field->is_required, ")\n",
            $field->description, "\n\n";
@@ -698,15 +783,16 @@ in the current state.
 
 =head1 SEE ALSO
 
-L<Workflow::Factory>
-
 L<Workflow::Context>
+
+L<Workflow::Factory>
 
 L<Workflow::State>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2003-2004 Chris Winters. All rights reserved.
+Copyright (c) 2003 Chris Winters and Arvato Direct; 2004 Chris
+Winters. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
@@ -717,6 +803,9 @@ Chris Winters E<lt>chris@cwinters.comE<gt>
 
 Dietmar Hanisch E<lt>Dietmar.Hanisch@Bertelsmann.deE<gt> - Provided
 most of the good ideas for the module and an excellent example of
-everyday usage.
+everyday use.
 
 Jim Smith E<lt>jgsmith@tamu.eduE<gt> - Contributed patches and ideas.
+
+Martin Winkler E<lt>mw@arsnavigandi.deE<gt> - Pointed out a bug and a
+few other items.

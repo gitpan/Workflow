@@ -1,6 +1,6 @@
 package TestApp::Action::TicketCreate;
 
-# $Id: TicketCreate.pm,v 1.3 2004/01/21 13:04:48 cwinters Exp $
+# $Id: TicketCreate.pm,v 1.4 2004/10/11 22:22:26 cwinters Exp $
 
 use strict;
 use base qw( Workflow::Action );
@@ -10,7 +10,7 @@ use TestApp::Ticket;
 use Workflow::Exception   qw( persist_error );
 use Workflow::Factory     qw( FACTORY );
 
-$TestApp::Action::TicketCreate::VERSION  = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
+$TestApp::Action::TicketCreate::VERSION  = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
 
 sub execute {
     my ( $self, $wf ) = @_;
@@ -89,7 +89,6 @@ sub execute {
             description => sprintf( "New ticket created of type '%s' and subject '%s'",
                                     $self->param( 'type' ), $self->param( 'subject' ) ),
             user        => $creator,
-            state       => $wf->state,
         })
     );
     $log->info( "History record added to workflow ok" );

@@ -1,6 +1,6 @@
 package App::Action::TicketCreate;
 
-# $Id: TicketCreate.pm,v 1.4 2003/12/30 06:05:58 cwinters Exp $
+# $Id: TicketCreate.pm,v 1.5 2004/10/11 22:22:26 cwinters Exp $
 
 use strict;
 use base qw( Workflow::Action );
@@ -9,7 +9,7 @@ use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( persist_error );
 use Workflow::Factory   qw( FACTORY );
 
-$App::Action::TicketCreate::VERSION  = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
+$App::Action::TicketCreate::VERSION  = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
 
 sub execute {
     my ( $self, $wf ) = @_;
@@ -68,7 +68,6 @@ sub execute {
             description => sprintf( "New ticket created of type '%s' and subject '%s'",
                                     $self->param( 'type' ), $self->param( 'subject' ) ),
             user        => $creator,
-            state       => $wf->state,
         })
     );
     $log->info( "History record added to workflow ok" );

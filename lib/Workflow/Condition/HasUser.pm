@@ -1,13 +1,13 @@
 package Workflow::Condition::HasUser;
 
-# $Id: HasUser.pm,v 1.3 2004/09/13 02:21:47 cwinters Exp $
+# $Id: HasUser.pm,v 1.4 2004/10/12 05:11:33 cwinters Exp $
 
 use strict;
 use base qw( Workflow::Condition );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( condition_error );
 
-$Workflow::Condition::HasUser::VERSION  = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Condition::HasUser::VERSION  = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
 
 my $DEFAULT_USER_KEY = 'current_user';
 
@@ -20,7 +20,7 @@ sub _init {
 sub evaluate {
     my ( $self, $wf ) = @_;
     my $log = get_logger();
-    $log->debug( "Trying to execute condition ", ref( $self ) );
+    $log->is_debug && $log->debug( "Trying to execute condition ", ref( $self ) );
     my $user_key = $self->param( 'user_key' );
     my $current_user = $wf->context->param( $user_key );
     $log->debug( "Current user in the context is '$current_user' retrieved ",

@@ -1,6 +1,6 @@
 package Workflow::Action;
 
-# $Id: Action.pm,v 1.5 2004/05/14 05:13:52 cwinters Exp $
+# $Id: Action.pm,v 1.6 2004/10/11 22:22:26 cwinters Exp $
 
 # Note: we may implement a separate event mechanism so that actions
 # can trigger other code (use 'Class::Observable'? read observations
@@ -12,7 +12,7 @@ use Log::Log4perl     qw( get_logger );
 use Workflow::Action::InputField;
 use Workflow::Factory qw( FACTORY );
 
-$Workflow::Action::VERSION  = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Action::VERSION  = sprintf("%d.%02d", q$Revision: 1.6 $ =~ /(\d+)\.(\d+)/);
 
 my @FIELDS = qw( name class description );
 __PACKAGE__->mk_accessors( @FIELDS );
@@ -153,26 +153,29 @@ Workflow::Action - Base class for Workflow actions
  sub execute {
      my ( $self, $wf ) = @_;
      my $context = $wf->context;
-
+ 
      # Since 'username' and 'email' have already been validated we
      # don't need to check them for uniqueness, well-formedness, etc.
-
+ 
      my $user = eval {
          User->create({ username => $context->param( 'username' ),
                         email    => $context->param( 'email' ) })
      };
-
+ 
      # Wrap all errors returned...
-
+ 
      if ( $@ ) {
          workflow_error
              "Cannot create new user with name '", $context->param( 'username' ), "': $@";
      }
-
+ 
      # Set the created user in the context for the application and/or
      # other actions (observers) to use
-
+ 
      $context->param( user => $user );
+ 
+     # return the username since it might be used elsewhere...
+     return $user->username;
  }
 
 =head1 DESCRIPTION
@@ -223,7 +226,10 @@ throw a L<Workflow::Exception>, the validation subclass.
 
 B<execute( $workflow )>
 
-Subclasses B<must> implement.
+Subclasses B<must> implement -- this will perform the actual
+work. It's not required that you return anything, but if the action
+may be used in a L<Workflow::State> object that has multiple resulting
+states you should return a simple scalar for a return value.
 
 =head2 Private Methods
 

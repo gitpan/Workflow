@@ -1,6 +1,6 @@
 package Workflow::Factory;
 
-# $Id: Factory.pm,v 1.12 2004/09/13 02:07:10 cwinters Exp $
+# $Id: Factory.pm,v 1.13 2004/10/11 22:22:26 cwinters Exp $
 
 use strict;
 use base qw( Workflow::Base );
@@ -8,7 +8,7 @@ use DateTime;
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( configuration_error workflow_error );
 
-$Workflow::Factory::VERSION  = sprintf("%d.%02d", q$Revision: 1.12 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Factory::VERSION  = sprintf("%d.%02d", q$Revision: 1.13 $ =~ /(\d+)\.(\d+)/);
 
 my ( $log );
 my ( %INSTANCES );
@@ -251,7 +251,11 @@ sub save_workflow {
     eval {
         $persister->update_workflow( $wf );
         $log->info( "Workflow '", $wf->id, "' updated ok" );
-        $persister->create_history( $wf, $wf->get_unsaved_history );
+        my @unsaved = $wf->get_unsaved_history;
+        foreach my $h ( @unsaved ) {
+            $h->set_new_state( $wf->state );
+        }
+        $persister->create_history( $wf, @unsaved );
         $log->info( "Created necessary history objects ok" );
     };
     if ( $@ ) {

@@ -1,12 +1,12 @@
 package Workflow::History;
 
-# $Id: History.pm,v 1.7 2004/05/14 05:13:52 cwinters Exp $
+# $Id: History.pm,v 1.8 2004/10/11 22:22:26 cwinters Exp $
 
 use strict;
 use base qw( Class::Accessor );
 use DateTime;
 
-$Workflow::History::VERSION  = sprintf("%d.%02d", q$Revision: 1.7 $ =~ /(\d+)\.(\d+)/);
+$Workflow::History::VERSION  = sprintf("%d.%02d", q$Revision: 1.8 $ =~ /(\d+)\.(\d+)/);
 
 my @FIELDS = qw( id workflow_id action description date user state );
 __PACKAGE__->mk_accessors( @FIELDS );
@@ -21,6 +21,13 @@ sub new {
         $self->date( DateTime->now() );
     }
     return $self;
+}
+
+sub set_new_state {
+    my ( $self, $new_state ) = @_;
+    unless ( $self->state ) {
+        $self->state( $new_state );
+    }
 }
 
 sub is_saved {
@@ -81,6 +88,26 @@ B<new( \%params )>
 
 Create a new history object, filling it with properties from
 C<\%params>.
+
+B<set_new_state( $new_state )>
+
+Assigns the new state C<$new_state> to the history if the state is not
+already assigned. This is used when you generate a history request in
+a L<Workflow::Action> since the workflow state will change once the
+action has successfully completed. So in the action you create a
+history object without the state:
+
+  $wf->add_history(
+      Workflow::History->new({
+          action      => "Cocoa Puffs",
+          description => "They're magically delicious",
+          user        => "Count Chocula",
+      })
+  );
+
+And then after the new state has been set but before the history
+objects are stored the workflow sets the new state in all unsaved
+history objects.
 
 B<is_saved()>
 
