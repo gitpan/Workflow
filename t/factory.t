@@ -1,13 +1,11 @@
 # -*-perl-*-
 
-# $Id: factory.t,v 1.3 2004/05/24 21:17:15 cwinters Exp $
+# $Id: factory.t,v 1.4 2004/10/17 15:22:26 cwinters Exp $
 
 use strict;
+use lib 't';
+use TestUtil;
 use Test::More  tests => 5;
-
-use Log::Log4perl qw( :easy );
-Log::Log4perl->easy_init({ level => $WARN,
-                           file  => ">> workflow_tests.log" });
 
 require_ok( 'Workflow::Factory' );
 

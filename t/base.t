@@ -1,8 +1,10 @@
 # -*-perl-*-
 
-# $Id: base.t,v 1.2 2004/01/03 20:04:52 cwinters Exp $
+# $Id: base.t,v 1.3 2004/10/17 15:22:26 cwinters Exp $
 
 use strict;
+use lib 't';
+use TestUtil;
 use Test::More  tests => 22;
 
 require_ok( 'Workflow::Base' );

@@ -1,13 +1,13 @@
 package Workflow::Config::XML;
 
-# $Id: XML.pm,v 1.2 2004/10/11 22:22:26 cwinters Exp $
+# $Id: XML.pm,v 1.3 2004/10/17 03:15:17 cwinters Exp $
 
 use strict;
 use base qw( Workflow::Config );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( configuration_error );
 
-$Workflow::Config::XML::VERSION  = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Config::XML::VERSION  = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
 
 my ( $log );
 
@@ -29,7 +29,7 @@ my %XML_OPTIONS = (
         KeyAttr    => [],
     },
     workflow => {
-        ForceArray => [ 'extra_data', 'state', 'action',  'resulting_state', 'condition' ],
+        ForceArray => [ 'extra_data', 'state', 'action',  'resulting_state', 'condition', 'observer' ],
         KeyAttr    => [],
     },
 );

@@ -1,19 +1,19 @@
 package Workflow;
 
-# $Id: Workflow.pm,v 1.18 2004/10/12 05:10:06 cwinters Exp $
+# $Id: Workflow.pm,v 1.21 2004/10/17 15:22:44 cwinters Exp $
 
 use strict;
 
-use base qw( Workflow::Base );
+use base qw( Workflow::Base Class::Observable );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Context;
 use Workflow::Exception qw( workflow_error );
 use Workflow::Factory   qw( FACTORY );
 
-my @FIELDS = qw( id description last_update state type );
+my @FIELDS = qw( id type description state last_update );
 __PACKAGE__->mk_accessors( @FIELDS );
 
-$Workflow::VERSION  = sprintf("%d.%02d", q$Revision: 1.18 $ =~ /(\d+)\.(\d+)/);
+$Workflow::VERSION  = sprintf("%d.%02d", q$Revision: 1.21 $ =~ /(\d+)\.(\d+)/);
 
 use constant NO_CHANGE_VALUE => 'NOCHANGE';
 
@@ -21,6 +21,8 @@ my ( $log );
 
 ########################################
 # PUBLIC METHODS
+
+# this is our only read-write property...
 
 sub context {
     my ( $self, $context ) = @_;
@@ -43,19 +45,23 @@ sub context {
     return $self->{context};
 }
 
+
 sub get_current_actions {
     my ( $self ) = @_;
     $log ||= get_logger();
-    $log->debug( "Getting current actions for wf '", $self->id, "'" );
+    $log->is_debug &&
+        $log->debug( "Getting current actions for wf '", $self->id, "'" );
     my $wf_state = $self->_get_workflow_state;
     return $wf_state->get_available_action_names( $self );
 }
+
 
 sub get_action_fields {
     my ( $self, $action_name ) = @_;
     my $action = $self->_get_action( $action_name );
     return $action->fields;
 }
+
 
 sub execute_action {
     my ( $self, $action_name ) = @_;
@@ -100,15 +106,20 @@ sub execute_action {
 
     if ( $@ ) {
         my $error = $@;
-        $log->error( "Caught exception from action: $error" );
-        $log->is_info &&
-            $log->info( "Ensuring that workflow is at old state '$old_state'" );
+        $log->error( "Caught exception from action: $error; reset ",
+                     "workflow to old state '$old_state'" );
         $self->state( $old_state );
 
         # Don't use 'workflow_error' here since $error should already
         # be a Workflow::Exception object or subclass
 
         die $error;
+    }
+
+    $self->notify_observers( 'execute', $old_state );
+
+    if ( $old_state ne $new_state ) {
+        $self->notify_observers( 'state change', $old_state );
     }
 
     my $new_state_obj = $self->_get_workflow_state;
@@ -121,27 +132,32 @@ sub execute_action {
     return $self->state;
 }
 
+
 sub add_history {
     my ( $self, @items ) = @_;
     $log ||= get_logger();
 
+    my @to_add = ();
     foreach my $item ( @items ) {
         if ( ref $item eq 'HASH' ) {
             $item->{workflow_id} = $self->id;
-            push @{ $self->{_histories} }, Workflow::History->new( $item );
-            $log->debug( "Adding history from hashref" );
+            push @to_add, Workflow::History->new( $item );
+            $log->is_debug && $log->debug( "Adding history from hashref" );
         }
         elsif ( UNIVERSAL::isa( $item, 'Workflow::History' ) ) {
             $item->workflow_id( $self->id );
-            push @{ $self->{_histories} }, $item;
-            $log->debug( "Adding history object directly" );
+            push @to_add, $item;
+            $log->is_debug && $log->debug( "Adding history object directly" );
         }
         else {
             workflow_error "I don't know how to add a history of ",
                            "type '", ref( $item ), "'";
         }
     }
+    push @{ $self->{_histories} }, @to_add;
+    $self->notify_observers( 'add history', \@to_add );
 }
+
 
 sub get_history {
     my ( $self ) = @_;
@@ -165,10 +181,12 @@ sub get_history {
     return @uniq_history;
 }
 
+
 sub get_unsaved_history {
     my ( $self ) = @_;
     return grep { ! $_->is_saved } @{ $self->{_histories} };
 }
+
 
 sub clear_history {
     my ( $self ) = @_;
@@ -196,7 +214,8 @@ sub init {
     while ( my ( $key, $value ) = each %{ $config } ) {
         next if ( $key =~ /^(type|description)$/ );
         next if ( ref $value );
-        $log->debug( "Assigning parameter '$key' -> '$value'" );
+        $log->is_debug &&
+            $log->debug( "Assigning parameter '$key' -> '$value'" );
         $self->param( $key, $value );
     }
 
@@ -208,18 +227,34 @@ sub init {
     }
 }
 
+# Override from Class::Accessor so only certain callers can set
+# properties
+
+sub set {
+    my ( $self, $prop, $value ) = @_;
+    my $calling_pkg = (caller(1))[0];
+    unless ( $calling_pkg =~ /^Workflow/ ) {
+        warn "Tried to set from: ", join( ', ', caller(1) );
+        workflow_error "Don't try to use my private setters from '$calling_pkg'!";
+    }
+    $self->{ $prop } = $value;
+}
+
+
 sub _get_action {
     my ( $self, $action_name ) = @_;
     $log ||= get_logger();
 
     my $state = $self->state;
-    $log->debug( "Trying to find action '$action_name' in state '$state'" );
+    $log->is_debug &&
+        $log->debug( "Trying to find action '$action_name' in state '$state'" );
 
     my $wf_state = $self->_get_workflow_state;
     unless ( $wf_state->contains_action( $action_name ) ) {
         workflow_error "State '$state' does not contain action '$action_name'";
     }
-    $log->debug( "Action '$action_name' exists in state '$state'" );
+    $log->is_debug &&
+        $log->debug( "Action '$action_name' exists in state '$state'" );
 
     my $action = FACTORY->get_action( $self, $action_name );
 
@@ -229,19 +264,22 @@ sub _get_action {
     return $action;
 }
 
+
 sub _get_workflow_state {
     my ( $self, $state ) = @_;
     $log ||= get_logger();
     $state ||= ''; # get rid of -w...
     my $use_state = $state || $self->state;
-    $log->debug( "Finding Workflow::State object for state [given: $state] ",
-                 "[internal: ", $self->state, "]" );
+    $log->is_debug &&
+        $log->debug( "Finding Workflow::State object for state [given: $use_state] ",
+                     "[internal: ", $self->state, "]" );
     my $wf_state = $self->{_states}{ $use_state };
     unless ( $wf_state ) {
         workflow_error "No state '$use_state' exists in workflow '", $self->type, "'";
     }
     return $wf_state;
 }
+
 
 sub _set_workflow_state {
     my ( $self, $wf_state ) = @_;
@@ -254,6 +292,7 @@ sub _get_next_state {
     my $wf_state = $self->_get_workflow_state;
     return $wf_state->get_next_state( $action_name, $action_return );
 }
+
 
 sub _auto_execute_state {
     my ( $self, $wf_state ) = @_;
@@ -281,6 +320,7 @@ Workflow - Simple, flexible system to implement workflows
  my $workflow_conf  = 'workflow.xml';
  
  # contents of 'workflow.xml'
+ 
  <workflow>
      <type>myworkflow</type>
      <state name="INITIAL">
@@ -310,8 +350,8 @@ Workflow - Simple, flexible system to implement workflows
  my $action_conf    = 'action.xml';
  
  # contents of 'action.xml'
+ 
  <actions>
-
      <action name="upload file" class="MyApp::Action::Upload">
          <field name="path" label="File Path"
                 description="Path to file" is_required="yes" />
@@ -326,13 +366,13 @@ Workflow - Simple, flexible system to implement workflows
      <action name="annotate"    class="MyApp::Action::Annotate" />
 
      <action name="null"        class="Workflow::Action::Null" />
-
- </action>
-
+ </actions>
+ 
  # Defines conditions available to the workflow
  my $condition_conf = 'condition.xml';
  
  # contents of 'condition.xml'
+ 
  <conditions>
      <condition name="can_annotate"
                 class="MyApp::Condition::CanAnnotate" />
@@ -342,6 +382,7 @@ Workflow - Simple, flexible system to implement workflows
  my $validator_conf = 'validator.xml';
  
  # contents of 'validator.xml'
+ 
  <validators>
      <validator name="filesize_cap" class="MyApp::Validator::FileSizeCap">
          <param name="max_size" value="20M" />
@@ -395,7 +436,7 @@ Workflow - Simple, flexible system to implement workflows
 
 =head1 DESCRIPTION
 
-This documentation is for version '0.10' of the Workflow module.
+This documentation is for version '0.15' of the Workflow module.
 
 =head2 Overview
 
@@ -625,6 +666,124 @@ Once the action passes these checks and successfully executes we
 update the permanent workflow storage with the new state, as long as
 the application has declared it.
 
+=head1 WORKFLOWS ARE OBSERVABLE
+
+=head2 Purpose
+
+It's useful to have your workflow generate events so that other parts
+of a system can see what's going on and react. For instance, say you
+have a new user creation process. You want to email the records of all
+users who have a first name of 'Sinead' because you're looking for
+your long-lost sister named 'Sinead'. You'd create an observer class
+like:
+
+ package FindSinead;
+ 
+ sub update {
+     my ( $class, $wf, $event, $new_state ) = @_;
+     return unless ( $event eq 'state change' );
+     return unless ( $new_state eq 'CREATED' );
+     my $context = $wf->context;
+     return unless ( $context->param( 'first_name' ) eq 'Sinead' );
+
+     my $user = $context->param( 'user' );
+     my $username = $user->username;
+     my $email    = $user->email;
+     my $mailer = get_mailer( ... );
+     $mailer->send( 'foo@bar.com','Found her!',
+                    "We found Sinead under '$username' at '$email' );
+ }
+
+And then associate it with your workflow:
+
+ <workflow>
+     <type>SomeFlow</type>
+     <observer class="FindSinead" />
+     ...
+
+Every time you create/fetch a workflow the associated observers are
+attached to it.
+
+=head2 Events Generated
+
+You can attach listeners to workflows and catch events at a few points
+in the workflow lifecycle; these are the events fired:
+
+=over 4
+
+=item *
+
+B<create> - Issued after a workflow is first created.
+
+No additional parameters.
+
+=item *
+
+B<fetch> - Issued after a workflow is fetched from the persister.
+
+No additional parameters.
+
+=item *
+
+B<save> - Issued after a workflow is successfully saved.
+
+No additional parameters.
+
+=item *
+
+B<execute> - Issued after a workflow is successfully executed and
+saved.
+
+Adds the parameter C<$old_state> which includes the state of the
+workflow before the action was executed.
+
+=item *
+
+B<state change> - Issued after a workflow is successfully executed,
+saved and results in a state change. The event will not be fired if
+you executed an action that did not result in a state change.
+
+Adds the parameter C<$old_state> which includes the state of the
+workflow before the action was executed.
+
+=item *
+
+B<add history> - Issued after one or more history objects added to a
+workflow object.
+
+The additional argument is an arrayref of all L<Workflow::History>
+objects added to the workflow. (Note that these will not be persisted
+until the workflow is persisted.)
+
+=back
+
+=head2 Configuring
+
+You configure the observers directly in the 'workflow' configuration
+item. Each 'observer' may have either a 'class' or 'sub' entry within
+it that defines the observer's location.
+
+We load these classes at startup time. So if you specify an observer
+that doesn't exist you see the error when the workflow system is
+initialized rather than the system tries to use the observer.
+
+For instance, the following defines two observers:
+
+<workflow>
+ <type>ObservedItem</type>
+ <description>This is...</description
+ 
+ <observer class="SomeObserver" />
+ <observer sub="SomeOtherObserver::Functions::other_sub" />
+
+In the first declaration we specify the class ('SomeObserver') that
+will catch observations using its C<update()> method. In the second
+we're naming exactly the subroutine ('other_sub()' in the class
+'SomeOtherObserver::Functions') that will catch observations.
+
+All configured observers get all events. It's up to each observer to
+figure out what it wants to handle.
+
 =head1 WORKFLOW METHODS
 
 The following documentation is for the workflow object itself rather
@@ -638,6 +797,21 @@ Execute the action C<$action_name>. Typically this changes the state
 of the workflow. If C<$action_name> is not in the current state, fails
 one of the conditions on the action, or fails one of the validators on
 the action an exception is thrown.
+
+After the action has been successfully executed and the workflow saved
+we issue a 'execute' observation with the old state as an additional
+parameter. So if you wanted to write an observer you could create a
+method with the signature:
+
+ sub update {
+     my ( $class, $workflow, $action, $old_state ) = @_;
+     if ( $action eq 'execute' ) { .... }
+ }
+
+We also issue a 'change state' observation if the executed action
+resulted in a new state. See L<WORKFLOWS ARE OBSERVABLE> above for how
+we use and register observers and L<Class::Observable> for more
+general information about observers as well as implementation details.
 
 Returns: new state of workflow
 
@@ -659,11 +833,20 @@ accessible by the environment an exception is thrown.
 
 Returns: list of L<Workflow::Action::InputField> objects
 
-B<add_history( \%params | $wf_history_object )>
+B<add_history( @( \%params | $wf_history_object ) )>
 
-Adds history to the workflow, typically done by an action in
-C<execute_action()> or one of the observers of that action. This
-history will not be saved until C<execute_action()> is complete.
+Adds any number of histories to the workflow, typically done by an
+action in C<execute_action()> or one of the observers of that
+action. This history will not be saved until C<execute_action()> is
+complete.
+
+You can add a list of either hashrefs with history information in them
+or full L<Workflow::History> objects. Trying to add anything else will
+result in an exception and B<none> of the items being added.
+
+Successfully adding the history objects results in a 'add history'
+observation being thrown. See L<WORKFLOWS ARE OBSERVABLE> above for
+more.
 
 Returns: nothing
 
@@ -683,7 +866,7 @@ from the long-term storage.
 
 =head2 Properties
 
-Unless otherwise noted properties are read-only.
+Unless otherwise noted properties are B<read-only>.
 
 B<id>
 
@@ -704,6 +887,10 @@ workflow.
 B<state>
 
 The current state of the workflow.
+
+B<last_update> (read-write)
+
+Date of the workflow's last update.
 
 B<context> (read-write, see below)
 
@@ -789,6 +976,10 @@ L<Workflow::Factory>
 
 L<Workflow::State>
 
+October 2004 talk 'Workflows in Perl' given to pgh.pm:
+
+  L<http://www.cwinters.com/pdf/workflow_pgh_pm.pdf>
+
 =head1 COPYRIGHT
 
 Copyright (c) 2003 Chris Winters and Arvato Direct; 2004 Chris
@@ -799,13 +990,27 @@ it under the same terms as Perl itself.
 
 =head1 AUTHORS
 
-Chris Winters E<lt>chris@cwinters.comE<gt>
+Chris Winters E<lt>chris@cwinters.comE<gt> is the primary author and
+maintainer.
+
+The following folks have also helped out:
 
 Dietmar Hanisch E<lt>Dietmar.Hanisch@Bertelsmann.deE<gt> - Provided
 most of the good ideas for the module and an excellent example of
 everyday use.
 
-Jim Smith E<lt>jgsmith@tamu.eduE<gt> - Contributed patches and ideas.
+Tom Moertel E<lt>tmoertel@cpan.orgE<gt> gave me the idea for being
+able to attach event listeners (observers) to the process.
+
+Michael Roberts E<lt>michael@vivtek.comE<gt> graciously released the
+'Workflow' namespace on CPAN; check out his Workflow toolkit at
+L<http://www.vivtek.com/wftk.html>.
+
+Michael Schwern E<lt>schwern@pobox.orgE<gt> barked via RT about a
+dependency problem and CPAN naming issue.
+
+Jim Smith E<lt>jgsmith@tamu.eduE<gt> - Contributed patches (being able
+to subclass L<Workflow::Factory>) and good ideas.
 
 Martin Winkler E<lt>mw@arsnavigandi.deE<gt> - Pointed out a bug and a
 few other items.

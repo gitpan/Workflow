@@ -1,8 +1,10 @@
 # -*-perl-*-
 
-# $Id: history.t,v 1.2 2004/01/03 19:44:15 cwinters Exp $
+# $Id: history.t,v 1.3 2004/10/17 15:22:26 cwinters Exp $
 
 use strict;
+use lib 't';
+use TestUtil;
 use Test::More  tests => 10;
 
 require_ok( 'Workflow::History' );

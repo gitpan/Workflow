@@ -1,15 +1,12 @@
 # -*-perl-*-
 
-# $Id: factory_subclass.t,v 1.1 2004/05/24 21:17:38 cwinters Exp $
+# $Id: factory_subclass.t,v 1.2 2004/10/17 15:22:26 cwinters Exp $
 
 use strict;
+use lib 't';
+use TestUtil;
 use Test::More  tests => 5;
 
-use Log::Log4perl qw( :easy );
-Log::Log4perl->easy_init({ level => $INFO,
-                           file  => ">> workflow_tests.log" });
-
-chdir 't' if ( -d 't' );
 require_ok( 'FactorySubclass' );
 my $factory = FactorySubclass->instance();
 is( ref( $factory ), 'FactorySubclass',

@@ -1,11 +1,11 @@
 package Workflow::Action::Null;
 
-# $Id: Null.pm,v 1.1 2004/10/11 13:58:48 cwinters Exp $
+# $Id: Null.pm,v 1.2 2004/10/12 18:58:51 cwinters Exp $
 
 use strict;
 use base qw( Workflow::Action );
 
-$Workflow::Action::Null::VERSION  = sprintf("%d.%02d", q$Revision: 1.1 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Action::Null::VERSION  = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
 
 sub execute {
     my ( $self ) = @_;
@@ -18,7 +18,7 @@ __END__
 
 =head1 NAME
 
-Workflow::Action::Null - 
+Workflow::Action::Null - Workflow action for the terminally lazy
 
 =head1 SYNOPSIS
 
@@ -32,15 +32,26 @@ Workflow::Action::Null -
 
 =head1 DESCRIPTION
 
-Workflow action that doesn't do anything. Can be useful if you just
-want to move a workflow from one state to another without actually
-doing anything.
+Workflow action that does nothing. But unlike all those other lazy
+modules out there, it does nothing with a purpose! For instance, you
+might want some poor slobs to have some action verified but the elite
+masters can skip the work entirely. So you can do:
+
+  <state name="checking" autorun="yes">
+     <action name="verify" resulting_state="verified">
+         <condition name="isPoorSlob" />
+     </action>
+     <action name="null" resulting_state="verified">
+         <condition name="isEliteMaster" />
+     </action>
+  </state>
 
 =head1 OBJECT METHODS
 
 B<execute()>
 
-Implemented from L<Workflow::Action>. Always returns C<undef>.
+Implemented from L<Workflow::Action>. Proudly does nothing and proves
+it by returning C<undef>.
 
 =head1 COPYRIGHT
 

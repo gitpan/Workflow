@@ -1,12 +1,14 @@
 # -*-perl-*-
 
-# $Id: persister_spops.t,v 1.8 2004/05/25 00:16:26 cwinters Exp $
+# $Id: persister_spops.t,v 1.9 2004/10/17 15:22:26 cwinters Exp $
 
 use strict;
+use lib 't';
+use TestUtil;
+
 use constant NUM_TESTS => 18;
 use Test::More;
 
-chdir 't' if ( -d 't' );
 eval "require SPOPS";
 if ( $@ ) {
     plan skip_all => 'SPOPS not installed';

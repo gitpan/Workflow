@@ -1,12 +1,11 @@
 # -*-perl-*-
 
-# $Id: persister_random_id.t,v 1.1 2004/01/02 13:01:50 cwinters Exp $
+# $Id: persister_random_id.t,v 1.2 2004/10/17 15:22:26 cwinters Exp $
 
 use strict;
-use constant NUM_TESTS => 10;
-use Test::More;
-
-plan tests => NUM_TESTS;
+use lib 't';
+use TestUtil;
+use Test::More tests => 10;
 
 require_ok( 'Workflow::Persister::RandomId' );
 my $generator = Workflow::Persister::RandomId->new();

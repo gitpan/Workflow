@@ -1,6 +1,6 @@
 package App::Action::TicketCreate;
 
-# $Id: TicketCreate.pm,v 1.5 2004/10/11 22:22:26 cwinters Exp $
+# $Id: TicketCreate.pm,v 1.6 2004/10/13 20:05:09 cwinters Exp $
 
 use strict;
 use base qw( Workflow::Action );
@@ -9,12 +9,13 @@ use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( persist_error );
 use Workflow::Factory   qw( FACTORY );
 
-$App::Action::TicketCreate::VERSION  = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
+$App::Action::TicketCreate::VERSION  = sprintf("%d.%02d", q$Revision: 1.6 $ =~ /(\d+)\.(\d+)/);
 
 sub execute {
     my ( $self, $wf ) = @_;
     my $log = get_logger();
-    $log->debug( "Action '", $self->name, "' with class '", ref( $self ), "' executing..." );
+    $log->debug( "Action '", $self->name, "' with class ",
+                 "'", ref( $self ), "' executing..." );
 
     my $context = $wf->context;
     my @fields = qw( type subject description due_date creator );

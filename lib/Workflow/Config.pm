@@ -1,6 +1,6 @@
 package Workflow::Config;
 
-# $Id: Config.pm,v 1.8 2004/09/13 02:06:21 cwinters Exp $
+# $Id: Config.pm,v 1.9 2004/10/17 03:15:17 cwinters Exp $
 
 use strict;
 use base qw( Class::Factory );
@@ -8,7 +8,7 @@ use Data::Dumper        qw( Dumper );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( configuration_error );
 
-$Workflow::Config::VERSION  = sprintf("%d.%02d", q$Revision: 1.8 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Config::VERSION  = sprintf("%d.%02d", q$Revision: 1.9 $ =~ /(\d+)\.(\d+)/);
 
 my %VALID_TYPES = map { $_ => 1 } qw( action condition persister validator workflow );
 
@@ -271,6 +271,9 @@ workflow pieces:
       type        $
       description $
       persister   $
+      observer    \@
+          sub           $
+          class         $
       state       \@
           name          $
           description   $
@@ -278,7 +281,7 @@ workflow pieces:
               name            $
               resulting_state $
               condition       \@
-                  name $
+                  name              $
 
 =over 4
 

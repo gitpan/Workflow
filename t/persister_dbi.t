@@ -1,19 +1,19 @@
 # -*-perl-*-
 
-# $Id: persister_dbi.t,v 1.8 2004/10/12 02:28:18 cwinters Exp $
+# $Id: persister_dbi.t,v 1.9 2004/10/17 15:22:26 cwinters Exp $
 
 use strict;
+use lib 't';
+use TestUtil;
 use constant NUM_TESTS => 41;
 use Test::More;
 
-chdir 't' if ( -d 't' );
 eval "require DBI";
 if ( $@ ) {
     plan skip_all => 'DBI not installed';
 }
 plan tests => NUM_TESTS;
 
-require TestUtil;
 require Workflow::Factory;
 
 my $TICKET_CLASS = 'TestApp::Ticket';
@@ -68,9 +68,9 @@ my ( $wf );
 
 {
     TestUtil->set_new_ticket_context( $wf );
-    my $old_state = $wf->state;
+    my $old_state = $wf->state();
     $wf->execute_action( 'TIX_NEW' );
-    is( $wf->state, 'TIX_CREATED',
+    is( $wf->state(), 'TIX_CREATED',
         'State of modified workflow correct' );
     my $ticket = $wf->context->param( 'ticket' );
     is( ref( $ticket ), 'TestApp::Ticket',

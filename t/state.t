@@ -1,12 +1,10 @@
 # -*-perl-*-
 
-# $Id: state.t,v 1.2 2004/05/25 00:19:21 cwinters Exp $
+# $Id: state.t,v 1.3 2004/10/17 15:22:26 cwinters Exp $
 
 use strict;
+use lib 't';
+use TestUtil;
 use Test::More  tests => 1;
-
-use Log::Log4perl qw( :easy );
-Log::Log4perl->easy_init({ level => $WARN,
-                           file  => ">> workflow_tests.log" });
 
 require_ok( 'Workflow::State' );

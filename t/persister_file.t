@@ -1,15 +1,14 @@
 # -*-perl-*-
 
-# $Id: persister_file.t,v 1.6 2004/05/25 00:19:21 cwinters Exp $
+# $Id: persister_file.t,v 1.7 2004/10/17 15:22:26 cwinters Exp $
 
 use strict;
+use lib 't';
+use TestUtil;
 use File::Path            qw( rmtree );
 use File::Spec::Functions qw( catdir curdir rel2abs );
 use Test::More  tests => 19;
 
-chdir 't' if ( -d 't' );
-
-require TestUtil;
 require Workflow::Factory;
 
 my $persist_dir = catdir( rel2abs( curdir() ), 'tmp_file' );
