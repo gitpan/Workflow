@@ -1,0 +1,69 @@
+<!--
+ This is a single workflow type which can be instantiated separately
+ from the others; all workflows have access to the same universe of
+ validators and conditions (described below)
+-->
+
+<workflow>
+ <type>Ticket</type>
+ <description>This is the workflow for sample application Ticket</description>
+ <persister>TestPersister</persister>
+
+  <state name="INITIAL">
+     <description>This is the state the workflow enters when
+        instantiated. It's like a 'state zero' but since we're
+        using names rather than IDs we cannot assume</description>
+
+<!-- This action is accessible from this state by everyone -->
+     <action name="TIX_NEW"
+        resulting_state="TIX_CREATED"/>
+  </state>
+
+  <state name="TIX_CREATED">
+     <description>State of ticket after it has been created</description>
+     <action name="TIX_COMMENT"
+             resulting_state="NOCHANGE"/>        
+<!--
+     <action name="TIX_CLOSE"
+             resulting_state="TIX_CLOSED">
+        <condition name="IsAdminUser"/>
+     </action>
+-->
+
+     <action name="TIX_EDIT"
+             resulting_state="TIX_IN_PROGRESS">
+        <condition name="IsWorker"/>
+     </action>
+   </state>
+
+   <state name="TIX_IN_PROGRESS">
+      <description>State of ticket after developers start work</description>
+      <action name="TIX_CLOSE"
+              resulting_state="TIX_CLOSED">
+         <condition name="IsCreator"/>
+      </action>
+   </state>
+
+<!--
+    <state name="TIX_AWAITS_APPROVAL">
+      <description>State of ticket after developers complete work</description>
+       <action name="TIX_CLOSE"
+               resulting_state="TIX_CLOSED">
+          <condition name="IsCreationUser"/>
+       </action>
+       <action name="TIX_ESCALATE"
+               resulting_state="TIX_CREATED_ESCALATED">
+          <condition name="IsCreationUser"/>
+       </action>
+    </state>
+-->
+
+   <state name="TIX_CLOSED">
+      <description>State of ticket after creator approves the work done</description>
+      <action name="TIX_REOPEN"
+              resulting_state="TIX_CREATED">
+         <condition name="IsCreator"/>
+      </action>
+   </state>
+
+</workflow>
