@@ -1,9 +1,14 @@
 # -*-perl-*-
 
-# $Id: persister_file.t,v 1.3 2004/01/11 19:36:49 cwinters Exp $
+# $Id: persister_file.t,v 1.4 2004/05/22 05:42:00 cwinters Exp $
 
 use strict;
-use lib qw( t/ );
+
+BEGIN {
+	chdir 't' if -d 't';
+	unshift @INC, '../blib/lib', '../lib';
+}
+
 use File::Path            qw( rmtree );
 use File::Spec::Functions qw( catdir curdir rel2abs );
 use Test::More  tests => 19;

@@ -1,17 +1,17 @@
 #XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
 name:         Workflow
-version:      0.01
+version:      0.02
 version_from: VERSION
 installdirs:  site
 requires:
     DBD::Mock:                     0.1
-    Class::Accessor:               0.18
-    Log::Log4perl:                 0.34
     XML::Simple:                   2
-    Log::Dispatch:                 2
-    DateTime::Format::Strptime:    1
     Test::More:                    0.41
+    Log::Dispatch:                 2
+    Class::Accessor:               0.18
     DateTime:                      0.15
+    Log::Log4perl:                 0.34
+    DateTime::Format::Strptime:    1
     Exception::Class:              1.1
 
 distribution_type: module

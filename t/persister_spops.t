@@ -1,9 +1,14 @@
 # -*-perl-*-
 
-# $Id: persister_spops.t,v 1.6 2004/01/11 19:36:49 cwinters Exp $
+# $Id: persister_spops.t,v 1.7 2004/05/22 05:42:00 cwinters Exp $
 
 use strict;
-use lib qw( t/ );
+
+BEGIN {
+	chdir 't' if -d 't';
+	unshift @INC, '../blib/lib', '../lib';
+}
+
 use constant NUM_TESTS => 18;
 use Test::More;
 
