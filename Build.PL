@@ -1,7 +1,10 @@
 use Module::Build;
 
 Module::Build->new(
+    dist_author       => 'Chris Winters <chris@cwinters.com>',
+    dist_abstract     => 'Simple, flexible system to implement workflows',
     dist_name         => 'Workflow',
+    distribution_type => 'module',
     license           => 'perl',
     dist_version_from => 'VERSION',
     requires          => {
@@ -17,5 +20,8 @@ Module::Build->new(
       'Safe'                       => 0,
       'Test::More'                 => 0.41,
       'XML::Simple'                => 2.00,
+    },
+    no_index => {
+        directory => [ 'eg', 't' ],
     },
 )->create_build_script();

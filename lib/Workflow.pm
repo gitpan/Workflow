@@ -1,6 +1,6 @@
 package Workflow;
 
-# $Id: Workflow.pm,v 1.21 2004/10/17 15:22:44 cwinters Exp $
+# $Id: Workflow.pm,v 1.24 2005/11/30 03:09:47 cwinters Exp $
 
 use strict;
 
@@ -13,7 +13,7 @@ use Workflow::Factory   qw( FACTORY );
 my @FIELDS = qw( id type description state last_update );
 __PACKAGE__->mk_accessors( @FIELDS );
 
-$Workflow::VERSION  = sprintf("%d.%02d", q$Revision: 1.21 $ =~ /(\d+)\.(\d+)/);
+$Workflow::VERSION  = sprintf("%d.%02d", q$Revision: 1.24 $ =~ /(\d+)\.(\d+)/);
 
 use constant NO_CHANGE_VALUE => 'NOCHANGE';
 
@@ -297,7 +297,7 @@ sub _get_next_state {
 sub _auto_execute_state {
     my ( $self, $wf_state ) = @_;
     $log ||= get_logger();
-    my $action_name = $wf_state->get_autorun_action_name;
+    my $action_name = $wf_state->get_autorun_action_name( $self );
     $log->is_debug &&
         $log->debug( "Found action '$action_name' to execute in ",
                      "autorun state ", $wf_state->state );
@@ -769,12 +769,12 @@ initialized rather than the system tries to use the observer.
 
 For instance, the following defines two observers:
 
-<workflow>
- <type>ObservedItem</type>
- <description>This is...</description
- 
- <observer class="SomeObserver" />
- <observer sub="SomeOtherObserver::Functions::other_sub" />
+ <workflow>
+   <type>ObservedItem</type>
+   <description>This is...</description>
+  
+   <observer class="SomeObserver" />
+   <observer sub="SomeOtherObserver::Functions::other_sub" />
 
 In the first declaration we specify the class ('SomeObserver') that
 will catch observations using its C<update()> method. In the second
@@ -976,9 +976,8 @@ L<Workflow::Factory>
 
 L<Workflow::State>
 
-October 2004 talk 'Workflows in Perl' given to pgh.pm:
-
-  L<http://www.cwinters.com/pdf/workflow_pgh_pm.pdf>
+October 2004 talk 'Workflows in Perl' given to
+pgh.pm: L<http://www.cwinters.com/pdf/workflow_pgh_pm.pdf>
 
 =head1 COPYRIGHT
 
