@@ -4,9 +4,9 @@ Module::Build->new(
     dist_author       => 'Chris Winters <chris@cwinters.com>',
     dist_abstract     => 'Simple, flexible system to implement workflows',
     dist_name         => 'Workflow',
+    dist_version_from => 'VERSION',
     distribution_type => 'module',
     license           => 'perl',
-    dist_version_from => 'VERSION',
     requires          => {
       'Class::Accessor'            => 0.18,
       'Class::Factory'             => 1.00,
@@ -24,4 +24,5 @@ Module::Build->new(
     no_index => {
         directory => [ 'eg', 't' ],
     },
+    create_makefile_pl => 'traditional',
 )->create_build_script();
