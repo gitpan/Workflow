@@ -1,6 +1,6 @@
 package Workflow::Factory;
 
-# $Id: Factory.pm,v 1.16 2005/11/30 03:10:52 cwinters Exp $
+# $Id: Factory.pm,v 1.17 2006/07/07 20:33:16 jonasbn Exp $
 
 use strict;
 use base qw( Workflow::Base );
@@ -8,7 +8,7 @@ use DateTime;
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( configuration_error workflow_error );
 
-$Workflow::Factory::VERSION  = sprintf("%d.%02d", q$Revision: 1.16 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Factory::VERSION  = sprintf("%d.%02d", q$Revision: 1.17 $ =~ /(\d+)\.(\d+)/);
 
 my ( $log );
 my ( %INSTANCES );

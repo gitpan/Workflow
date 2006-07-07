@@ -1,6 +1,6 @@
 package Workflow;
 
-# $Id: Workflow.pm,v 1.25 2006/07/07 12:44:19 jonasbn Exp $
+# $Id: Workflow.pm,v 1.27 2006/07/07 21:24:52 jonasbn Exp $
 
 use strict;
 
@@ -13,7 +13,7 @@ use Workflow::Factory   qw( FACTORY );
 my @FIELDS = qw( id type description state last_update );
 __PACKAGE__->mk_accessors( @FIELDS );
 
-$Workflow::VERSION  = sprintf("%d.%02d", q$Revision: 1.25 $ =~ /(\d+)\.(\d+)/);
+$Workflow::VERSION  = sprintf("%d.%02d", q$Revision: 1.27 $ =~ /(\d+)\.(\d+)/);
 
 use constant NO_CHANGE_VALUE => 'NOCHANGE';
 
@@ -996,7 +996,7 @@ Chris Winters E<lt>chris@cwinters.comE<gt>, original author.
 The following folks have also helped out:
 
 Martin Bartosch, for bug reporting and giving the solution not even using a
-patch (0.19 to 0.20)
+patch (0.19 to 0.20) and a patch resulting in 0.21
 
 Randal Schwartz, for testing 0.18 and swiftly giving feedback (0.18 to 0.19)
 
