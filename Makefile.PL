@@ -5,10 +5,13 @@ WriteMakefile
           'PL_FILES' => {},
           'INSTALLDIRS' => 'site',
           'DISTNAME' => 'Workflow',
-          'EXE_FILES' => [],
+          'EXE_FILES' => [
+                           '/Users/jonasbn/develop/cvs-logicLAB/modules/workflow/bin/XML2Perl.pl'
+                         ],
           'VERSION_FROM' => 'VERSION',
           'PREREQ_PM' => {
                            'DateTime' => '0.15',
+                           'Test::Exception' => 0,
                            'DBD::Mock' => '0.1',
                            'XML::Simple' => '2',
                            'Class::Observable' => '1.04',

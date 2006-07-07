@@ -1,6 +1,6 @@
 package Workflow;
 
-# $Id: Workflow.pm,v 1.24 2005/11/30 03:09:47 cwinters Exp $
+# $Id: Workflow.pm,v 1.25 2006/07/07 12:44:19 jonasbn Exp $
 
 use strict;
 
@@ -13,7 +13,7 @@ use Workflow::Factory   qw( FACTORY );
 my @FIELDS = qw( id type description state last_update );
 __PACKAGE__->mk_accessors( @FIELDS );
 
-$Workflow::VERSION  = sprintf("%d.%02d", q$Revision: 1.24 $ =~ /(\d+)\.(\d+)/);
+$Workflow::VERSION  = sprintf("%d.%02d", q$Revision: 1.25 $ =~ /(\d+)\.(\d+)/);
 
 use constant NO_CHANGE_VALUE => 'NOCHANGE';
 
@@ -981,18 +981,21 @@ pgh.pm: L<http://www.cwinters.com/pdf/workflow_pgh_pm.pdf>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2003 Chris Winters and Arvato Direct; 2004 Chris
-Winters. All rights reserved.
+Copyright (c) 2003 Chris Winters and Arvato Direct; 2004, 2005, 2006 
+Chris Winters. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =head1 AUTHORS
 
-Chris Winters E<lt>chris@cwinters.comE<gt> is the primary author and
-maintainer.
+Jonas B. Nielsen (jonasbn) E<lt>jonasbn@cpan.orgE<gt>, current maintainer.
+
+Chris Winters E<lt>chris@cwinters.comE<gt>, original author.
 
 The following folks have also helped out:
+
+Chris Brown, for a patch to L<Workflow::Config::Perl>
 
 Dietmar Hanisch E<lt>Dietmar.Hanisch@Bertelsmann.deE<gt> - Provided
 most of the good ideas for the module and an excellent example of
