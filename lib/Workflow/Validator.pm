@@ -1,11 +1,11 @@
 package Workflow::Validator;
 
-# $Id: Validator.pm,v 1.4 2004/03/08 04:56:09 cwinters Exp $
+# $Id: Validator.pm,v 1.5 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Workflow::Base );
 
-$Workflow::Validator::VERSION  = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Validator::VERSION  = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
 
 my @FIELDS = qw( name class );
 __PACKAGE__->mk_accessors( @FIELDS );
@@ -123,12 +123,14 @@ care where it comes from.
 
 =head2 Methods
 
-B<_init( \%params )>
+#=head3 init
+
+=head3 _init( \%params )
 
 Called when the validator is first initialized. If you do not have
 sufficient information in C<\%params> you should throw an exception.
 
-B<validate( $workflow, $data )>
+=head3 validate( $workflow, $data )
 
 Determine whether your C<$data> is true or false. If necessary you can
 get the application context information from the C<$workflow> object.

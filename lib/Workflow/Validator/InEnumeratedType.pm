@@ -1,12 +1,12 @@
 package Workflow::Validator::InEnumeratedType;
 
-# $Id: InEnumeratedType.pm,v 1.3 2004/03/08 04:56:09 cwinters Exp $
+# $Id: InEnumeratedType.pm,v 1.4 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Workflow::Validator );
 use Workflow::Exception qw( configuration_error validation_error );
 
-$Workflow::Validator::InEnumeratedType::VERSION  = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Validator::InEnumeratedType::VERSION  = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
 
 sub _init {
     my ( $self, $params ) = @_;
@@ -157,15 +157,17 @@ The implementation for the validator might look like:
      $self->SUPER::validate( $wf, $worker_id );
  }
 
-=head2 Methods
+=head2 METHODS
 
-B<_init( \%params )>
+#=head3 _init( \%params )
 
-B<add_enumerated_values( @values )>
+#=head3 validator
 
-B<get_enumerated_values()>
+#=head3 add_enumerated_values( @values )
 
-B<is_enumerated_value( $value )>
+#=head3 get_enumerated_values()
+
+=head3 is_enumerated_value( $value )
 
 This is most often the single method you will want to modify.
 

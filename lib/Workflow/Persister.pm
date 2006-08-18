@@ -1,13 +1,13 @@
 package Workflow::Persister;
 
-# $Id: Persister.pm,v 1.8 2004/05/14 05:13:52 cwinters Exp $
+# $Id: Persister.pm,v 1.9 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Workflow::Base );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( persist_error );
 
-$Workflow::Persister::VERSION  = sprintf("%d.%02d", q$Revision: 1.8 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Persister::VERSION  = sprintf("%d.%02d", q$Revision: 1.9 $ =~ /(\d+)\.(\d+)/);
 
 my @FIELDS = qw( name class
                  use_random use_uuid
@@ -157,27 +157,37 @@ fetches workflow history records.
 
 =head2 Methods
 
-B<create_workflow( $workflow )>
+=head3 create_workflow( $workflow )
 
 Generate an ID for the workflow, serialize the workflow data (ID and
 state) and set the ID in the workflow.
 
-B<update_workflow( $workflow )>
+=head3 update_workflow( $workflow )
 
 Update the workflow state.
 
-B<fetch_workflow( $workflow_id )>
+=head3 fetch_workflow( $workflow_id )
 
 Retrieve the workflow data corresponding to C<$workflow_id>. It not
 found return undef, if found return a hashref with the data.
 
-B<create_history( $workflow, @history )>
+=head3 create_history( $workflow, @history )
 
 Serialize all objects in C<@history> for later retrieval.
 
-B<fetch_history( $workflow )>
+=head3 fetch_history( $workflow )
 
 Return list of L<Workflow::History> objects.
+
+#=head3 assign_generators
+
+#=head3 fetch_extra_workflow_data
+
+#=head3 init
+
+#=head3 init_random_generators
+
+#=head3 init_uuid_generators
 
 =head1 SEE ALSO
 

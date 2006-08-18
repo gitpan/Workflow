@@ -1,6 +1,6 @@
 package Workflow::Persister::File;
 
-# $Id: File.pm,v 1.9 2004/05/14 05:13:52 cwinters Exp $
+# $Id: File.pm,v 1.10 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Workflow::Persister );
@@ -10,7 +10,7 @@ use Log::Log4perl         qw( get_logger );
 use Workflow::Exception   qw( configuration_error persist_error );
 use Workflow::Persister::RandomId;
 
-$Workflow::Persister::File::VERSION  = sprintf("%d.%02d", q$Revision: 1.9 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Persister::File::VERSION  = sprintf("%d.%02d", q$Revision: 1.10 $ =~ /(\d+)\.(\d+)/);
 
 my @FIELDS = qw( path );
 __PACKAGE__->mk_accessors( @FIELDS );
@@ -202,6 +202,24 @@ Workflow::Persister::File - Persist workflow and history to the filesystem
 Main persistence class for storing the workflow and workflow history
 records to a filesystem for later retrieval. Data are stored in
 serialized Perl data structure files.
+
+=head2 METHODS
+
+#=head3 constitute_object
+
+#=head3 create_history
+
+#=head3 create_workflow
+
+#=head3 fetch_history
+
+#=head3 fetch_workflow
+
+#=head3 init
+
+#=head3 serialize_object
+
+#=head3 update_workflow
 
 =head1 SEE ALSO
 

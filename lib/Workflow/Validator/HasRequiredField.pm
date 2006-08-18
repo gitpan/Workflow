@@ -1,12 +1,12 @@
 package Workflow::Validator::HasRequiredField;
 
-# $Id: HasRequiredField.pm,v 1.3 2004/03/08 04:56:09 cwinters Exp $
+# $Id: HasRequiredField.pm,v 1.4 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Workflow::Validator );
 use Workflow::Exception qw( validation_error );
 
-$Workflow::Validator::HasRequiredField::VERSION  = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Validator::HasRequiredField::VERSION  = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
 
 sub validate {
     my ( $self, $wf, @required_fields ) = @_;
@@ -84,6 +84,10 @@ Note that we do not try to match the value in the context against a
 set of known values or algorithm, just see if the value is defined --
 using the Perl notion for defined rather than true/false, which means
 '0' and the empty string will both be valid.
+
+=head2 METHODS
+
+#=head3 validate
 
 =head1 COPYRIGHT
 

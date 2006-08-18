@@ -1,13 +1,13 @@
 package Workflow::Condition::HasUser;
 
-# $Id: HasUser.pm,v 1.4 2004/10/12 05:11:33 cwinters Exp $
+# $Id: HasUser.pm,v 1.5 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Workflow::Condition );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( condition_error );
 
-$Workflow::Condition::HasUser::VERSION  = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Condition::HasUser::VERSION  = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
 
 my $DEFAULT_USER_KEY = 'current_user';
 
@@ -83,6 +83,10 @@ Key in workflow context to check for data. If not specified we use
 'current_user'.
 
 =back
+
+=head2 METHODS
+
+#=head3 evaluate
 
 =head1 SEE ALSO
 

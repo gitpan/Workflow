@@ -1,11 +1,11 @@
 package Workflow::Context;
 
-# $Id: Context.pm,v 1.4 2006/07/07 21:24:52 jonasbn Exp $
+# $Id: Context.pm,v 1.5 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Workflow::Base );
 
-$Workflow::Context::VERSION  = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Context::VERSION  = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
 
 sub merge {
     my ( $self, $other ) = @_;
@@ -53,7 +53,7 @@ including its Actions, Conditions and Validators.
 
 =head1 OBJECT METHODS
 
-B<merge( $other_context )>
+=head3 merge( $other_context )
 
 Merges the values from C<$other_context> into this object. If there
 are duplicate keys in this object and C<$other_context>,

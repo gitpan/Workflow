@@ -1,6 +1,6 @@
 package Workflow::Persister::SPOPS;
 
-# $Id: SPOPS.pm,v 1.6 2004/03/08 04:56:09 cwinters Exp $
+# $Id: SPOPS.pm,v 1.7 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Workflow::Persister );
@@ -8,7 +8,7 @@ use DateTime;
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( configuration_error persist_error );
 
-$Workflow::Persister::SPOPS::VERSION  = sprintf("%d.%02d", q$Revision: 1.6 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Persister::SPOPS::VERSION  = sprintf("%d.%02d", q$Revision: 1.7 $ =~ /(\d+)\.(\d+)/);
 
 my @FIELDS = qw( workflow_class history_class );
 __PACKAGE__->mk_accessors( @FIELDS );
@@ -164,6 +164,20 @@ B<NOTE>: The configuration for your workflow history object B<must>
 use the L<SPOPS::Tool::DateConvert> to translate the 'history_date'
 field into a L<DateTime> object. We assume when we fetch the history
 object that this has already been done.
+
+=head2 METHODS
+
+#=head3 init
+
+#=head3 create_workflow
+
+#=head3 fetch_workflow
+
+#=head3 update_workflow
+
+#=head3 create_history
+
+#=head3 fetch_history
 
 =head1 SEE ALSO
 

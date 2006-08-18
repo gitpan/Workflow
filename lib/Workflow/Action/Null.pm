@@ -1,11 +1,11 @@
 package Workflow::Action::Null;
 
-# $Id: Null.pm,v 1.2 2004/10/12 18:58:51 cwinters Exp $
+# $Id: Null.pm,v 1.3 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Workflow::Action );
 
-$Workflow::Action::Null::VERSION  = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Action::Null::VERSION  = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
 
 sub execute {
     my ( $self ) = @_;
@@ -48,7 +48,7 @@ masters can skip the work entirely. So you can do:
 
 =head1 OBJECT METHODS
 
-B<execute()>
+=head3 execute()
 
 Implemented from L<Workflow::Action>. Proudly does nothing and proves
 it by returning C<undef>.

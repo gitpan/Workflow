@@ -5,7 +5,7 @@ use base qw( Workflow::Validator );
 use DateTime::Format::Strptime;
 use Workflow::Exception qw( configuration_error validation_error );
 
-$Workflow::Validator::MatchesDateFormat::VERSION  = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Validator::MatchesDateFormat::VERSION  = sprintf("%d.%02d", q$Revision: 1.6 $ =~ /(\d+)\.(\d+)/);
 
 __PACKAGE__->mk_accessors( 'formatter' );
 
@@ -79,6 +79,12 @@ field to ensure it has a value.
 Also, if you pass a L<DateTime> object to the validator it will not
 determine whether the date is correct or within a range. As far as it
 is concerned its job is done.
+
+=head2 METHODS
+
+#=head3 _init
+
+#=head3 validate
 
 =head1 COPYRIGHT
 

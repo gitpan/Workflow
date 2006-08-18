@@ -1,11 +1,11 @@
 package Workflow::Persister::UUID;
 
-# $Id: UUID.pm,v 1.2 2004/03/08 04:56:09 cwinters Exp $
+# $Id: UUID.pm,v 1.3 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use Data::UUID;
 
-$Workflow::Persister::UUID::VERSION  = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Persister::UUID::VERSION  = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
 
 sub new {
     my ( $class, $params ) = @_;
@@ -44,6 +44,14 @@ UUIDs/GUIDs generated until 3400 CE."
 
 This uses the L<Data::UUID> module to generate the UUID string, so
 look there if you are curious about the algorithm, efficiency, etc.
+
+=head2 METHODS
+
+#=head3 new
+
+#=head3 pre_fetch_id
+
+#=head3 post_fetch_id
 
 =head1 COPYRIGHT
 

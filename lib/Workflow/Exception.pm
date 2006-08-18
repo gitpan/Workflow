@@ -1,6 +1,6 @@
 package Workflow::Exception;
 
-# $Id: Exception.pm,v 1.7 2004/09/13 02:05:38 cwinters Exp $
+# $Id: Exception.pm,v 1.8 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 
@@ -35,7 +35,7 @@ my %TYPE_CLASSES = (
     workflow_error      => 'Workflow::Exception',
 );
 
-$Workflow::Exception::VERSION   = sprintf("%d.%02d", q$Revision: 1.7 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Exception::VERSION   = sprintf("%d.%02d", q$Revision: 1.8 $ =~ /(\d+)\.(\d+)/);
 @Workflow::Exception::ISA       = qw( Exporter Exception::Class::Base );
 @Workflow::Exception::EXPORT_OK = keys %TYPE_CLASSES;
 
@@ -141,7 +141,7 @@ exception easier and more readable.
 
 =head1 METHODS
 
-B<throw( @msg, [ \%params ])>
+=head3 throw( @msg, [ \%params ])
 
 This overrides B<throw()> from L<Exception::Class|Exception::Class> to
 add a little syntactic sugar. Instead of:
@@ -163,6 +163,16 @@ makes for very readable code:
  workflow_error "Something went horribly, terribly, dreadfully, "
                 "frightfully wrong: $@",
                 { foo => 'bar' };
+
+#=head3 condition_error
+
+#=head3 configuration_error
+
+#=head3 persist_error
+
+#=head3 validation_error
+
+#=head3 workflow_error
 
 =head1 SHORTCUTS
 

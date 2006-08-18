@@ -1,13 +1,13 @@
 package Workflow::Config::XML;
 
-# $Id: XML.pm,v 1.3 2004/10/17 03:15:17 cwinters Exp $
+# $Id: XML.pm,v 1.4 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Workflow::Config );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( configuration_error );
 
-$Workflow::Config::XML::VERSION  = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Config::XML::VERSION  = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
 
 my ( $log );
 
@@ -105,6 +105,10 @@ Workflow::Config::XML - Parse workflow configurations from XML content
 Implementation of configuration parser for XML files/data; requires
 L<XML::Simple> to be installed. See L<Workflow::Config> for C<parse()>
 description.
+
+=head2 METHODS
+
+#=head3 parse
 
 =head1 SEE ALSO
 

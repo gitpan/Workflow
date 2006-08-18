@@ -1,6 +1,6 @@
 package Workflow::Persister::DBI::SequenceId;
 
-# $Id: SequenceId.pm,v 1.4 2005/11/30 03:14:50 cwinters Exp $
+# $Id: SequenceId.pm,v 1.5 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Class::Accessor );
@@ -8,7 +8,7 @@ use DBI;
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( persist_error );
 
-$Workflow::Persister::DBI::SequenceId::VERSION  = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Persister::DBI::SequenceId::VERSION  = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
 
 my @FIELDS = qw( sequence_name sequence_select );
 __PACKAGE__->mk_accessors( @FIELDS );
@@ -55,6 +55,12 @@ Workflow::Persister::DBI::SequenceId - Persister to fetch ID from a sequence
 =head1 DESCRIPTION
 
 Implementation for DBI persister to fetch an ID value from a sequence.
+
+=head2 METHODS
+
+#=head3 pre_fetch_id
+
+#=head3 post_fetch_id
 
 =head1 COPYRIGHT
 

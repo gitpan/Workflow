@@ -1,12 +1,12 @@
 package Workflow::History;
 
-# $Id: History.pm,v 1.8 2004/10/11 22:22:26 cwinters Exp $
+# $Id: History.pm,v 1.9 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Class::Accessor );
 use DateTime;
 
-$Workflow::History::VERSION  = sprintf("%d.%02d", q$Revision: 1.8 $ =~ /(\d+)\.(\d+)/);
+$Workflow::History::VERSION  = sprintf("%d.%02d", q$Revision: 1.9 $ =~ /(\d+)\.(\d+)/);
 
 my @FIELDS = qw( id workflow_id action description date user state );
 __PACKAGE__->mk_accessors( @FIELDS );
@@ -84,12 +84,12 @@ about how the history is saved, just that the history is available.
 
 =head2 Public Methods
 
-B<new( \%params )>
+=head3 new( \%params )
 
 Create a new history object, filling it with properties from
 C<\%params>.
 
-B<set_new_state( $new_state )>
+=head3 set_new_state( $new_state )
 
 Assigns the new state C<$new_state> to the history if the state is not
 already assigned. This is used when you generate a history request in
@@ -109,7 +109,7 @@ And then after the new state has been set but before the history
 objects are stored the workflow sets the new state in all unsaved
 history objects.
 
-B<is_saved()>
+=head3 is_saved()
 
 Returns true if this history object has been saved, false if not.
 
@@ -147,6 +147,10 @@ B<user> - User name (ID, login, or full name, up to you) taking action
 B<state> - State of workflow as history was recorded.
 
 =back
+
+#=head3 clear_saved
+
+#=head3 set_saved
 
 =head1 SEE ALSO
 

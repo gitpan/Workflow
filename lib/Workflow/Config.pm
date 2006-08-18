@@ -1,6 +1,6 @@
 package Workflow::Config;
 
-# $Id: Config.pm,v 1.10 2006/07/07 20:33:16 jonasbn Exp $
+# $Id: Config.pm,v 1.11 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Class::Factory );
@@ -8,7 +8,7 @@ use Data::Dumper        qw( Dumper );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( configuration_error );
 
-$Workflow::Config::VERSION  = sprintf("%d.%02d", q$Revision: 1.10 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Config::VERSION  = sprintf("%d.%02d", q$Revision: 1.11 $ =~ /(\d+)\.(\d+)/);
 
 my %VALID_TYPES = map { $_ => 1 } qw( action condition persister validator workflow );
 
@@ -121,7 +121,7 @@ files but there was too much deeply nested information. Sorry.)
 
 =head1 CLASS METHODS
 
-B<parse_all_files( $workflow_config_type, @files )>
+=head3 parse_all_files( $workflow_config_type, @files )
 
 Runs through each file in C<@files> and processes it according to the valid
 
@@ -206,7 +206,7 @@ files alongside the built-in parsers for XML and Perl files:
 
 =head2 Inherited Methods
 
-B<new( $parser_type )>
+=head3 new( $parser_type )
 
 Instantiates an object of the correct type -- see L<Class::Factory>
 for how this is implemented:
@@ -217,19 +217,19 @@ for how this is implemented:
  # Parser of type 'Workflow::Config::Perl
  my $perl_parser = Workflow::Config->new( 'perl' );
 
-B<is_valid_config_type( $config_type )>
+=head3 is_valid_config_type( $config_type )
 
 Returns true if C<$config_type> is a valid configuration type, false
 if not. Valid configuration types are: 'action', 'condition',
 'validator', 'workflow'.
 
-B<get_valid_config_types()>
+=head3 get_valid_config_types()
 
 Returns list of strings representing the valid configuration types.
 
 =head2 Required Object Methods
 
-B<parse( $workflow_config_type, @items )>
+=head3 parse( $workflow_config_type, @items )
 
 Parse each item in C<@items> to a hash reference based on the
 configuration type C<$config_type> which must pass the

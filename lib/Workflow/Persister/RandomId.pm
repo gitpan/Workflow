@@ -1,11 +1,11 @@
 package Workflow::Persister::RandomId;
 
-# $Id: RandomId.pm,v 1.2 2004/03/08 04:56:09 cwinters Exp $
+# $Id: RandomId.pm,v 1.3 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Class::Accessor );
 
-$Workflow::Persister::RandomId::VERSION  = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Persister::RandomId::VERSION  = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
 
 my @FIELDS = qw( id_length );
 __PACKAGE__->mk_accessors( @FIELDS );
@@ -45,6 +45,14 @@ Workflow::Persister::RandomId - Persister to generate random ID
 Implementation for any persister to generate a random ID string. You
 can specify the length using the 'id_length' parameter, but normally
 the default (8 characters) is sufficient.
+
+=head2 METHODS
+
+#=head3 new
+
+#=head3 pre_fetch_id
+
+#=head3 post_fetch_id
 
 =head1 COPYRIGHT
 

@@ -1,13 +1,13 @@
 package Workflow::Persister::DBI::ExtraData;
 
-# $Id: ExtraData.pm,v 1.4 2004/09/13 02:04:16 cwinters Exp $
+# $Id: ExtraData.pm,v 1.5 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Workflow::Persister::DBI );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( configuration_error persist_error );
 
-$Workflow::Persister::DBI::ExtraData::VERSION  = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Persister::DBI::ExtraData::VERSION  = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
 
 my @FIELDS = qw( table data_field context_key );
 __PACKAGE__->mk_accessors( @FIELDS );
@@ -204,6 +204,12 @@ Note: this is ignored when you specify multiple fields in
 C<extra_data_field>; we just use the fieldnames for the context keys
 in that case. And if you specify a single data field and do not
 specify a context key we also use the data field name.
+
+=head2 METHODS
+
+#=head3 init
+
+#=head3 fetch_extra_workflow_data
 
 =head1 COPYRIGHT
 

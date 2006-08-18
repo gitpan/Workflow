@@ -1,6 +1,6 @@
 package Workflow::Condition::Evaluate;
 
-# $Id: Evaluate.pm,v 1.1 2004/10/12 05:09:48 cwinters Exp $
+# $Id: Evaluate.pm,v 1.2 2006/07/08 20:02:33 jonasbn Exp $
 
 use strict;
 use base qw( Workflow::Condition );
@@ -8,7 +8,7 @@ use Log::Log4perl       qw( get_logger );
 use Safe;
 use Workflow::Exception qw( condition_error configuration_error );
 
-$Workflow::Condition::Evaluate::VERSION  = sprintf("%d.%02d", q$Revision: 1.1 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Condition::Evaluate::VERSION  = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
 
 my @FIELDS = qw( test );
 __PACKAGE__->mk_accessors( @FIELDS );
@@ -94,12 +94,12 @@ It should provide a good balance.
 
 =head1 OBJECT METHODS
 
-B<new( \%params )>
+=head3 new( \%params )
 
 One of the C<\%params> should be 'test', which contains the text to
 evaluate for truth.
 
-B<evaluate( $wf )>
+=head3 evaluate( $wf )
 
 Evaluate the text passed into the constructor: if the evaluation
 returns a true value then the condition passes; if it throws an
