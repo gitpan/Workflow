@@ -1,12 +1,12 @@
 package Workflow::Base;
 
-# $Id: Base.pm,v 1.6 2006/07/08 20:02:33 jonasbn Exp $
+# $Id: Base.pm,v 1.8 2006/09/12 18:05:15 jonasbn Exp $
 
 use strict;
 use base qw( Class::Accessor );
 use Log::Log4perl;
 
-$Workflow::Base::VERSION  = sprintf("%d.%02d", q$Revision: 1.6 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Base::VERSION  = sprintf("%d.%02d", q$Revision: 1.8 $ =~ /(\d+)\.(\d+)/);
 
 sub new {
     my ( $class, @params ) = @_;
@@ -28,7 +28,7 @@ sub init { return }
 
 sub param {
     my ( $self, $name, $value ) = @_;
-    unless ( $name ) {
+    unless ( defined $name ) {
         return { %{ $self->{PARAMS} } };
     }
 
@@ -41,13 +41,42 @@ sub param {
         return { %{ $self->{PARAMS} } };
     }
 
-    unless ( $value ) {
+    unless ( defined $value ) {
         if ( exists $self->{PARAMS}{ $name } ) {
             return $self->{PARAMS}{ $name };
         }
         return undef;
     }
     return $self->{PARAMS}{ $name } = $value;
+}
+
+sub delete_param {
+    my ( $self, $name ) = @_;
+    unless ( defined $name ) {
+        ## this is an error - perhaps an exception is too radical
+        return undef;
+    }
+
+    # Allow multiple parameters to be deleted at once...
+
+    if ( ref $name eq 'ARRAY' ) {
+        my %list = ();
+        foreach my $param_name ( @{ $name } ) {
+	    next if (not exists $self->{PARAMS}{ $param_name });
+	    $list{$param_name} = $self->{PARAMS}{ $param_name }; 
+            delete $self->{PARAMS}{ $param_name }
+        }
+        return { %list };
+    }
+
+    if ( exists $self->{PARAMS}{ $name } ) {
+        my $value = $self->{PARAMS}{ $name };
+	delete $self->{PARAMS}{ $name };
+        return $value;
+    }
+
+    ## this is an error - perhaps an exception is too radical
+    return undef;
 }
 
 sub clear_params {
@@ -129,6 +158,29 @@ If C<$name> and C<$value> given, associate C<$name> with C<$value>,
 overwriting any existing value, and return the new value.
 
  $object->param( foo => 'blurney' );
+
+=head3 delete_param( [ $name ] )
+
+Delete parameters from this object.
+
+If C<$name> given and it is an array reference, then delete all
+parameters from this object. All deleted parameters will be returned
+as a hash reference together with their values.
+
+ my $deleted = $object->delete_param(['foo','baz']);
+ foreach my $key (keys %{$deleted})
+ {
+   print $key."::=".$deleted->{$key}."\n";
+ }
+
+If C<$name> given and it is not an array reference, delete the
+parameter and return the value of the parameter.
+
+ my $value = $object->delete_param( 'foo' );
+ print "Value of 'foo' was '$value'\n";
+
+If C<$name> is not defined or C<$name> does not exists the
+undef is returned.
 
 =head3 clear_params()
 
