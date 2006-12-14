@@ -1,10 +1,6 @@
 ---
 name: Workflow
-version: !!perl/hash:Module::Build::Version
-  original: 0.23
-  version:
-    - 0
-    - 230
+version: 0.24
 author:
   - 'Jonas B. NIelsen <jonasbn@cpan.org>'
 abstract: 'Simple, flexible system to implement workflows'
@@ -31,7 +27,7 @@ provides:
     version: 1.01
   Workflow:
     file: lib/Workflow.pm
-    version: 1.30
+    version: 1.31
   Workflow::Action:
     file: lib/Workflow/Action.pm
     version: 1.09
@@ -103,7 +99,7 @@ provides:
     version: 1.03
   Workflow::State:
     file: lib/Workflow/State.pm
-    version: 1.09
+    version: 1.10
   Workflow::Validator:
     file: lib/Workflow/Validator.pm
     version: 1.05
@@ -120,7 +116,7 @@ no_index:
   directory:
     - eg
     - t
-generated_by: Module::Build version 0.2804
+generated_by: Module::Build version 0.2805
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
   version: 1.2
