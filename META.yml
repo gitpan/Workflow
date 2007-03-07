@@ -1,6 +1,6 @@
 ---
 name: Workflow
-version: 0.25
+version: 0.26
 author:
   - 'Jonas B. NIelsen <jonasbn@cpan.org>'
 abstract: 'Simple, flexible system to implement workflows'
@@ -99,7 +99,7 @@ provides:
     version: 1.03
   Workflow::State:
     file: lib/Workflow/State.pm
-    version: 1.11
+    version: 1.13
   Workflow::Validator:
     file: lib/Workflow/Validator.pm
     version: 1.05
@@ -116,7 +116,7 @@ no_index:
   directory:
     - eg
     - t
-generated_by: Module::Build version 0.2805
+generated_by: Module::Build version 0.2806
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
   version: 1.2

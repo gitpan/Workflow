@@ -1,6 +1,6 @@
 package Workflow::Condition;
 
-# $Id: Condition.pm,v 1.7 2006/12/14 08:18:15 jonasbn Exp $
+# $Id: Condition.pm,v 1.7 2006/12/15 07:59:20 jonasbn Exp $
 
 use strict;
 use base qw( Workflow::Base );

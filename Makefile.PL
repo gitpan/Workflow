@@ -2,25 +2,25 @@
 use ExtUtils::MakeMaker;
 WriteMakefile
 (
-          'PL_FILES' => {},
-          'INSTALLDIRS' => 'site',
           'DISTNAME' => 'Workflow',
-          'EXE_FILES' => [],
           'VERSION_FROM' => 'VERSION',
           'PREREQ_PM' => {
-                           'DateTime' => '0.15',
-                           'Test::Exception' => 0,
-                           'DBD::Mock' => '0.1',
-                           'XML::Simple' => '2',
-                           'Class::Observable' => '1.04',
-                           'Class::Factory' => '1',
                            'Class::Accessor' => '0.18',
+                           'Class::Factory' => '1',
+                           'Class::Observable' => '1.04',
+                           'DBD::Mock' => '0.1',
+                           'DateTime' => '0.15',
                            'DateTime::Format::Strptime' => '1',
-                           'Test::More' => '0.41',
                            'Exception::Class' => '1.1',
                            'Log::Dispatch' => '2',
-                           'Safe' => 0,
-                           'Log::Log4perl' => '0.34'
-                         }
+                           'Log::Log4perl' => '0.34',
+                           'Safe' => '0',
+                           'Test::Exception' => '0',
+                           'Test::More' => '0.41',
+                           'XML::Simple' => '2'
+                         },
+          'INSTALLDIRS' => 'site',
+          'EXE_FILES' => [],
+          'PL_FILES' => {}
         )
 ;

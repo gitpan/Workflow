@@ -1,196 +1,196 @@
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (24) Trying to import 'FACTORY' of type 'Workflow::Factory' to 'Workflow::Action' 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (73) Creating empty instance of 'Workflow::Factory' factory for singleton use 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (32) Target 'Workflow::Action::FACTORY' not yet defined, creating subroutine on the fly 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (24) Trying to import 'FACTORY' of type 'Workflow::Factory' to 'Workflow::State' 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (32) Target 'Workflow::State::FACTORY' not yet defined, creating subroutine on the fly 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (24) Trying to import 'FACTORY' of type 'Workflow::Factory' to 'Workflow' 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (32) Target 'Workflow::FACTORY' not yet defined, creating subroutine on the fly 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (92) Using 'action' configuration file(s): workflow_action.xml 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (92) Using 'condition' configuration file(s): workflow_condition.xml 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (92) Using 'validator' configuration file(s): workflow_validator.xml 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (92) Using 'workflow' configuration file(s): workflow.xml 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (98) Adding condition configurations... 
-09:18:42 INFO Workflow.Config.XML Workflow::Config::XML (50) Will parse 'condition' XML config file 'workflow_condition.xml' 
-09:18:42 INFO Workflow.Config.XML Workflow::Config::XML (53) Parsed XML 'workflow_condition.xml' ok 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (527) Adding configuration for condition 'HasUser' 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (536) Trying to include condition class 'TestApp::Condition::HasUser' 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (543) Included condition 'HasUser' class 'TestApp::Condition::HasUser' ok; now try to instantiate condition... 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (550) Instantiated condition 'HasUser' ok 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (112) Adding validator configurations... 
-09:18:42 INFO Workflow.Config.XML Workflow::Config::XML (50) Will parse 'validator' XML config file 'workflow_validator.xml' 
-09:18:42 INFO Workflow.Config.XML Workflow::Config::XML (53) Parsed XML 'workflow_validator.xml' ok 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (575) Adding configuration for validator 'DateValidator' 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (584) Trying to include validator class 'Workflow::Validator::MatchesDateFormat' 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (590) Included validator 'DateValidator' class 'Workflow::Validator::MatchesDateFormat'  ok; now try to instantiate validator... 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (597) Instantiated validator 'DateValidator' ok 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (127) Adding persister configurations... 
-09:18:42 DEBUG Workflow.Factory Workflow::Factory (142) Adding action configurations... 
-09:18:42 INFO Workflow.Config.XML Workflow::Config::XML (50) Will parse 'action' XML config file 'workflow_action.xml' 
-09:18:43 INFO Workflow.Config.XML Workflow::Config::XML (53) Parsed XML 'workflow_action.xml' ok 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (436) Adding configuration for action 'TIX_NEW' 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (445) Trying to include action class 'TestApp::Action::TicketCreate'... 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (24) Trying to import 'FACTORY' of type 'Workflow::Factory' to 'TestApp::Ticket' 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (32) Target 'TestApp::Ticket::FACTORY' not yet defined, creating subroutine on the fly 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (24) Trying to import 'FACTORY' of type 'Workflow::Factory' to 'TestApp::Action::TicketCreate' 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (32) Target 'TestApp::Action::TicketCreate::FACTORY' not yet defined, creating subroutine on the fly 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (451) Included action 'TIX_NEW' class 'TestApp::Action::TicketCreate' ok 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (436) Adding configuration for action 'TIX_COMMENT' 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (445) Trying to include action class 'TestApp::Action::TicketComment'... 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (451) Included action 'TIX_COMMENT' class 'TestApp::Action::TicketComment' ok 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (436) Adding configuration for action 'TIX_EDIT' 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (445) Trying to include action class 'TestApp::Action::TicketUpdate'... 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (451) Included action 'TIX_EDIT' class 'TestApp::Action::TicketUpdate' ok 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (436) Adding configuration for action 'TIX_CLOSE' 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (445) Trying to include action class 'TestApp::Action::TicketUpdate'... 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (451) Included action 'TIX_CLOSE' class 'TestApp::Action::TicketUpdate' ok 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (436) Adding configuration for action 'TIX_REOPEN' 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (445) Trying to include action class 'TestApp::Action::TicketUpdate'... 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (451) Included action 'TIX_REOPEN' class 'TestApp::Action::TicketUpdate' ok 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (436) Adding configuration for action 'null' 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (445) Trying to include action class 'Workflow::Action::Null'... 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (451) Included action 'null' class 'Workflow::Action::Null' ok 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (436) Adding configuration for action 'null2' 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (445) Trying to include action class 'Workflow::Action::Null'... 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (451) Included action 'null2' class 'Workflow::Action::Null' ok 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (157) Adding workflow configurations... 
-09:18:43 INFO Workflow.Config.XML Workflow::Config::XML (50) Will parse 'workflow' XML config file 'workflow.xml' 
-09:18:43 INFO Workflow.Config.XML Workflow::Config::XML (53) Parsed XML 'workflow.xml' ok 
-09:18:43 DEBUG Workflow.State Workflow::State (243) Constructing 'Workflow::State' object for state INITIAL 
-09:18:43 DEBUG Workflow.State Workflow::State (269) Adding action 'TIX_NEW' to 'Workflow::State' 'INITIAL' 
-09:18:43 DEBUG Workflow.State Workflow::State (315) Adding 'INITIAL' 'TIX_NEW' config 
-09:18:43 DEBUG Workflow.State Workflow::State (243) Constructing 'Workflow::State' object for state TIX_CREATED 
-09:18:43 DEBUG Workflow.State Workflow::State (269) Adding action 'TIX_COMMENT' to 'Workflow::State' 'TIX_CREATED' 
-09:18:43 DEBUG Workflow.State Workflow::State (315) Adding 'TIX_CREATED' 'TIX_COMMENT' config 
-09:18:43 DEBUG Workflow.State Workflow::State (269) Adding action 'TIX_EDIT' to 'Workflow::State' 'TIX_CREATED' 
-09:18:43 DEBUG Workflow.State Workflow::State (315) Adding 'TIX_CREATED' 'TIX_EDIT' config 
-09:18:43 INFO Workflow.State Workflow::State (346) Fetching condition 'HasUser' 
-09:18:43 DEBUG Workflow.State Workflow::State (243) Constructing 'Workflow::State' object for state TIX_IN_PROGRESS 
-09:18:43 DEBUG Workflow.State Workflow::State (269) Adding action 'TIX_CLOSE' to 'Workflow::State' 'TIX_IN_PROGRESS' 
-09:18:43 DEBUG Workflow.State Workflow::State (315) Adding 'TIX_IN_PROGRESS' 'TIX_CLOSE' config 
-09:18:43 INFO Workflow.State Workflow::State (346) Fetching condition 'HasUser' 
-09:18:43 DEBUG Workflow.State Workflow::State (243) Constructing 'Workflow::State' object for state TIX_CLOSED 
-09:18:43 DEBUG Workflow.State Workflow::State (269) Adding action 'TIX_REOPEN' to 'Workflow::State' 'TIX_CLOSED' 
-09:18:43 DEBUG Workflow.State Workflow::State (315) Adding 'TIX_CLOSED' 'TIX_REOPEN' config 
-09:18:43 INFO Workflow.State Workflow::State (346) Fetching condition 'HasUser' 
-09:18:43 INFO Workflow.Factory Workflow::Factory (226) Added all workflow states... 
-09:18:43 INFO Workflow.Factory Workflow::Factory (274) Added observers to 'Ticket':  
-09:18:43 INFO Workflow.Factory Workflow::Factory (229) Added all workflow observers... 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (477) Adding configuration for persister 'TestPersister' 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (486) Trying to include persister class 'Workflow::Persister::DBI'... 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (493) Included persister 'TestPersister' class 'Workflow::Persister::DBI' ok; now try to instantiate persister... 
-09:18:43 INFO Workflow.Persister Workflow::Persister (29) Initializing persister 'TestPersister' 
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (39) Pulled driver 'Mock' from DBI DSN 
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (105) Assigning random ID generators 
-09:18:43 INFO Workflow.Persister.DBI Workflow::Persister::DBI (43) Assigned workflow generator 'Workflow::Persister::RandomId'; history generator 'Workflow::Persister::RandomId' 
-09:18:43 INFO Workflow.Persister.DBI Workflow::Persister::DBI (48) Assigned workflow table 'workflow'; history table 'workflow_history' 
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (67) Connected to database 'DBI:Mock:' and assigned to persister ok 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (501) Instantiated persister 'TestPersister' ok 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (92) Using 'workflow' configuration file(s): workflow_observer.xml 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (98) Adding condition configurations... 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (112) Adding validator configurations... 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (127) Adding persister configurations... 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (142) Adding action configurations... 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (157) Adding workflow configurations... 
-09:18:43 INFO Workflow.Config.XML Workflow::Config::XML (50) Will parse 'workflow' XML config file 'workflow_observer.xml' 
-09:18:43 INFO Workflow.Config.XML Workflow::Config::XML (53) Parsed XML 'workflow_observer.xml' ok 
-09:18:43 DEBUG Workflow.State Workflow::State (243) Constructing 'Workflow::State' object for state INITIAL 
-09:18:43 DEBUG Workflow.State Workflow::State (269) Adding action 'null' to 'Workflow::State' 'INITIAL' 
-09:18:43 DEBUG Workflow.State Workflow::State (315) Adding 'INITIAL' 'null' config 
-09:18:43 DEBUG Workflow.State Workflow::State (243) Constructing 'Workflow::State' object for state FIRST 
-09:18:43 DEBUG Workflow.State Workflow::State (269) Adding action 'null2' to 'Workflow::State' 'FIRST' 
-09:18:43 DEBUG Workflow.State Workflow::State (315) Adding 'FIRST' 'null2' config 
-09:18:43 DEBUG Workflow.State Workflow::State (269) Adding action 'null' to 'Workflow::State' 'FIRST' 
-09:18:43 DEBUG Workflow.State Workflow::State (315) Adding 'FIRST' 'null' config 
-09:18:43 DEBUG Workflow.State Workflow::State (243) Constructing 'Workflow::State' object for state PROGRESS 
-09:18:43 DEBUG Workflow.State Workflow::State (269) Adding action 'null' to 'Workflow::State' 'PROGRESS' 
-09:18:43 DEBUG Workflow.State Workflow::State (315) Adding 'PROGRESS' 'null' config 
-09:18:43 DEBUG Workflow.State Workflow::State (243) Constructing 'Workflow::State' object for state CLOSED 
-09:18:43 DEBUG Workflow.State Workflow::State (269) Adding action 'null' to 'Workflow::State' 'CLOSED' 
-09:18:43 DEBUG Workflow.State Workflow::State (315) Adding 'CLOSED' 'null' config 
-09:18:43 INFO Workflow.Factory Workflow::Factory (226) Added all workflow states... 
-09:18:43 INFO Workflow.Factory Workflow::Factory (274) Added observers to 'ObservedTicket': SomeObserver, CODE(0x1ad5ee8) 
-09:18:43 INFO Workflow.Factory Workflow::Factory (229) Added all workflow observers... 
-09:18:43 INFO Workflow Workflow (205) Instantiating workflow of with ID '' and type 'ObservedTicket' with current state 'INITIAL' 
-09:18:43 DEBUG Workflow Workflow (218) Assigning parameter 'persister' -> 'TestPersister' 
-09:18:43 INFO Workflow.Factory Workflow::Factory (305) Instantiated workflow object properly, persisting... 
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (193) Got ID from pre_fetch_id: ZSMDYLZR 
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (202) Will use SQL
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (24) Trying to import 'FACTORY' of type 'Workflow::Factory' to 'Workflow::Action' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (73) Creating empty instance of 'Workflow::Factory' factory for singleton use 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (32) Target 'Workflow::Action::FACTORY' not yet defined, creating subroutine on the fly 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (24) Trying to import 'FACTORY' of type 'Workflow::Factory' to 'Workflow::State' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (32) Target 'Workflow::State::FACTORY' not yet defined, creating subroutine on the fly 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (24) Trying to import 'FACTORY' of type 'Workflow::Factory' to 'Workflow' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (32) Target 'Workflow::FACTORY' not yet defined, creating subroutine on the fly 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (92) Using 'action' configuration file(s): workflow_action.xml 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (92) Using 'condition' configuration file(s): workflow_condition.xml 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (92) Using 'validator' configuration file(s): workflow_validator.xml 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (92) Using 'workflow' configuration file(s): workflow.xml 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (98) Adding condition configurations... 
+09:27:09 INFO Workflow.Config.XML Workflow::Config::XML (50) Will parse 'condition' XML config file 'workflow_condition.xml' 
+09:27:09 INFO Workflow.Config.XML Workflow::Config::XML (53) Parsed XML 'workflow_condition.xml' ok 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (527) Adding configuration for condition 'HasUser' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (536) Trying to include condition class 'TestApp::Condition::HasUser' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (543) Included condition 'HasUser' class 'TestApp::Condition::HasUser' ok; now try to instantiate condition... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (550) Instantiated condition 'HasUser' ok 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (112) Adding validator configurations... 
+09:27:09 INFO Workflow.Config.XML Workflow::Config::XML (50) Will parse 'validator' XML config file 'workflow_validator.xml' 
+09:27:09 INFO Workflow.Config.XML Workflow::Config::XML (53) Parsed XML 'workflow_validator.xml' ok 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (575) Adding configuration for validator 'DateValidator' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (584) Trying to include validator class 'Workflow::Validator::MatchesDateFormat' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (590) Included validator 'DateValidator' class 'Workflow::Validator::MatchesDateFormat'  ok; now try to instantiate validator... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (597) Instantiated validator 'DateValidator' ok 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (127) Adding persister configurations... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (142) Adding action configurations... 
+09:27:09 INFO Workflow.Config.XML Workflow::Config::XML (50) Will parse 'action' XML config file 'workflow_action.xml' 
+09:27:09 INFO Workflow.Config.XML Workflow::Config::XML (53) Parsed XML 'workflow_action.xml' ok 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (436) Adding configuration for action 'TIX_NEW' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (445) Trying to include action class 'TestApp::Action::TicketCreate'... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (24) Trying to import 'FACTORY' of type 'Workflow::Factory' to 'TestApp::Ticket' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (32) Target 'TestApp::Ticket::FACTORY' not yet defined, creating subroutine on the fly 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (24) Trying to import 'FACTORY' of type 'Workflow::Factory' to 'TestApp::Action::TicketCreate' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (32) Target 'TestApp::Action::TicketCreate::FACTORY' not yet defined, creating subroutine on the fly 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (451) Included action 'TIX_NEW' class 'TestApp::Action::TicketCreate' ok 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (436) Adding configuration for action 'TIX_COMMENT' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (445) Trying to include action class 'TestApp::Action::TicketComment'... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (451) Included action 'TIX_COMMENT' class 'TestApp::Action::TicketComment' ok 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (436) Adding configuration for action 'TIX_EDIT' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (445) Trying to include action class 'TestApp::Action::TicketUpdate'... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (451) Included action 'TIX_EDIT' class 'TestApp::Action::TicketUpdate' ok 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (436) Adding configuration for action 'TIX_CLOSE' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (445) Trying to include action class 'TestApp::Action::TicketUpdate'... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (451) Included action 'TIX_CLOSE' class 'TestApp::Action::TicketUpdate' ok 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (436) Adding configuration for action 'TIX_REOPEN' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (445) Trying to include action class 'TestApp::Action::TicketUpdate'... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (451) Included action 'TIX_REOPEN' class 'TestApp::Action::TicketUpdate' ok 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (436) Adding configuration for action 'null' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (445) Trying to include action class 'Workflow::Action::Null'... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (451) Included action 'null' class 'Workflow::Action::Null' ok 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (436) Adding configuration for action 'null2' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (445) Trying to include action class 'Workflow::Action::Null'... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (451) Included action 'null2' class 'Workflow::Action::Null' ok 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (157) Adding workflow configurations... 
+09:27:09 INFO Workflow.Config.XML Workflow::Config::XML (50) Will parse 'workflow' XML config file 'workflow.xml' 
+09:27:09 INFO Workflow.Config.XML Workflow::Config::XML (53) Parsed XML 'workflow.xml' ok 
+09:27:09 DEBUG Workflow.State Workflow::State (254) Constructing 'Workflow::State' object for state INITIAL 
+09:27:09 DEBUG Workflow.State Workflow::State (280) Adding action 'TIX_NEW' to 'Workflow::State' 'INITIAL' 
+09:27:09 DEBUG Workflow.State Workflow::State (326) Adding 'INITIAL' 'TIX_NEW' config 
+09:27:09 DEBUG Workflow.State Workflow::State (254) Constructing 'Workflow::State' object for state TIX_CREATED 
+09:27:09 DEBUG Workflow.State Workflow::State (280) Adding action 'TIX_COMMENT' to 'Workflow::State' 'TIX_CREATED' 
+09:27:09 DEBUG Workflow.State Workflow::State (326) Adding 'TIX_CREATED' 'TIX_COMMENT' config 
+09:27:09 DEBUG Workflow.State Workflow::State (280) Adding action 'TIX_EDIT' to 'Workflow::State' 'TIX_CREATED' 
+09:27:09 DEBUG Workflow.State Workflow::State (326) Adding 'TIX_CREATED' 'TIX_EDIT' config 
+09:27:09 INFO Workflow.State Workflow::State (357) Fetching condition 'HasUser' 
+09:27:09 DEBUG Workflow.State Workflow::State (254) Constructing 'Workflow::State' object for state TIX_IN_PROGRESS 
+09:27:09 DEBUG Workflow.State Workflow::State (280) Adding action 'TIX_CLOSE' to 'Workflow::State' 'TIX_IN_PROGRESS' 
+09:27:09 DEBUG Workflow.State Workflow::State (326) Adding 'TIX_IN_PROGRESS' 'TIX_CLOSE' config 
+09:27:09 INFO Workflow.State Workflow::State (357) Fetching condition 'HasUser' 
+09:27:09 DEBUG Workflow.State Workflow::State (254) Constructing 'Workflow::State' object for state TIX_CLOSED 
+09:27:09 DEBUG Workflow.State Workflow::State (280) Adding action 'TIX_REOPEN' to 'Workflow::State' 'TIX_CLOSED' 
+09:27:09 DEBUG Workflow.State Workflow::State (326) Adding 'TIX_CLOSED' 'TIX_REOPEN' config 
+09:27:09 INFO Workflow.State Workflow::State (357) Fetching condition 'HasUser' 
+09:27:09 INFO Workflow.Factory Workflow::Factory (226) Added all workflow states... 
+09:27:09 INFO Workflow.Factory Workflow::Factory (274) Added observers to 'Ticket':  
+09:27:09 INFO Workflow.Factory Workflow::Factory (229) Added all workflow observers... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (477) Adding configuration for persister 'TestPersister' 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (486) Trying to include persister class 'Workflow::Persister::DBI'... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (493) Included persister 'TestPersister' class 'Workflow::Persister::DBI' ok; now try to instantiate persister... 
+09:27:09 INFO Workflow.Persister Workflow::Persister (29) Initializing persister 'TestPersister' 
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (39) Pulled driver 'Mock' from DBI DSN 
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (105) Assigning random ID generators 
+09:27:09 INFO Workflow.Persister.DBI Workflow::Persister::DBI (43) Assigned workflow generator 'Workflow::Persister::RandomId'; history generator 'Workflow::Persister::RandomId' 
+09:27:09 INFO Workflow.Persister.DBI Workflow::Persister::DBI (48) Assigned workflow table 'workflow'; history table 'workflow_history' 
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (67) Connected to database 'DBI:Mock:' and assigned to persister ok 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (501) Instantiated persister 'TestPersister' ok 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (92) Using 'workflow' configuration file(s): workflow_observer.xml 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (98) Adding condition configurations... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (112) Adding validator configurations... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (127) Adding persister configurations... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (142) Adding action configurations... 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (157) Adding workflow configurations... 
+09:27:09 INFO Workflow.Config.XML Workflow::Config::XML (50) Will parse 'workflow' XML config file 'workflow_observer.xml' 
+09:27:09 INFO Workflow.Config.XML Workflow::Config::XML (53) Parsed XML 'workflow_observer.xml' ok 
+09:27:09 DEBUG Workflow.State Workflow::State (254) Constructing 'Workflow::State' object for state INITIAL 
+09:27:09 DEBUG Workflow.State Workflow::State (280) Adding action 'null' to 'Workflow::State' 'INITIAL' 
+09:27:09 DEBUG Workflow.State Workflow::State (326) Adding 'INITIAL' 'null' config 
+09:27:09 DEBUG Workflow.State Workflow::State (254) Constructing 'Workflow::State' object for state FIRST 
+09:27:09 DEBUG Workflow.State Workflow::State (280) Adding action 'null2' to 'Workflow::State' 'FIRST' 
+09:27:09 DEBUG Workflow.State Workflow::State (326) Adding 'FIRST' 'null2' config 
+09:27:09 DEBUG Workflow.State Workflow::State (280) Adding action 'null' to 'Workflow::State' 'FIRST' 
+09:27:09 DEBUG Workflow.State Workflow::State (326) Adding 'FIRST' 'null' config 
+09:27:09 DEBUG Workflow.State Workflow::State (254) Constructing 'Workflow::State' object for state PROGRESS 
+09:27:09 DEBUG Workflow.State Workflow::State (280) Adding action 'null' to 'Workflow::State' 'PROGRESS' 
+09:27:09 DEBUG Workflow.State Workflow::State (326) Adding 'PROGRESS' 'null' config 
+09:27:09 DEBUG Workflow.State Workflow::State (254) Constructing 'Workflow::State' object for state CLOSED 
+09:27:09 DEBUG Workflow.State Workflow::State (280) Adding action 'null' to 'Workflow::State' 'CLOSED' 
+09:27:09 DEBUG Workflow.State Workflow::State (326) Adding 'CLOSED' 'null' config 
+09:27:09 INFO Workflow.Factory Workflow::Factory (226) Added all workflow states... 
+09:27:09 INFO Workflow.Factory Workflow::Factory (274) Added observers to 'ObservedTicket': SomeObserver, CODE(0x1ad8e70) 
+09:27:09 INFO Workflow.Factory Workflow::Factory (229) Added all workflow observers... 
+09:27:09 INFO Workflow Workflow (205) Instantiating workflow of with ID '' and type 'ObservedTicket' with current state 'INITIAL' 
+09:27:09 DEBUG Workflow Workflow (218) Assigning parameter 'persister' -> 'TestPersister' 
+09:27:09 INFO Workflow.Factory Workflow::Factory (305) Instantiated workflow object properly, persisting... 
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (193) Got ID from pre_fetch_id: SBPSDVPD 
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (202) Will use SQL
 INSERT INTO workflow ( type, state, last_update, workflow_id ) VALUES ( ?, ?, ?, ? ) 
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (203) Will use parameters
-ObservedTicket, INITIAL, 2006-12-14 08:18, ZSMDYLZR 
-09:18:43 INFO Workflow.Factory Workflow::Factory (310) Persisted workflow with ID 'ZSMDYLZR'; creating history... 
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (306) Will use SQL
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (203) Will use parameters
+ObservedTicket, INITIAL, 2007-03-07 08:27, SBPSDVPD 
+09:27:09 INFO Workflow.Factory Workflow::Factory (310) Persisted workflow with ID 'SBPSDVPD'; creating history... 
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (306) Will use SQL
 INSERT INTO workflow_history ( workflow_id, action, description, state, workflow_user, history_date, workflow_hist_id ) VALUES ( ?, ?, ?, ?, ?, ?, ? ) 
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (307) Will use parameters
-ZSMDYLZR, Create workflow, Create new workflow, INITIAL, n/a, 2006-12-14 08:18, GENXEPMA 
-09:18:43 INFO Workflow.Persister.DBI Workflow::Persister::DBI (327) Workflow history entry GENXEPMA created ok 
-09:18:43 INFO Workflow.Factory Workflow::Factory (322) Created history object ok 
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (237) Will use SQL
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (307) Will use parameters
+SBPSDVPD, Create workflow, Create new workflow, INITIAL, n/a, 2007-03-07 08:27, XOMXWWIF 
+09:27:09 INFO Workflow.Persister.DBI Workflow::Persister::DBI (327) Workflow history entry XOMXWWIF created ok 
+09:27:09 INFO Workflow.Factory Workflow::Factory (322) Created history object ok 
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (237) Will use SQL
 
         SELECT state, last_update
           FROM workflow 
          WHERE workflow_id = ?
      
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (238) Will use parameters: 1 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (342) Fetched data for workflow '1' ok: [State: INITIAL] [Last update: ] 
-09:18:43 INFO Workflow Workflow (205) Instantiating workflow of with ID '1' and type 'ObservedTicket' with current state 'INITIAL' 
-09:18:43 DEBUG Workflow Workflow (218) Assigning parameter 'persister' -> 'TestPersister' 
-09:18:43 INFO Workflow.Persister Workflow::Persister (97) Called empty 'fetch_extra_workflow_data()' (ok) 
-09:18:43 DEBUG Workflow.Persister Workflow::Persister (98) An empty implementation is not an error as you may not need this extra functionality. If you do you should use a perister for this purpose (e.g., Workflow::Persister::DBI::ExtraData) or create your own and just implement this method. 
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (237) Will use SQL
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (238) Will use parameters: 1 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (342) Fetched data for workflow '1' ok: [State: INITIAL] [Last update: ] 
+09:27:09 INFO Workflow Workflow (205) Instantiating workflow of with ID '1' and type 'ObservedTicket' with current state 'INITIAL' 
+09:27:09 DEBUG Workflow Workflow (218) Assigning parameter 'persister' -> 'TestPersister' 
+09:27:09 INFO Workflow.Persister Workflow::Persister (97) Called empty 'fetch_extra_workflow_data()' (ok) 
+09:27:09 DEBUG Workflow.Persister Workflow::Persister (98) An empty implementation is not an error as you may not need this extra functionality. If you do you should use a perister for this purpose (e.g., Workflow::Persister::DBI::ExtraData) or create your own and just implement this method. 
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (237) Will use SQL
 
         SELECT state, last_update
           FROM workflow 
          WHERE workflow_id = ?
      
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (238) Will use parameters: 1 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (342) Fetched data for workflow '1' ok: [State: INITIAL] [Last update: ] 
-09:18:43 INFO Workflow Workflow (205) Instantiating workflow of with ID '1' and type 'ObservedTicket' with current state 'INITIAL' 
-09:18:43 DEBUG Workflow Workflow (218) Assigning parameter 'persister' -> 'TestPersister' 
-09:18:43 INFO Workflow.Persister Workflow::Persister (97) Called empty 'fetch_extra_workflow_data()' (ok) 
-09:18:43 DEBUG Workflow.Persister Workflow::Persister (98) An empty implementation is not an error as you may not need this extra functionality. If you do you should use a perister for this purpose (e.g., Workflow::Persister::DBI::ExtraData) or create your own and just implement this method. 
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (269) Will use SQL
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (238) Will use parameters: 1 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (342) Fetched data for workflow '1' ok: [State: INITIAL] [Last update: ] 
+09:27:09 INFO Workflow Workflow (205) Instantiating workflow of with ID '1' and type 'ObservedTicket' with current state 'INITIAL' 
+09:27:09 DEBUG Workflow Workflow (218) Assigning parameter 'persister' -> 'TestPersister' 
+09:27:09 INFO Workflow.Persister Workflow::Persister (97) Called empty 'fetch_extra_workflow_data()' (ok) 
+09:27:09 DEBUG Workflow.Persister Workflow::Persister (98) An empty implementation is not an error as you may not need this extra functionality. If you do you should use a perister for this purpose (e.g., Workflow::Persister::DBI::ExtraData) or create your own and just implement this method. 
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (269) Will use SQL
 
         UPDATE workflow
            SET state = ?,
                last_update = ?
          WHERE workflow_id = ?
      
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (270) Will use parameters
-INITIAL, 2006-12-14 08:18, 1 
-09:18:43 INFO Workflow.Persister.DBI Workflow::Persister::DBI (282) Workflow 1 updated ok 
-09:18:43 INFO Workflow.Factory Workflow::Factory (394) Workflow '1' updated ok 
-09:18:43 INFO Workflow.Factory Workflow::Factory (401) Created necessary history objects ok 
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (237) Will use SQL
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (270) Will use parameters
+INITIAL, 2007-03-07 08:27, 1 
+09:27:09 INFO Workflow.Persister.DBI Workflow::Persister::DBI (282) Workflow 1 updated ok 
+09:27:09 INFO Workflow.Factory Workflow::Factory (394) Workflow '1' updated ok 
+09:27:09 INFO Workflow.Factory Workflow::Factory (401) Created necessary history objects ok 
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (237) Will use SQL
 
         SELECT state, last_update
           FROM workflow 
          WHERE workflow_id = ?
      
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (238) Will use parameters: 1 
-09:18:43 DEBUG Workflow.Factory Workflow::Factory (342) Fetched data for workflow '1' ok: [State: INITIAL] [Last update: ] 
-09:18:43 INFO Workflow Workflow (205) Instantiating workflow of with ID '1' and type 'ObservedTicket' with current state 'INITIAL' 
-09:18:43 DEBUG Workflow Workflow (218) Assigning parameter 'persister' -> 'TestPersister' 
-09:18:43 INFO Workflow.Persister Workflow::Persister (97) Called empty 'fetch_extra_workflow_data()' (ok) 
-09:18:43 DEBUG Workflow.Persister Workflow::Persister (98) An empty implementation is not an error as you may not need this extra functionality. If you do you should use a perister for this purpose (e.g., Workflow::Persister::DBI::ExtraData) or create your own and just implement this method. 
-09:18:43 DEBUG Workflow Workflow (250) Trying to find action 'null' in state 'INITIAL' 
-09:18:43 DEBUG Workflow Workflow (274) Finding Workflow::State object for state [given: INITIAL] [internal: INITIAL] 
-09:18:43 DEBUG Workflow Workflow (258) Action 'null' exists in state 'INITIAL' 
-09:18:43 DEBUG Workflow Workflow (83) Action validated ok 
-09:18:43 DEBUG Workflow Workflow (85) Action executed ok 
-09:18:43 DEBUG Workflow Workflow (274) Finding Workflow::State object for state [given: INITIAL] [internal: INITIAL] 
-09:18:43 INFO Workflow Workflow (89) Set new state 'FIRST' after action executed 
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (269) Will use SQL
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (238) Will use parameters: 1 
+09:27:09 DEBUG Workflow.Factory Workflow::Factory (342) Fetched data for workflow '1' ok: [State: INITIAL] [Last update: ] 
+09:27:09 INFO Workflow Workflow (205) Instantiating workflow of with ID '1' and type 'ObservedTicket' with current state 'INITIAL' 
+09:27:09 DEBUG Workflow Workflow (218) Assigning parameter 'persister' -> 'TestPersister' 
+09:27:09 INFO Workflow.Persister Workflow::Persister (97) Called empty 'fetch_extra_workflow_data()' (ok) 
+09:27:09 DEBUG Workflow.Persister Workflow::Persister (98) An empty implementation is not an error as you may not need this extra functionality. If you do you should use a perister for this purpose (e.g., Workflow::Persister::DBI::ExtraData) or create your own and just implement this method. 
+09:27:09 DEBUG Workflow Workflow (250) Trying to find action 'null' in state 'INITIAL' 
+09:27:09 DEBUG Workflow Workflow (274) Finding Workflow::State object for state [given: INITIAL] [internal: INITIAL] 
+09:27:09 DEBUG Workflow Workflow (258) Action 'null' exists in state 'INITIAL' 
+09:27:09 DEBUG Workflow Workflow (83) Action validated ok 
+09:27:09 DEBUG Workflow Workflow (85) Action executed ok 
+09:27:09 DEBUG Workflow Workflow (274) Finding Workflow::State object for state [given: INITIAL] [internal: INITIAL] 
+09:27:09 INFO Workflow Workflow (89) Set new state 'FIRST' after action executed 
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (269) Will use SQL
 
         UPDATE workflow
            SET state = ?,
                last_update = ?
          WHERE workflow_id = ?
      
-09:18:43 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (270) Will use parameters
-FIRST, 2006-12-14 08:18, 1 
-09:18:43 INFO Workflow.Persister.DBI Workflow::Persister::DBI (282) Workflow 1 updated ok 
-09:18:43 INFO Workflow.Factory Workflow::Factory (394) Workflow '1' updated ok 
-09:18:43 INFO Workflow.Factory Workflow::Factory (401) Created necessary history objects ok 
-09:18:43 INFO Workflow Workflow (100) Saved workflow with possible new state ok 
-09:18:43 DEBUG Workflow Workflow (274) Finding Workflow::State object for state [given: FIRST] [internal: FIRST] 
+09:27:09 DEBUG Workflow.Persister.DBI Workflow::Persister::DBI (270) Will use parameters
+FIRST, 2007-03-07 08:27, 1 
+09:27:09 INFO Workflow.Persister.DBI Workflow::Persister::DBI (282) Workflow 1 updated ok 
+09:27:09 INFO Workflow.Factory Workflow::Factory (394) Workflow '1' updated ok 
+09:27:09 INFO Workflow.Factory Workflow::Factory (401) Created necessary history objects ok 
+09:27:09 INFO Workflow Workflow (100) Saved workflow with possible new state ok 
+09:27:09 DEBUG Workflow Workflow (274) Finding Workflow::State object for state [given: FIRST] [internal: FIRST] 
