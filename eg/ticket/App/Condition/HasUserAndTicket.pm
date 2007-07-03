@@ -1,6 +1,6 @@
 package App::Condition::HasUserAndTicket;
 
-# $Id: HasUserAndTicket.pm,v 1.2 2004/05/14 00:08:13 cwinters Exp $
+# $Id: HasUserAndTicket.pm 289 2007-06-18 21:45:56Z jonasbn $
 
 use strict;
 use base qw( Workflow::Condition );
@@ -9,7 +9,7 @@ use Workflow::Exception qw( condition_error );
 
 my ( $log );
 
-$App::Condition::HasUserAndTicket::VERSION  = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
+$App::Condition::HasUserAndTicket::VERSION = '1.02';
 
 sub evaluate {
     my ( $self, $wf ) = @_;

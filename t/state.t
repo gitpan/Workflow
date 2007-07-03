@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: state.t,v 1.3 2004/10/17 15:22:26 cwinters Exp $
+# $Id: state.t 213 2004-10-17 15:22:26Z cwinters $
 
 use strict;
 use lib 't';

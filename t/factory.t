@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: factory.t,v 1.5 2006/07/07 20:33:16 jonasbn Exp $
+# $Id: factory.t 254 2006-07-07 20:33:16Z jonasbn $
 
 use strict;
 use lib 't';

@@ -1,10 +1,10 @@
 package TestApp::User;
 
-# $Id: User.pm,v 1.1 2004/01/10 05:15:02 cwinters Exp $
+# $Id: User.pm 290 2007-06-18 21:46:48Z jonasbn $
 
 use strict;
 
-$TestApp::User::VERSION  = sprintf("%d.%02d", q$Revision: 1.1 $ =~ /(\d+)\.(\d+)/);
+$TestApp::User::VERSION = '0.01';
 
 my %USERS = (
     Stu => 'Stu Nahan',

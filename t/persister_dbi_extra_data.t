@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: persister_dbi_extra_data.t,v 1.2 2004/01/03 22:37:03 cwinters Exp $
+# $Id: persister_dbi_extra_data.t 118 2004-01-03 22:37:03Z cwinters $
 
 use strict;
 use constant NUM_TESTS => 1;

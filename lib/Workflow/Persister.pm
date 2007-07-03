@@ -1,13 +1,13 @@
 package Workflow::Persister;
 
-# $Id: Persister.pm,v 1.9 2006/07/08 20:02:33 jonasbn Exp $
+# $Id: Persister.pm 285 2007-06-18 19:57:58Z jonasbn $
 
 use strict;
 use base qw( Workflow::Base );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( persist_error );
 
-$Workflow::Persister::VERSION  = sprintf("%d.%02d", q$Revision: 1.9 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Persister::VERSION = '';
 
 my @FIELDS = qw( name class
                  use_random use_uuid

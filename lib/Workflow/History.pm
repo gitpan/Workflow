@@ -1,12 +1,12 @@
 package Workflow::History;
 
-# $Id: History.pm,v 1.9 2006/07/08 20:02:33 jonasbn Exp $
+# $Id: History.pm 285 2007-06-18 19:57:58Z jonasbn $
 
 use strict;
 use base qw( Class::Accessor );
 use DateTime;
 
-$Workflow::History::VERSION  = sprintf("%d.%02d", q$Revision: 1.9 $ =~ /(\d+)\.(\d+)/);
+$Workflow::History::VERSION = '1.09';
 
 my @FIELDS = qw( id workflow_id action description date user state );
 __PACKAGE__->mk_accessors( @FIELDS );

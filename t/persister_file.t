@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: persister_file.t,v 1.7 2004/10/17 15:22:26 cwinters Exp $
+# $Id: persister_file.t 213 2004-10-17 15:22:26Z cwinters $
 
 use strict;
 use lib 't';

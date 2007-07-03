@@ -1,11 +1,11 @@
 package Workflow::Action::Null;
 
-# $Id: Null.pm,v 1.3 2006/07/08 20:02:33 jonasbn Exp $
+# $Id: Null.pm 285 2007-06-18 19:57:58Z jonasbn $
 
 use strict;
 use base qw( Workflow::Action );
 
-$Workflow::Action::Null::VERSION  = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Action::Null::VERSION = '1.03';
 
 sub execute {
     my ( $self ) = @_;

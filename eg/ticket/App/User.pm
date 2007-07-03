@@ -1,10 +1,10 @@
 package App::User;
 
-# $Id: User.pm,v 1.1 2003/12/28 21:51:42 cwinters Exp $
+# $Id: User.pm 289 2007-06-18 21:45:56Z jonasbn $
 
 use strict;
 
-$App::User::VERSION  = sprintf("%d.%02d", q$Revision: 1.1 $ =~ /(\d+)\.(\d+)/);
+$App::User::VERSION = '1.01';
 
 my %USERS = (
     Stu => 'Stu Nahan',

@@ -1,6 +1,6 @@
 package Workflow::Persister::File;
 
-# $Id: File.pm,v 1.10 2006/07/08 20:02:33 jonasbn Exp $
+# $Id: File.pm 285 2007-06-18 19:57:58Z jonasbn $
 
 use strict;
 use base qw( Workflow::Persister );
@@ -10,7 +10,7 @@ use Log::Log4perl         qw( get_logger );
 use Workflow::Exception   qw( configuration_error persist_error );
 use Workflow::Persister::RandomId;
 
-$Workflow::Persister::File::VERSION  = sprintf("%d.%02d", q$Revision: 1.10 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Persister::File::VERSION = '1.10';
 
 my @FIELDS = qw( path );
 __PACKAGE__->mk_accessors( @FIELDS );

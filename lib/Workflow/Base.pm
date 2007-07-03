@@ -1,12 +1,12 @@
 package Workflow::Base;
 
-# $Id: Base.pm,v 1.8 2006/09/12 18:05:15 jonasbn Exp $
+# $Id: Base.pm 285 2007-06-18 19:57:58Z jonasbn $
 
 use strict;
 use base qw( Class::Accessor );
 use Log::Log4perl;
 
-$Workflow::Base::VERSION  = sprintf("%d.%02d", q$Revision: 1.8 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Base::VERSION  = '1.08';
 
 sub new {
     my ( $class, @params ) = @_;

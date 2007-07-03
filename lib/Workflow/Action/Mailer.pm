@@ -1,11 +1,11 @@
 package Action::Mailer;
 
-# $Id: Mailer.pm,v 1.1.1.1 2003/12/18 15:21:07 cwinters Exp $
+# $Id: Mailer.pm 285 2007-06-18 19:57:58Z jonasbn $
 
 use strict;
 use base qw( Action );
 
-$Action::Mailer::VERSION  = sprintf("%d.%02d", q$Revision: 1.1.1.1 $ =~ /(\d+)\.(\d+)/);
+$Action::Mailer::VERSION  = '1.01';
 
 sub execute {
     

@@ -1,6 +1,6 @@
 package Workflow::Factory;
 
-# $Id: Factory.pm,v 1.18 2006/07/08 20:02:33 jonasbn Exp $
+# $Id: Factory.pm 288 2007-06-18 20:27:52Z jonasbn $
 
 use strict;
 use base qw( Workflow::Base );
@@ -8,7 +8,7 @@ use DateTime;
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( configuration_error workflow_error );
 
-$Workflow::Factory::VERSION  = sprintf("%d.%02d", q$Revision: 1.18 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Factory::VERSION = '1.18';
 
 my ( $log );
 my ( %INSTANCES );
@@ -20,7 +20,7 @@ sub import {
     $class = ref $class || $class; # just in case
     my $package = caller;
 
-    if ( $_[0] eq 'FACTORY' ) {
+    if ( defined $_[0] && $_[0] eq 'FACTORY' ) {
         $log->is_debug &&
             $log->debug( "Trying to import 'FACTORY' of type '$class' to '$package'" );
         shift;

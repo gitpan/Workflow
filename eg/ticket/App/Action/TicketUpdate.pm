@@ -1,13 +1,13 @@
 package App::Action::TicketUpdate;
 
-# $Id: TicketUpdate.pm,v 1.5 2004/10/13 20:05:09 cwinters Exp $
+# $Id: TicketUpdate.pm 289 2007-06-18 21:45:56Z jonasbn $
 
 use strict;
 use base qw( Workflow::Action );
 use Log::Log4perl qw( get_logger );
 use Workflow::History;
 
-$App::Action::TicketUpdate::VERSION  = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
+$App::Action::TicketUpdate::VERSION = '1.05';
 
 sub execute {
     my ( $self, $wf ) = @_;

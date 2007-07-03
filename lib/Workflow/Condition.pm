@@ -1,11 +1,11 @@
 package Workflow::Condition;
 
-# $Id: Condition.pm,v 1.7 2006/12/15 07:59:20 jonasbn Exp $
+# $Id: Condition.pm 285 2007-06-18 19:57:58Z jonasbn $
 
 use strict;
 use base qw( Workflow::Base );
 
-$Workflow::Condition::VERSION  = sprintf("%d.%02d", q$Revision: 1.7 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Condition::VERSION = '1.07';
 
 my @FIELDS = qw( name class );
 __PACKAGE__->mk_accessors( @FIELDS );

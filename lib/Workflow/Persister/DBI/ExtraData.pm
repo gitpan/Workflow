@@ -1,13 +1,13 @@
 package Workflow::Persister::DBI::ExtraData;
 
-# $Id: ExtraData.pm,v 1.5 2006/07/08 20:02:33 jonasbn Exp $
+# $Id: ExtraData.pm 285 2007-06-18 19:57:58Z jonasbn $
 
 use strict;
 use base qw( Workflow::Persister::DBI );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( configuration_error persist_error );
 
-$Workflow::Persister::DBI::ExtraData::VERSION  = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Persister::DBI::ExtraData::VERSION = '1.05';
 
 my @FIELDS = qw( table data_field context_key );
 __PACKAGE__->mk_accessors( @FIELDS );

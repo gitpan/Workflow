@@ -1,11 +1,11 @@
 package Workflow::Validator;
 
-# $Id: Validator.pm,v 1.5 2006/07/08 20:02:33 jonasbn Exp $
+# $Id: Validator.pm 285 2007-06-18 19:57:58Z jonasbn $
 
 use strict;
 use base qw( Workflow::Base );
 
-$Workflow::Validator::VERSION  = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Validator::VERSION = '1.05'; 
 
 my @FIELDS = qw( name class );
 __PACKAGE__->mk_accessors( @FIELDS );

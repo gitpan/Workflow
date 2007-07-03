@@ -1,12 +1,12 @@
 package Workflow::Validator::HasRequiredField;
 
-# $Id: HasRequiredField.pm,v 1.4 2006/07/08 20:02:33 jonasbn Exp $
+# $Id: HasRequiredField.pm 285 2007-06-18 19:57:58Z jonasbn $
 
 use strict;
 use base qw( Workflow::Validator );
 use Workflow::Exception qw( validation_error );
 
-$Workflow::Validator::HasRequiredField::VERSION  = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Validator::HasRequiredField::VERSION = '1.04';
 
 sub validate {
     my ( $self, $wf, @required_fields ) = @_;

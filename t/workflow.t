@@ -1,11 +1,18 @@
 # -*-perl-*-
 
-# $Id: workflow.t,v 1.5 2004/10/17 15:22:07 cwinters Exp $
+# $Id: workflow.t 284 2007-06-01 20:16:19Z jonasbn $
 
 use strict;
 use lib 't';
 use TestUtil;
-use Test::More  tests => 32;
+use Test::More;
+
+eval "require DBI";
+if ( $@ ) {
+    plan skip_all => 'DBI not installed';
+} else {
+	plan tests => 32;
+}
 
 require_ok( 'Workflow' );
 

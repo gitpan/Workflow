@@ -1,13 +1,13 @@
 package Workflow::Condition::HasUser;
 
-# $Id: HasUser.pm,v 1.5 2006/07/08 20:02:33 jonasbn Exp $
+# $Id: HasUser.pm 285 2007-06-18 19:57:58Z jonasbn $
 
 use strict;
 use base qw( Workflow::Condition );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( condition_error );
 
-$Workflow::Condition::HasUser::VERSION  = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Condition::HasUser::VERSION = '1.05';
 
 my $DEFAULT_USER_KEY = 'current_user';
 

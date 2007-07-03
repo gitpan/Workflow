@@ -1,10 +1,19 @@
 # -*-perl-*-
 
-# $Id: action.t,v 1.3 2004/10/17 15:22:26 cwinters Exp $
+# $Id: action.t 304 2007-07-03 14:56:43Z jonasbn $
 
 use strict;
 use lib 't';
 use TestUtil;
-use Test::More  tests => 1;
+use Test::Exception;
+use Test::More  tests => 2;
 
 require_ok( 'Workflow::Action' );
+
+my $action;
+
+dies_ok { $action = Workflow::Action->new({}) };
+
+#ok($action = Workflow::Action->new({}));
+
+#isa_ok($action, 'Workflow::Action');

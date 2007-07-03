@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: config.t,v 1.3 2006/07/07 12:43:08 jonasbn Exp $
+# $Id: config.t 292 2007-06-19 14:48:02Z jonasbn $
 
 use strict;
 use lib 't';
@@ -38,7 +38,8 @@ dies_ok { $parser->parse( 'workflow', 'workflow_errorprone.perl' ) };
 dies_ok { $parser->parse( 'workflow', 'no_such_file.perl' ) };
 dies_ok { $parser->parse( '123_NOSUCHTYPE', 'workflow_errorprone.perl' ) };
 
-ok(scalar $parser->parse( 'workflow' ) == 0 ); #forgotten file
+my @config = $parser->parse( 'workflow' );
+is(scalar(@config), 0, 'forgotten file, asserting length of array returned'); 
 
 ok($parser->parse( 'workflow', 'workflow.perl' ));
 ok($parser->parse( 'action', 'workflow_action.perl' ));

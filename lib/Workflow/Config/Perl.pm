@@ -1,6 +1,6 @@
 package Workflow::Config::Perl;
 
-# $Id: Perl.pm,v 1.2 2006/07/07 13:04:39 jonasbn Exp $
+# $Id: Perl.pm 292 2007-06-19 14:48:02Z jonasbn $
 
 use strict;
 use base                qw( Workflow::Config );
@@ -8,7 +8,7 @@ use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( configuration_error );
 use Data::Dumper        qw( Dumper );
 
-$Workflow::Config::Perl::VERSION  = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Config::Perl::VERSION = '1.03';
 
 my ( $log );
 
@@ -17,6 +17,11 @@ sub parse {
     $log ||= get_logger();
 
     $self->_check_config_type( $type );
+
+    if (! scalar @items) {
+        return @items;
+    }
+
     my @config_items = Workflow::Config::_expand_refs( @items );
     return () unless ( scalar @config_items );
 

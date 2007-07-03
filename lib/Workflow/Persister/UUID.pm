@@ -1,11 +1,11 @@
 package Workflow::Persister::UUID;
 
-# $Id: UUID.pm,v 1.3 2006/07/08 20:02:33 jonasbn Exp $
+# $Id: UUID.pm 299 2007-07-03 14:52:11Z jonasbn $
 
 use strict;
 use Data::UUID;
 
-$Workflow::Persister::UUID::VERSION  = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Persister::UUID::VERSION = '1.03';
 
 sub new {
     my ( $class, $params ) = @_;
@@ -47,11 +47,35 @@ look there if you are curious about the algorithm, efficiency, etc.
 
 =head2 METHODS
 
-#=head3 new
+=head3 new
 
-#=head3 pre_fetch_id
+Instantiates a Workflow::Persister::UUID object, which is actually an
+encapsulation of L<Data::UUID>.
 
-#=head3 post_fetch_id
+=head3 pre_fetch_id
+
+L</pre_fetch_id> can then be used to generate/retrieve a unique ID, generated
+by L<Data::UUID>.
+
+=head3 post_fetch_id
+
+This method is unimplemented at this time, please see the TODO.
+
+=head1 TODO
+
+=over
+
+=item * Implement L</post_fetch_id>
+
+=back 
+
+=head1 SEE ALSO
+
+=over
+
+=item L<Data::UUID>
+
+=back
 
 =head1 COPYRIGHT
 

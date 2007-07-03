@@ -1,6 +1,6 @@
 package Workflow::Config;
 
-# $Id: Config.pm,v 1.11 2006/07/08 20:02:33 jonasbn Exp $
+# $Id: Config.pm 292 2007-06-19 14:48:02Z jonasbn $
 
 use strict;
 use base qw( Class::Factory );
@@ -8,7 +8,7 @@ use Data::Dumper        qw( Dumper );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( configuration_error );
 
-$Workflow::Config::VERSION  = sprintf("%d.%02d", q$Revision: 1.11 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Config::VERSION = '1.12';
 
 my %VALID_TYPES = map { $_ => 1 } qw( action condition persister validator workflow );
 
@@ -72,6 +72,11 @@ sub _check_config_type {
 sub _expand_refs {
     my ( @items ) = @_;
     my @all = ();
+
+    if (! scalar @items) {
+        return @all;
+    }
+    
     foreach my $item ( @items ) {
         next unless ( $item );
         push @all, ( ref $item eq 'ARRAY' ) ? @{ $item } : $item;

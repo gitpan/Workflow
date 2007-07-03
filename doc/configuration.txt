@@ -1,6 +1,6 @@
 Configuration Description
 ----------------------------------------
-$Id: configuration.txt,v 1.4 2006/07/07 12:40:31 jonasbn Exp $
+$Id: configuration.txt 234 2006-07-07 12:40:31Z jonasbn $
 
 workflow:
 

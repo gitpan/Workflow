@@ -1,6 +1,6 @@
 ---
 name: Workflow
-version: 0.26
+version: 0.27
 author:
   - 'Jonas B. NIelsen <jonasbn@cpan.org>'
 abstract: 'Simple, flexible system to implement workflows'
@@ -51,13 +51,13 @@ provides:
     version: 1.05
   Workflow::Config:
     file: lib/Workflow/Config.pm
-    version: 1.11
+    version: 1.12
   Workflow::Config::Perl:
     file: lib/Workflow/Config/Perl.pm
-    version: 1.02
+    version: 1.03
   Workflow::Config::XML:
     file: lib/Workflow/Config/XML.pm
-    version: 1.04
+    version: 1.05
   Workflow::Context:
     file: lib/Workflow/Context.pm
     version: 1.05
@@ -72,7 +72,7 @@ provides:
     version: 1.09
   Workflow::Persister:
     file: lib/Workflow/Persister.pm
-    version: 1.09
+    version: ''
   Workflow::Persister::DBI:
     file: lib/Workflow/Persister/DBI.pm
     version: 1.19

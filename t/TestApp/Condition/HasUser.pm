@@ -1,13 +1,13 @@
 package TestApp::Condition::HasUser;
 
-# $Id: HasUser.pm,v 1.1 2004/01/10 05:15:02 cwinters Exp $
+# $Id: HasUser.pm 290 2007-06-18 21:46:48Z jonasbn $
 
 use strict;
 use base qw( Workflow::Condition );
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( condition_error );
 
-$TestApp::Condition::HasUser::VERSION  = sprintf("%d.%02d", q$Revision: 1.1 $ =~ /(\d+)\.(\d+)/);
+$TestApp::Condition::HasUser::VERSION = '0.01';
 
 sub evaluate {
     my ( $self, $wf ) = @_;

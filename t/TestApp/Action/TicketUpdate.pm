@@ -1,12 +1,12 @@
 package TestApp::Action::TicketUpdate;
 
-# $Id: TicketUpdate.pm,v 1.1 2004/01/10 05:15:02 cwinters Exp $
+# $Id: TicketUpdate.pm 290 2007-06-18 21:46:48Z jonasbn $
 
 use strict;
 use base qw( Workflow::Action );
 use Log::Log4perl qw( get_logger );
 
-$TestApp::Action::TicketUpdate::VERSION  = sprintf("%d.%02d", q$Revision: 1.1 $ =~ /(\d+)\.(\d+)/);
+$TestApp::Action::TicketUpdate::VERSION = '1.05';
 
 sub execute {
     my ( $self, $wf ) = @_;

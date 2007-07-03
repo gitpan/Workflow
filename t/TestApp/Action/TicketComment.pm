@@ -1,12 +1,12 @@
 package TestApp::Action::TicketComment;
 
-# $Id: TicketComment.pm,v 1.2 2004/10/11 22:22:26 cwinters Exp $
+# $Id: TicketComment.pm 290 2007-06-18 21:46:48Z jonasbn $
 
 use strict;
 use base qw( Workflow::Action );
 use Log::Log4perl qw( get_logger );
 
-$TestApp::Action::TicketComment::VERSION  = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
+$TestApp::Action::TicketComment::VERSION  = '1.02';
 
 sub execute {
     my ( $self, $wf ) = @_;

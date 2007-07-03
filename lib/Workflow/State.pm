@@ -1,6 +1,6 @@
 package Workflow::State;
 
-# $Id: State.pm,v 1.13 2007/01/29 13:46:08 alech Exp $
+# $Id: State.pm 295 2007-06-28 14:12:52Z alech $
 
 use strict;
 use base qw( Workflow::Base );
@@ -9,7 +9,7 @@ use Workflow::Condition::Evaluate;
 use Workflow::Exception qw( workflow_error );
 use Workflow::Factory   qw( FACTORY );
 
-$Workflow::State::VERSION  = sprintf("%d.%02d", q$Revision: 1.13 $ =~ /(\d+)\.(\d+)/);
+$Workflow::State::VERSION = '1.13';
 
 my @FIELDS = qw( state description );
 __PACKAGE__->mk_accessors( @FIELDS );
@@ -39,6 +39,11 @@ sub get_available_action_names {
     my ( $self, $wf ) = @_;
     my @all_actions = $self->get_all_action_names;
     my @available_actions = ();
+
+    # assuming that the user wants the _fresh_ list of available actions,
+    # we clear the condition cache before checking which ones are available
+    $self->clear_condition_cache();
+
     foreach my $action_name ( @all_actions ) {
         if ( $self->is_action_available( $wf, $action_name ) ) {
             push @available_actions, $action_name;
@@ -70,8 +75,6 @@ sub evaluate_action {
 
     # NOTE: this will throw an exception if C<$action_name> is not
     # contained in this state, so there's no need to do it explicitly
-
-    $self->clear_condition_cache();
 
     my @conditions = $self->get_conditions( $action_name );
     foreach my $condition ( @conditions ) {

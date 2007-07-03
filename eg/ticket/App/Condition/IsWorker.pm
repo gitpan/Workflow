@@ -1,6 +1,6 @@
 package App::Condition::IsWorker;
 
-# $Id: IsWorker.pm,v 1.2 2004/05/14 00:08:13 cwinters Exp $
+# $Id: IsWorker.pm 289 2007-06-18 21:45:56Z jonasbn $
 
 use strict;
 use base qw( Workflow::Condition );
@@ -8,7 +8,7 @@ use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( condition_error );
 use Workflow::Factory   qw( FACTORY );
 
-$App::Condition::IsWorker::VERSION  = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
+$App::Condition::IsWorker::VERSION = '1.02'
 
 my ( $log );
 

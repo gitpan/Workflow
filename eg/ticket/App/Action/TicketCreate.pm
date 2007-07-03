@@ -1,6 +1,6 @@
 package App::Action::TicketCreate;
 
-# $Id: TicketCreate.pm,v 1.6 2004/10/13 20:05:09 cwinters Exp $
+# $Id: TicketCreate.pm 289 2007-06-18 21:45:56Z jonasbn $
 
 use strict;
 use base qw( Workflow::Action );
@@ -9,7 +9,7 @@ use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( persist_error );
 use Workflow::Factory   qw( FACTORY );
 
-$App::Action::TicketCreate::VERSION  = sprintf("%d.%02d", q$Revision: 1.6 $ =~ /(\d+)\.(\d+)/);
+$App::Action::TicketCreate::VERSION = '1.06';
 
 sub execute {
     my ( $self, $wf ) = @_;

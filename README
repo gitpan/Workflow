@@ -1,6 +1,6 @@
 INTRO
 ========================================
-$Id: README,v 1.12 2006/07/07 12:42:31 jonasbn Exp $
+$Id: README 237 2006-07-07 12:42:31Z jonasbn $
 
 
 The 'Workflow' Perl module implements a standalone workflow system. It

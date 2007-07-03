@@ -1,10 +1,21 @@
 # -*-perl-*-
 
-# $Id: validator_matches_date_format.t,v 1.2 2004/10/17 15:22:26 cwinters Exp $
+# $Id: validator_matches_date_format.t 294 2007-06-19 21:07:00Z jonasbn $
 
 use strict;
 use lib 't';
 use TestUtil;
-use Test::More  tests => 1;
+use Test::Exception;
+use Test::More tests => 4;
 
 require_ok( 'Workflow::Validator::MatchesDateFormat' );
+
+my $validator;
+
+dies_ok { $validator = Workflow::Validator::MatchesDateFormat->new({}) };
+
+ok($validator = Workflow::Validator::MatchesDateFormat->new({
+    date_format => '%Y-%m-%d',
+}));
+
+isa_ok($validator, 'Workflow::Validator');

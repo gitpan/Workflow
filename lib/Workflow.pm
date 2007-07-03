@@ -1,6 +1,6 @@
 package Workflow;
 
-# $Id: Workflow.pm,v 1.32 2006/12/15 07:59:20 jonasbn Exp $
+# $Id: Workflow.pm 295 2007-06-28 14:12:52Z alech $
 
 use strict;
 
@@ -13,7 +13,7 @@ use Workflow::Factory   qw( FACTORY );
 my @FIELDS = qw( id type description state last_update );
 __PACKAGE__->mk_accessors( @FIELDS );
 
-$Workflow::VERSION  = sprintf("%d.%02d", q$Revision: 1.32 $ =~ /(\d+)\.(\d+)/);
+$Workflow::VERSION  = '1.32';
 
 use constant NO_CHANGE_VALUE => 'NOCHANGE';
 
@@ -118,12 +118,14 @@ sub execute_action {
 
     $self->notify_observers( 'execute', $old_state, $action_name, $autorun );
 
+    my $new_state_obj = $self->_get_workflow_state;
     if ( $old_state ne $new_state ) {
         $self->notify_observers( 'state change', $old_state,
                                  $action_name, $autorun );
+        # clear condition cache on state change
+        $new_state_obj->clear_condition_cache();
     }
 
-    my $new_state_obj = $self->_get_workflow_state;
     if ( $new_state_obj->autorun ) {
         $log->is_info &&
             $log->info( "State '$new_state' marked to be run ",
@@ -1025,7 +1027,9 @@ Chris Winters E<lt>chris@cwinters.comE<gt>, original author.
 
 The following folks have also helped out:
 
-Alexander Klink, for: patches resulting in 0.23, 0.24 and 0.25
+Jim Brandt, for patch to Workflow::Config::XML. See Changes file, 0.27/candidate
+
+Alexander Klink, for: patches resulting in 0.23, 0.24, 0.25 and 0.26
 
 Michael Bell, for patch resulting in 0.22
 

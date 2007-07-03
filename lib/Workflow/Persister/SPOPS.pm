@@ -1,6 +1,6 @@
 package Workflow::Persister::SPOPS;
 
-# $Id: SPOPS.pm,v 1.7 2006/07/08 20:02:33 jonasbn Exp $
+# $Id: SPOPS.pm 285 2007-06-18 19:57:58Z jonasbn $
 
 use strict;
 use base qw( Workflow::Persister );
@@ -8,7 +8,7 @@ use DateTime;
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( configuration_error persist_error );
 
-$Workflow::Persister::SPOPS::VERSION  = sprintf("%d.%02d", q$Revision: 1.7 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Persister::SPOPS::VERSION = '1.07';
 
 my @FIELDS = qw( workflow_class history_class );
 __PACKAGE__->mk_accessors( @FIELDS );

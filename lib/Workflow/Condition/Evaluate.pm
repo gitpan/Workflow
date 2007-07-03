@@ -1,6 +1,6 @@
 package Workflow::Condition::Evaluate;
 
-# $Id: Evaluate.pm,v 1.2 2006/07/08 20:02:33 jonasbn Exp $
+# $Id: Evaluate.pm 285 2007-06-18 19:57:58Z jonasbn $
 
 use strict;
 use base qw( Workflow::Condition );
@@ -8,7 +8,7 @@ use Log::Log4perl       qw( get_logger );
 use Safe;
 use Workflow::Exception qw( condition_error configuration_error );
 
-$Workflow::Condition::Evaluate::VERSION  = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Condition::Evaluate::VERSION = '1.02';
 
 my @FIELDS = qw( test );
 __PACKAGE__->mk_accessors( @FIELDS );

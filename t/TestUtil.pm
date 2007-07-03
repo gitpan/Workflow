@@ -1,10 +1,13 @@
 package TestUtil;
 
-# $Id: TestUtil.pm,v 1.6 2005/11/30 03:25:17 cwinters Exp $
+# $Id: TestUtil.pm 290 2007-06-18 21:46:48Z jonasbn $
 
 use strict;
+use vars qw($VERSION);
 use DateTime;
 use Test::More;
+
+$VERSION = '0.01';
 
 my ( $original_dir );
 

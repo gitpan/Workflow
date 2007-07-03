@@ -1,6 +1,6 @@
 package Workflow::Persister::DBI::SequenceId;
 
-# $Id: SequenceId.pm,v 1.5 2006/07/08 20:02:33 jonasbn Exp $
+# $Id: SequenceId.pm 285 2007-06-18 19:57:58Z jonasbn $
 
 use strict;
 use base qw( Class::Accessor );
@@ -8,7 +8,7 @@ use DBI;
 use Log::Log4perl       qw( get_logger );
 use Workflow::Exception qw( persist_error );
 
-$Workflow::Persister::DBI::SequenceId::VERSION  = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
+$Workflow::Persister::DBI::SequenceId::VERSION = '1.05';
 
 my @FIELDS = qw( sequence_name sequence_select );
 __PACKAGE__->mk_accessors( @FIELDS );
