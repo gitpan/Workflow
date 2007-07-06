@@ -1,6 +1,6 @@
 package Workflow::Config::XML;
 
-# $Id: XML.pm 287 2007-06-18 20:04:33Z jonasbn $
+# $Id: XML.pm 316 2007-07-04 19:17:50Z jonasbn $
 
 use strict;
 use base qw( Workflow::Config );
@@ -114,7 +114,13 @@ description.
 
 =head2 METHODS
 
-#=head3 parse
+=head3 parse ( $type, @items )
+
+This method parses the configuration provided it is in XML format.
+
+Takes two parameters: a $type indication and an array of of items
+
+Returns a list of config parameters as a array upon success.
 
 =head1 SEE ALSO
 

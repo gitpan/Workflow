@@ -1,6 +1,6 @@
 ---
 name: Workflow
-version: 0.27
+version: 0.28
 author:
   - 'Jonas B. NIelsen <jonasbn@cpan.org>'
 abstract: 'Simple, flexible system to implement workflows'
@@ -22,9 +22,6 @@ requires:
   Test::More: 0.41
   XML::Simple: 2
 provides:
-  Action::Mailer:
-    file: lib/Workflow/Action/Mailer.pm
-    version: 1.01
   Workflow:
     file: lib/Workflow.pm
     version: 1.32
@@ -34,6 +31,9 @@ provides:
   Workflow::Action::InputField:
     file: lib/Workflow/Action/InputField.pm
     version: 1.09
+  Workflow::Action::Mailer:
+    file: lib/Workflow/Action/Mailer.pm
+    version: 1.01
   Workflow::Action::Null:
     file: lib/Workflow/Action/Null.pm
     version: 1.03
@@ -72,7 +72,7 @@ provides:
     version: 1.09
   Workflow::Persister:
     file: lib/Workflow/Persister.pm
-    version: ''
+    version: 1.09
   Workflow::Persister::DBI:
     file: lib/Workflow/Persister/DBI.pm
     version: 1.19

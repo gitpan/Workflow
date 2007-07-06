@@ -1,6 +1,6 @@
 package Workflow::Condition::HasUser;
 
-# $Id: HasUser.pm 285 2007-06-18 19:57:58Z jonasbn $
+# $Id: HasUser.pm 317 2007-07-05 05:46:25Z jonasbn $
 
 use strict;
 use base qw( Workflow::Condition );
@@ -86,7 +86,13 @@ Key in workflow context to check for data. If not specified we use
 
 =head2 METHODS
 
-#=head3 evaluate
+=head3 evaluate ( $wf )
+
+Method to evaluate whether a user has been set for a workflow.
+
+Takes a workflow object as parameter
+
+Throws L<Workflow::Exception> if evaluation fails
 
 =head1 SEE ALSO
 

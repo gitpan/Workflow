@@ -1,6 +1,6 @@
 package Workflow::Persister::DBI::ExtraData;
 
-# $Id: ExtraData.pm 285 2007-06-18 19:57:58Z jonasbn $
+# $Id: ExtraData.pm 317 2007-07-05 05:46:25Z jonasbn $
 
 use strict;
 use base qw( Workflow::Persister::DBI );
@@ -207,17 +207,32 @@ specify a context key we also use the data field name.
 
 =head2 METHODS
 
-#=head3 init
+=head3 init ( \%params )
 
-#=head3 fetch_extra_workflow_data
+Initializes persister for extra workflow data.
+
+Throws L<Workflow::Exception> if initialization is not successful.
+
+=head3 fetch_extra_workflow_data ( $wf )
+
+Fetches extra data from database and feeds this to context of given workflow.
+
+Takes a single parameter, a workflow object to which extra data are feed if
+retrieved successfully.
+
+Throws L<Workflow::Exception> if retrieval is not successful.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2003-2004 Chris Winters. All rights reserved.
+Copyright (c) 2003-2007 Chris Winters. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =head1 AUTHORS
 
-Chris Winters E<lt>chris@cwinters.comE<gt>
+Jonas B. Nielsen (jonasbn) E<lt>jonasbn@cpan.orgE<gt> is the current maintainer.
+
+Chris Winters E<lt>chris@cwinters.comE<gt>, original author.
+
+=cut

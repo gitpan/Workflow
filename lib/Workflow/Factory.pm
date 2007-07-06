@@ -1,6 +1,6 @@
 package Workflow::Factory;
 
-# $Id: Factory.pm 288 2007-06-18 20:27:52Z jonasbn $
+# $Id: Factory.pm 316 2007-07-04 19:17:50Z jonasbn $
 
 use strict;
 use base qw( Workflow::Base );
@@ -849,9 +849,21 @@ instantiate an object of that class.
 
 Returns: nothing
 
-#=head3 associate_observers_with_workflow
+=head3 associate_observers_with_workflow
 
-#=head3 new
+Add defined observers with workflow.
+
+The workflow has to be provided as the single parameter accepted by this
+method.
+
+The observers added will have to be of the type relevant to the workflow type.
+    
+=head3 new
+
+The new method is a dummy constructor, since we are using a factory it makes
+no sense to call new - and calling new will result in a L<Workflow::Exception>
+
+L</instance> should be called or the imported 'FACTORY' should be utilized.
 
 =head1 SUBCLASSING
 
@@ -903,7 +915,7 @@ L<Workflow::Validator>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2003-2006 Chris Winters. All rights reserved.
+Copyright (c) 2003-2007 Chris Winters. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

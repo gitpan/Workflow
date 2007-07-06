@@ -1,6 +1,6 @@
 package Workflow::Persister::RandomId;
 
-# $Id: RandomId.pm 300 2007-07-03 14:53:09Z jonasbn $
+# $Id: RandomId.pm 316 2007-07-04 19:17:50Z jonasbn $
 
 use strict;
 use base qw( Class::Accessor );
@@ -47,6 +47,8 @@ can specify the length using the 'id_length' parameter, but normally
 the default (8 characters) is sufficient.
 
 =head2 METHODS
+
+=head3 new
 
 Instantiates a Workflow::Persister::RandomId object, this object can generate
 randon Id's based on the 'id_length' parameter provided. This parameter defaults

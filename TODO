@@ -1,8 +1,6 @@
 TODO file for Workflow
 
-$Id: TODO 303 2007-07-03 14:55:21Z jonasbn $
-
-- Implement post_fetch_id in Workflow::Persister::UUID, seens unimplemented
+$Id: TODO 316 2007-07-04 19:17:50Z jonasbn $
 
 - Document general workflow initialization phase and the call to the
   Workflow classes init method in a more general way
@@ -16,9 +14,6 @@ $Id: TODO 303 2007-07-03 14:55:21Z jonasbn $
   class. One holds a validate method the other a validator method.
 
 - Add test of validator in Workflow::Validator::InEnumeratedType
-
-- Should Action::Mailer not be called Workflow::Action::Mailer, looks like a
-  stub that was never finalized
 
 - Should we add DBI as a requirement, our tests seem to rely on it's
   presence and currently it seems to be required via our dependency 
