@@ -1,13 +1,16 @@
 package Workflow::Action::Mailer;
 
-# $Id: Mailer.pm 317 2007-07-05 05:46:25Z jonasbn $
+# $Id: Mailer.pm 330 2007-08-12 11:01:58Z jonasbn $
 
 use strict;
 use base qw( Workflow::Action );
 
 $Workflow::Action::Mailer::VERSION  = '1.01';
 
-sub execute {}
+sub execute {
+    my ( $self ) = @_;
+    return 1;
+}
 
 1;
 

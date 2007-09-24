@@ -1,6 +1,28 @@
 Revision history for Perl extension Workflow
 
-# $Id: Changes 323 2007-07-06 14:43:07Z jonasbn $
+# $Id: Changes 330 2007-08-12 11:01:58Z jonasbn $
+
+0.29
+
+- Added patch from Jim Brandt improving handling of date formats
+
+- Added new test file: t/persister.t for Workflow::Persister
+
+- Updated t/confition.t for better coverage
+
+- Updated t/action.t for better coverage
+
+- Updated t/validator.t for better coverage
+
+- Updated Workflow::Action::Mailer (stub now can be tested, this might however
+  prove to be a bad idea)
+
+- Added new test file: t/action_mailer.t for Workflow::Action::Mailer
+
+- Updated t/action_null.t for better coverage
+
+- Added some more tests t/Config.t
+
 
 0.28 Fri Jul  6 16:42:30 CEST 2007 (update not required)
 

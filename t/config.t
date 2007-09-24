@@ -1,11 +1,11 @@
 # -*-perl-*-
 
-# $Id: config.t 292 2007-06-19 14:48:02Z jonasbn $
+# $Id: config.t 330 2007-08-12 11:01:58Z jonasbn $
 
 use strict;
 use lib 't';
 use TestUtil;
-use Test::More  tests => 21;
+use Test::More  tests => 24;
 use Test::Exception;
 
 my ($parser);
@@ -50,3 +50,10 @@ ok($parser->parse( 'validator', 'workflow_validator.perl' ));
 $parser = Workflow::Config->new( 'perl' );
 ok($parser->parse( 'workflow', 'workflow.perl', 'workflow_action.perl', 'workflow_condition.perl', 'workflow_validator.perl' ));
 
+#testing class method parse_all_files
+my @array = Workflow::Config->parse_all_files();
+is(scalar @array, 0, 'asserting return value');
+
+dies_ok { Workflow::Config->parse_all_files( '123_NOSUCHTYPE', 'workflow_condition.prl' ) };
+
+ok(Workflow::Config->parse_all_files( 'workflow', 'workflow_condition.perl', 'workflow_validator.perl' ));
