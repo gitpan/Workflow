@@ -1,6 +1,6 @@
 package TestUtil;
 
-# $Id: TestUtil.pm 290 2007-06-18 21:46:48Z jonasbn $
+# $Id: TestUtil.pm 336 2007-09-25 10:27:49Z jonasbn $
 
 use strict;
 use vars qw($VERSION);
@@ -95,6 +95,7 @@ sub init_mock_persister {
         name  => 'TestPersister',
         class => 'Workflow::Persister::DBI',
         dsn   => 'DBI:Mock:',
+	user => 'DBTester',
     );
     $factory->add_config( persister => [ \%persister ] );
 }

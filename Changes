@@ -1,10 +1,14 @@
 Revision history for Perl extension Workflow
 
-# $Id: Changes 330 2007-08-12 11:01:58Z jonasbn $
+# $Id: Changes 337 2007-09-25 10:29:08Z jonasbn $
 
-0.29
+0.30 Tue Sep 25 12:28:12 CEST 2007 (update not required)
 
-- Added patch from Jim Brandt improving handling of date formats
+- Added patch from Jim Brandt improving handling of date formats for real, the 
+  merge into 0.29 (see below) was not completed
+
+
+0.29 Mon Sep 24 23:09:12 CEST 2007 (update not required)
 
 - Added new test file: t/persister.t for Workflow::Persister
 

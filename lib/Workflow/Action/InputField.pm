@@ -1,6 +1,6 @@
 package Workflow::Action::InputField;
 
-# $Id: InputField.pm 316 2007-07-04 19:17:50Z jonasbn $
+# $Id: InputField.pm 336 2007-09-25 10:27:49Z jonasbn $
 
 use strict;
 use base qw( Class::Accessor );
@@ -17,7 +17,8 @@ my %INCLUDED = ();
 sub new {
     my ( $class, $params ) = @_;
     my $log = get_logger();
-    $log->debug( "Instantiating new field '$params->{name}'" );
+    $log->debug( "Instantiating new field '$params->{name}'" )
+      if $params->{name};
 
     my $self = bless( {}, $class );
 
