@@ -1,12 +1,34 @@
 Revision history for Perl extension Workflow
 
-# $Id: Changes 337 2007-09-25 10:29:08Z jonasbn $
+# $Id: Changes 341 2007-09-26 18:29:16Z jonasbn $
+
+0.31 Wed Sep 26 20:26:49 CEST 2007 (update not required)
+
+- Fixed failing tests in t/persister_dbi.t, this has only observed twice
+  and does not seem to be consistent. This is related to execution time
+  for the test suite and the use of now, using the debugger would demonstrate
+  this.
+
+  Resolves: RT #29037 - https://rt.cpan.org/Public/Bug/Display.html?id=29037
+
+- Cleaned TODO file a bit
+
+- Added Data::Dumper requirement to Build.PL
+
 
 0.30 Tue Sep 25 12:28:12 CEST 2007 (update not required)
 
 - Added patch from Jim Brandt improving handling of date formats for real, the 
   merge into 0.29 (see below) was not completed
-
+  
+  The patch also addresses RT #29037
+  
+  https://rt.cpan.org/Public/Bug/Display.html?id=29037 
+  
+  which is related to a failing test:
+  
+  http://www.nntp.perl.org/group/perl.cpan.testers/2007/08/msg582727.html
+  
 
 0.29 Mon Sep 24 23:09:12 CEST 2007 (update not required)
 

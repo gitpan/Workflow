@@ -1,6 +1,6 @@
 package Workflow::Action::Mailer;
 
-# $Id: Mailer.pm 330 2007-08-12 11:01:58Z jonasbn $
+# $Id: Mailer.pm 340 2007-09-25 20:58:06Z jonasbn $
 
 use strict;
 use base qw( Workflow::Action );
