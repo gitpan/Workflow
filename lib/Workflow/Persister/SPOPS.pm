@@ -1,6 +1,6 @@
 package Workflow::Persister::SPOPS;
 
-# $Id: SPOPS.pm 316 2007-07-04 19:17:50Z jonasbn $
+# $Id: SPOPS.pm 361 2008-04-05 13:23:31Z jonasbn $
 
 use strict;
 use base qw( Workflow::Persister );
@@ -35,7 +35,7 @@ sub create_workflow {
     my $wf_persist = $self->workflow_class->new({
         state       => $wf->state,
         type        => $wf->type,
-        last_update => DateTime->now,
+        last_update => DateTime->now(time_zone => $wf->time_zone()),
     });
     eval { $wf_persist->save };
     if ( $@ ) {
@@ -120,6 +120,7 @@ sub fetch_history {
             user         => $_->user,
 # NOTE: SPOPS class must return this as a DateTime object...
             date         => $_->history_date,
+	    time_zone    => $_->time_zone,
         });
         $hist->set_saved();
         push @histories, $hist;

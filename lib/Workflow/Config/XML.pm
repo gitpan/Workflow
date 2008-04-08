@@ -1,6 +1,6 @@
 package Workflow::Config::XML;
 
-# $Id: XML.pm 316 2007-07-04 19:17:50Z jonasbn $
+# $Id: XML.pm 361 2008-04-05 13:23:31Z jonasbn $
 
 use strict;
 use base qw( Workflow::Config );
@@ -58,10 +58,14 @@ sub parse {
         die "Processing $file_name: $@" if $@;
         $log->is_info &&
             $log->info( "Parsed XML '$file_name' ok" );
-        if ( ref $this_config->{ $type } eq 'ARRAY' ) {
+
+	# This sets the outer-most tag to use
+	# when returning the parsed XML.
+	my $outer_tag = $self->get_config_type_tag($type);
+        if ( ref $this_config->{ $outer_tag } eq 'ARRAY' ) {
             $log->is_debug &&
                 $log->debug( "Adding multiple configurations for '$type'" );
-            push @config, @{ $this_config->{ $type } };
+            push @config, @{ $this_config->{ $outer_tag } };
         }
         else {
             $log->is_debug &&

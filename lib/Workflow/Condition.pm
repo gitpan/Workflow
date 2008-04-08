@@ -1,6 +1,6 @@
 package Workflow::Condition;
 
-# $Id: Condition.pm 317 2007-07-05 05:46:25Z jonasbn $
+# $Id: Condition.pm 361 2008-04-05 13:23:31Z jonasbn $
 
 use strict;
 use base qw( Workflow::Base );
@@ -112,6 +112,30 @@ you specify the reference to the condition only inside of the full
 action specification in a seperate file then nothing will happen. The
 reference to the condition must be defined inside of the state/workflow
 specification.
+
+=head1 CONFIGURATION
+
+While some conditions apply to all workflows, you may have a case where
+a condition has different implementations for different workflow types.
+For example, IsAdminUser may look in two different places for two
+different workflow types, but you want to use the same condition name
+for both.
+
+You can accomplish this by adding a type in the condition configuration.
+
+ <conditions>
+ <type>Ticket</type>
+   <condition
+      name="IsAdminUser"
+      class="MyApp::Condition::IsAdminUser">
+         <param name="admin_group_id" value="5" />
+         <param name="admin_group_id" value="6" />
+   </condition>
+ ...
+
+The type must match a loaded workflow type, or the condition won't work.
+When the workflow looks for a condition, it will look for a typed condition
+first. If it doesn't find one, it will look for non-typed conditions.
 
 =head1 SUBCLASSING
 

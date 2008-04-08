@@ -1,6 +1,11 @@
 TODO file for Workflow
 
-$Id: TODO 340 2007-09-25 20:58:06Z jonasbn $
+$Id: TODO 364 2008-04-06 07:12:16Z jonasbn $
+
+- Look into inconsistent XML configuration for persisters, this might however 
+  break backwards compitability
+
+- Add more tests of persister configurations
 
 - Document general workflow initialization phase and the call to the
   Workflow classes init method in a more general way

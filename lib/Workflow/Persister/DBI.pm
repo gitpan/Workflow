@@ -1,6 +1,6 @@
 package Workflow::Persister::DBI;
 
-# $Id: DBI.pm 336 2007-09-25 10:27:49Z jonasbn $
+# $Id: DBI.pm 361 2008-04-05 13:23:31Z jonasbn $
 
 use strict;
 use base qw( Workflow::Persister );
@@ -188,7 +188,8 @@ sub create_workflow {
     my @fields = @WF_FIELDS[1,2,3];
     my @values = ( $wf->type,
                    $wf->state,
-                   DateTime->now->strftime( $self->date_format() ) );
+                   DateTime->now(time_zone => $wf->time_zone())
+		     ->strftime( $self->date_format() ) );
     my $dbh = $self->handle;
 
     my $id = $self->workflow_id_generator->pre_fetch_id( $dbh );
@@ -268,7 +269,8 @@ sub update_workflow {
          WHERE $WF_FIELDS[0] = ?
     };
     $sql = sprintf( $sql, $self->workflow_table );
-    my $update_date = DateTime->now->strftime( $self->date_format() );
+    my $update_date = DateTime->now(time_zone => $wf->time_zone())
+                        ->strftime( $self->date_format() );
 
     if ( $log->is_debug ) {
         $log->debug( "Will use SQL\n$sql" );

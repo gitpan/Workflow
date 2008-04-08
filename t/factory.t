@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: factory.t 254 2006-07-07 20:33:16Z jonasbn $
+# $Id: factory.t 361 2008-04-05 13:23:31Z jonasbn $
 
 use strict;
 use lib 't';
@@ -25,7 +25,7 @@ is( $i_factory, $factory,
     'Imported factory returns the same object' );
 
 lives_ok { $factory->add_config_from_file( workflow  => 'workflow.xml',
-                                    action    => [ 'workflow_action.xml', 'workflow_action.perl' ],
+                                    action    => [ 'workflow_action.xml', 'workflow_action_type.xml', 'workflow_action.perl',  ],
                                     validator => [ 'workflow_validator.xml', 'workflow_validator.perl' ],
                                     condition => 'workflow_condition.xml') };
 
