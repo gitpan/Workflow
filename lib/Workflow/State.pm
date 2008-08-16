@@ -1,6 +1,6 @@
 package Workflow::State;
 
-# $Id: State.pm 361 2008-04-05 13:23:31Z jonasbn $
+# $Id: State.pm 380 2008-07-29 20:36:32Z jonasbn $
 
 use strict;
 use base qw( Workflow::Base );
@@ -114,7 +114,7 @@ sub evaluate_action {
                         $log->debug( "Cached condition result is false." );
                     workflow_error "No access to action '$action_name' in ",
                                    "state '$state' because cached ",
-                                   "condition 'orig_condition' already ",
+                                   "condition '$orig_condition' already ",
                                    "failed before.";
                 }
             }
