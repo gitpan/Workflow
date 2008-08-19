@@ -1,6 +1,6 @@
 ---
 name: Workflow
-version: 0.32_3
+version: 0.32_4
 author:
   - 'Jonas B. NIelsen <jonasbn@cpan.org>'
 abstract: 'Simple, flexible system to implement workflows'
@@ -11,7 +11,6 @@ requires:
   Class::Accessor: 0.18
   Class::Factory: 1
   Class::Observable: 1.04
-  DBD::Mock: 0.1
   DBI: 0
   Data::Dumper: 0
   DateTime: 0.15
@@ -20,9 +19,12 @@ requires:
   Log::Dispatch: 2
   Log::Log4perl: 0.34
   Safe: 0
+  XML::Simple: 2
+build_requires:
+  DBD::Mock: 0.1
+  List::MoreUtils: 0
   Test::Exception: 0
   Test::More: 0.41
-  XML::Simple: 2
 provides:
   Workflow:
     file: lib/Workflow.pm

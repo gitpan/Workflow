@@ -1,11 +1,11 @@
 # -*-perl-*-
 
-# $Id: state.t 361 2008-04-05 13:23:31Z jonasbn $
+# $Id: state.t 383 2008-08-19 09:50:25Z jonasbn $
 
 use strict;
 use lib 't';
 use TestUtil;
-use Test::More  tests => 20;
+use Test::More  tests => 19;
 
 require_ok( 'Workflow::State' );
 

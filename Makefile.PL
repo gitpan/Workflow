@@ -14,6 +14,7 @@ WriteMakefile
                            'DateTime' => '0.15',
                            'DateTime::Format::Strptime' => '1',
                            'Exception::Class' => '1.1',
+                           'List::MoreUtils' => '0',
                            'Log::Dispatch' => '2',
                            'Log::Log4perl' => '0.34',
                            'Safe' => '0',
