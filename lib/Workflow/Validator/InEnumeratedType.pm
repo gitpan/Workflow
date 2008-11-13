@@ -1,6 +1,6 @@
 package Workflow::Validator::InEnumeratedType;
 
-# $Id: InEnumeratedType.pm 285 2007-06-18 19:57:58Z jonasbn $
+# $Id: InEnumeratedType.pm 293 2007-06-19 20:50:34Z jonasbn $
 
 use strict;
 use base qw( Workflow::Validator );
