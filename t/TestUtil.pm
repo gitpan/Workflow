@@ -1,6 +1,6 @@
 package TestUtil;
 
-# $Id: TestUtil.pm 383 2008-08-19 09:50:25Z jonasbn $
+# $Id: TestUtil.pm 395 2008-12-15 15:52:54Z stocks29 $
 
 use strict;
 use vars qw($VERSION);
@@ -81,7 +81,7 @@ sub init_factory {
     require Workflow::Factory;
     my $factory = Workflow::Factory->instance;
     $factory->add_config_from_file(
-        workflow  => [ 'workflow.xml', 'workflow_type.xml' ],
+        workflow  => [ 'workflow.xml', 'workflow_type.xml', 'workflow_evaluate_condition.xml' ],
         action    => [ 'workflow_action.xml', 'workflow_action_type.xml' ],
         condition => [ 'workflow_condition.xml', 'workflow_condition_type.xml'],
         validator => "workflow_validator.xml"
