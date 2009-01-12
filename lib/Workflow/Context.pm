@@ -1,7 +1,8 @@
 package Workflow::Context;
 
-# $Id: Context.pm 285 2007-06-18 19:57:58Z jonasbn $
+# $Id: Context.pm 454 2009-01-12 10:04:02Z jonasbn $
 
+use warnings;
 use strict;
 use base qw( Workflow::Base );
 
@@ -10,7 +11,7 @@ $Workflow::Context::VERSION = '1.05';
 sub merge {
     my ( $self, $other ) = @_;
     my $other_params = $other->param();
-    while ( my ( $k, $v ) = each %{ $other_params } ) {
+    while ( my ( $k, $v ) = each %{$other_params} ) {
         $self->param( $k, $v );
     }
 }
@@ -22,6 +23,10 @@ __END__
 =head1 NAME
 
 Workflow::Context - Data blackboard for Workflows, Actions, Conditions and Validators
+
+=head1 VERSION
+
+This documentation describes version 1.05 of this package
 
 =head1 SYNOPSIS
 

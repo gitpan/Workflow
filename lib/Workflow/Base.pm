@@ -1,30 +1,31 @@
 package Workflow::Base;
 
-# $Id: Base.pm 285 2007-06-18 19:57:58Z jonasbn $
+# $Id: Base.pm 454 2009-01-12 10:04:02Z jonasbn $
 
+use warnings;
 use strict;
 use base qw( Class::Accessor );
 use Log::Log4perl;
 
-$Workflow::Base::VERSION  = '1.08';
+$Workflow::Base::VERSION = '1.08';
 
 sub new {
     my ( $class, @params ) = @_;
-    my $self = bless( { PARAMS => {} }, $class );
+    my $self = bless { PARAMS => {} }, $class;
 
     # always automatically pull out the name/value pairs from 'param'
 
     if ( ref $params[0] eq 'HASH' && ref $params[0]->{param} eq 'ARRAY' ) {
-        foreach my $declared ( @{ $params[0]->{param} }) {
+        foreach my $declared ( @{ $params[0]->{param} } ) {
             $params[0]->{ $declared->{name} } = $declared->{value};
         }
         delete $params[0]->{param};
     }
-    $self->init( @params );
+    $self->init(@params);
     return $self;
 }
 
-sub init { return }
+sub init {return}
 
 sub param {
     my ( $self, $name, $value ) = @_;
@@ -35,19 +36,19 @@ sub param {
     # Allow multiple parameters to be set at once...
 
     if ( ref $name eq 'HASH' ) {
-        foreach my $param_name ( keys %{ $name } ) {
-            $self->{PARAMS}{ $param_name } = $name->{ $param_name };
+        foreach my $param_name ( keys %{$name} ) {
+            $self->{PARAMS}{$param_name} = $name->{$param_name};
         }
         return { %{ $self->{PARAMS} } };
     }
 
     unless ( defined $value ) {
-        if ( exists $self->{PARAMS}{ $name } ) {
-            return $self->{PARAMS}{ $name };
+        if ( exists $self->{PARAMS}{$name} ) {
+            return $self->{PARAMS}{$name};
         }
         return undef;
     }
-    return $self->{PARAMS}{ $name } = $value;
+    return $self->{PARAMS}{$name} = $value;
 }
 
 sub delete_param {
@@ -61,17 +62,17 @@ sub delete_param {
 
     if ( ref $name eq 'ARRAY' ) {
         my %list = ();
-        foreach my $param_name ( @{ $name } ) {
-	    next if (not exists $self->{PARAMS}{ $param_name });
-	    $list{$param_name} = $self->{PARAMS}{ $param_name }; 
-            delete $self->{PARAMS}{ $param_name }
+        foreach my $param_name ( @{$name} ) {
+            next if ( not exists $self->{PARAMS}{$param_name} );
+            $list{$param_name} = $self->{PARAMS}{$param_name};
+            delete $self->{PARAMS}{$param_name};
         }
-        return { %list };
+        return {%list};
     }
 
-    if ( exists $self->{PARAMS}{ $name } ) {
-        my $value = $self->{PARAMS}{ $name };
-	delete $self->{PARAMS}{ $name };
+    if ( exists $self->{PARAMS}{$name} ) {
+        my $value = $self->{PARAMS}{$name};
+        delete $self->{PARAMS}{$name};
         return $value;
     }
 
@@ -80,15 +81,14 @@ sub delete_param {
 }
 
 sub clear_params {
-    my ( $self ) = @_;
+    my ($self) = @_;
     $self->{PARAMS} = {};
 }
 
 sub normalize_array {
     my ( $self, $ref_or_item ) = @_;
-    return () unless ( $ref_or_item );
-    return ( ref $ref_or_item eq 'ARRAY' )
-             ? @{ $ref_or_item } : ( $ref_or_item );
+    return () unless ($ref_or_item);
+    return ( ref $ref_or_item eq 'ARRAY' ) ? @{$ref_or_item} : ($ref_or_item);
 }
 
 1;
@@ -98,6 +98,10 @@ __END__
 =head1 NAME
 
 Workflow::Base - Base class with constructor
+
+=head1 VERSION
+
+This documentation describes version 1.08 of this package
 
 =head1 SYNOPSIS
 

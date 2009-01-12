@@ -1,28 +1,31 @@
 package Workflow::History;
 
-# $Id: History.pm 361 2008-04-05 13:23:31Z jonasbn $
+# $Id: History.pm 454 2009-01-12 10:04:02Z jonasbn $
 
+use warnings;
 use strict;
 use base qw( Class::Accessor );
 use DateTime;
 
-$Workflow::History::VERSION = '1.09';
+$Workflow::History::VERSION = '1.10';
 
-my @FIELDS = qw( id workflow_id action description date user state time_zone );
-__PACKAGE__->mk_accessors( @FIELDS );
+my @FIELDS
+    = qw( id workflow_id action description date user state time_zone );
+__PACKAGE__->mk_accessors(@FIELDS);
 
 sub new {
     my ( $class, $params ) = @_;
-    my $self = bless( { _saved => 0 }, $class );
-    for ( @FIELDS ) {
-        $self->$_( $params->{ $_ } ) if ( $params->{ $_ } );
+    my $self = bless { _saved => 0 }, $class;
+    for (@FIELDS) {
+        $self->$_( $params->{$_} ) if ( $params->{$_} );
     }
 
-    my $time_zone = exists $params->{time_zone} ? $params->{time_zone} : 'floating';
+    my $time_zone
+        = exists $params->{time_zone} ? $params->{time_zone} : 'floating';
     $self->time_zone($time_zone);
 
     unless ( $self->date ) {
-        $self->date( DateTime->now(time_zone => $self->time_zone()) );
+        $self->date( DateTime->now( time_zone => $self->time_zone() ) );
     }
     return $self;
 }
@@ -30,23 +33,27 @@ sub new {
 sub set_new_state {
     my ( $self, $new_state ) = @_;
     unless ( $self->state ) {
-        $self->state( $new_state );
+        $self->state($new_state);
     }
 }
 
 sub is_saved {
-    my ( $self ) = @_;
+    my ($self) = @_;
     return $self->{_saved};
 }
 
 sub set_saved {
-    my ( $self ) = @_;
+    my ($self) = @_;
     $self->{_saved} = 1;
+
+    return 1;
 }
 
 sub clear_saved {
-    my ( $self ) = @_;
+    my ($self) = @_;
     $self->{_saved} = 0;
+
+    return 0;
 }
 
 1;
@@ -56,6 +63,10 @@ __END__
 =head1 NAME
 
 Workflow::History - Recorded work on a workflow action or workflow itself
+
+=head1 VERSION
+
+This documentation describes version 1.10 of this package
 
 =head1 SYNOPSIS
 
@@ -115,7 +126,7 @@ history objects.
 
 =head3 is_saved()
 
-Returns true if this history object has been saved, false if not.
+Returns true (1) if this history object has been saved, false (0) if not.
 
 =head2 Properties
 

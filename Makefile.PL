@@ -3,8 +3,9 @@ use ExtUtils::MakeMaker;
 WriteMakefile
 (
           'DISTNAME' => 'Workflow',
-          'VERSION_FROM' => 'VERSION',
+          'VERSION_FROM' => 'lib/Workflow.pm',
           'PREREQ_PM' => {
+                           'Carp' => '0',
                            'Class::Accessor' => '0.18',
                            'Class::Factory' => '1',
                            'Class::Observable' => '1.04',
@@ -14,6 +15,7 @@ WriteMakefile
                            'DateTime' => '0.15',
                            'DateTime::Format::Strptime' => '1',
                            'Exception::Class' => '1.1',
+                           'File::Slurp' => '0',
                            'List::MoreUtils' => '0',
                            'Log::Dispatch' => '2',
                            'Log::Log4perl' => '0.34',

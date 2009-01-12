@@ -1,32 +1,33 @@
 package Workflow::Validator;
 
-# $Id: Validator.pm 316 2007-07-04 19:17:50Z jonasbn $
+# $Id: Validator.pm 454 2009-01-12 10:04:02Z jonasbn $
 
+use warnings;
 use strict;
 use base qw( Workflow::Base );
+use Carp qw(croak);
 
-$Workflow::Validator::VERSION = '1.05'; 
+$Workflow::Validator::VERSION = '1.05';
 
 my @FIELDS = qw( name class );
-__PACKAGE__->mk_accessors( @FIELDS );
+__PACKAGE__->mk_accessors(@FIELDS);
 
 sub init {
     my ( $self, $params ) = @_;
     if ( $params->{name} ) {
         $self->name( $params->{name} );
-    }
-    else {
-        $self->name( "$params->{class} (init in Action)" );
+    } else {
+        $self->name("$params->{class} (init in Action)");
     }
     $self->class( $params->{class} );
-    $self->_init( $params );
+    $self->_init($params);
 }
 
-sub _init { return }
+sub _init {return}
 
 sub validate {
-    my ( $self ) = @_;
-    die "Class ", ref( $self ), " must implement 'validate()'!\n";
+    my ($self) = @_;
+    croak "Class ", ref($self), " must implement 'validate()'!\n";
 }
 
 1;
@@ -36,6 +37,10 @@ __END__
 =head1 NAME
 
 Workflow::Validator - Ensure data are valid
+
+=head1 VERSION
+
+This documentation describes version 1.05 of this package
 
 =head1 SYNOPSIS
 

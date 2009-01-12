@@ -1,68 +1,70 @@
 package Workflow::Config::Perl;
 
-# $Id: Perl.pm 361 2008-04-05 13:23:31Z jonasbn $
+# $Id: Perl.pm 454 2009-01-12 10:04:02Z jonasbn $
 
+use warnings;
 use strict;
-use base                qw( Workflow::Config );
-use Log::Log4perl       qw( get_logger );
+use base qw( Workflow::Config );
+use Log::Log4perl qw( get_logger );
 use Workflow::Exception qw( configuration_error );
-use Data::Dumper        qw( Dumper );
+use Data::Dumper qw( Dumper );
+use English qw( -no_match_vars );
 
 $Workflow::Config::Perl::VERSION = '1.03';
 
-my ( $log );
+my ($log);
 
 sub parse {
     my ( $self, $type, @items ) = @_;
     $log ||= get_logger();
 
-    $self->_check_config_type( $type );
+    $self->_check_config_type($type);
 
-    if (! scalar @items) {
+    if ( !scalar @items ) {
         return @items;
     }
 
-    my @config_items = Workflow::Config::_expand_refs( @items );
+    my @config_items = Workflow::Config::_expand_refs(@items);
     return () unless ( scalar @config_items );
 
     my @config = ();
-    foreach my $item ( @config_items ) {
+    foreach my $item (@config_items) {
         my ( $file_name, $method );
         if ( ref $item ) {
-            $method = '_translate_perl';
+            $method    = '_translate_perl';
             $file_name = '[scalar ref]';
         }
 
         # $item is a filename...
         else {
-            $method = '_translate_perl_file';
+            $method    = '_translate_perl_file';
             $file_name = $item;
         }
-        $log->is_info &&
-            $log->info( "Will parse '$type' Perl config file '$file_name'" );
+        $log->is_info
+            && $log->info("Will parse '$type' Perl config file '$file_name'");
         my $this_config = $self->$method( $type, $item );
-#warn "This config looks like:";
-#warn Dumper (\$this_config);
-        $log->is_info &&
-            $log->info( "Parsed Perl '$file_name' ok" );
 
-	if ( exists $this_config->{'type'} ) {
-	  $log->debug( "Adding typed configuration for '$type'" );
-	  push @config, $this_config;
-	}
-        elsif ( $type eq 'persister'
-		and ref $this_config->{ $type } eq 'ARRAY' ) {
+        #warn "This config looks like:";
+        #warn Dumper (\$this_config);
+        $log->is_info
+            && $log->info("Parsed Perl '$file_name' ok");
 
-	  # This special exception for persister is required because
-	  # the config design for persisters was different from the
-	  # other config types. It didn't have a top level 'persister'
-	  # element. For backward compatibility, I'm adding this
-	  # exception here.
-            $log->debug( "Adding multiple configurations for '$type'" );
-            push @config, @{ $this_config->{ $type } };
-        }
-        else {
-            $log->debug( "Adding single configuration for '$type'" );
+        if ( exists $this_config->{'type'} ) {
+            $log->debug("Adding typed configuration for '$type'");
+            push @config, $this_config;
+        } elsif ( $type eq 'persister'
+            and ref $this_config->{$type} eq 'ARRAY' )
+        {
+
+            # This special exception for persister is required because
+            # the config design for persisters was different from the
+            # other config types. It didn't have a top level 'persister'
+            # element. For backward compatibility, I'm adding this
+            # exception here.
+            $log->debug("Adding multiple configurations for '$type'");
+            push @config, @{ $this_config->{$type} };
+        } else {
+            $log->debug("Adding single configuration for '$type'");
             push @config, $this_config;
         }
     }
@@ -73,14 +75,14 @@ sub _translate_perl_file {
     my ( $class, $type, $file ) = @_;
     my $log = get_logger();
 
-    local $/ = undef;
+    local $INPUT_RECORD_SEPARATOR = undef;
     open( CONF, '<', $file )
         || configuration_error "Cannot read file '$file': $!";
     my $config = <CONF>;
-    close( CONF );
+    close(CONF) || configuration_error "Cannot close file '$file': $!";
     my $data = $class->_translate_perl( $type, $config, $file );
-    $log->is_debug &&
-        $log->debug( "Translated '$type' '$file' into: ", Dumper( $data ) );
+    $log->is_debug
+        && $log->debug( "Translated '$type' '$file' into: ", Dumper($data) );
     return $data;
 }
 
@@ -90,14 +92,12 @@ sub _translate_perl {
 
     no strict 'vars';
     my $data = eval $config;
-    if ( $@ ) {
+    if ($EVAL_ERROR) {
         configuration_error "Cannot evaluate perl data structure ",
-                            "in '$file': $@";
+            "in '$file': $EVAL_ERROR";
     }
     return $data;
 }
-
-
 
 1;
 
@@ -106,6 +106,10 @@ __END__
 =head1 NAME
 
 Workflow::Config::Perl - Parse workflow configurations as Perl data structures
+
+=head1 VERSION
+
+This documentation describes version 1.03 of this package
 
 =head1 SYNOPSIS
 

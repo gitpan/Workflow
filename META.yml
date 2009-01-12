@@ -1,6 +1,6 @@
 ---
 name: Workflow
-version: 0.32_7
+version: 0.32_8
 author:
   - 'Jonas B. NIelsen <jonasbn@cpan.org>'
 abstract: 'Simple, flexible system to implement workflows'
@@ -8,6 +8,7 @@ license: perl
 resources:
   license: http://dev.perl.org/licenses/
 requires:
+  Carp: 0
   Class::Accessor: 0.18
   Class::Factory: 1
   Class::Observable: 1.04
@@ -16,6 +17,7 @@ requires:
   DateTime: 0.15
   DateTime::Format::Strptime: 1
   Exception::Class: 1.1
+  File::Slurp: 0
   Log::Dispatch: 2
   Log::Log4perl: 0.34
   Safe: 0
@@ -28,7 +30,7 @@ build_requires:
 provides:
   Workflow:
     file: lib/Workflow.pm
-    version: 1.32
+    version: 0.32_8
   Workflow::Action:
     file: lib/Workflow/Action.pm
     version: 1.09
@@ -73,7 +75,7 @@ provides:
     version: 1.18
   Workflow::History:
     file: lib/Workflow/History.pm
-    version: 1.09
+    version: 1.10
   Workflow::Persister:
     file: lib/Workflow/Persister.pm
     version: 1.09
@@ -103,7 +105,7 @@ provides:
     version: 1.03
   Workflow::State:
     file: lib/Workflow/State.pm
-    version: 1.13
+    version: 1.14
   Workflow::Validator:
     file: lib/Workflow/Validator.pm
     version: 1.05

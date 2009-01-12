@@ -1,7 +1,8 @@
 package Workflow::Persister::UUID;
 
-# $Id: UUID.pm 299 2007-07-03 14:52:11Z jonasbn $
+# $Id: UUID.pm 454 2009-01-12 10:04:02Z jonasbn $
 
+use warnings;
 use strict;
 use Data::UUID;
 
@@ -9,7 +10,7 @@ $Workflow::Persister::UUID::VERSION = '1.03';
 
 sub new {
     my ( $class, $params ) = @_;
-    my $self = bless( { gen => Data::UUID->new() }, $class );
+    my $self = bless { gen => Data::UUID->new() }, $class;
     return $self;
 }
 
@@ -18,7 +19,7 @@ sub pre_fetch_id {
     return $self->{gen}->create_str();
 }
 
-sub post_fetch_id { return }
+sub post_fetch_id {return}
 
 1;
 
@@ -27,6 +28,10 @@ __END__
 =head1 NAME
 
 Workflow::Persister::UUID - Persister to generate Universally Unique Identifiers
+
+=head1 VERSION
+
+This documentation describes version 1.03 of this package
 
 =head1 SYNOPSIS
 

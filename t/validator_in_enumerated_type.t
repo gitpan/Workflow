@@ -1,12 +1,12 @@
 # -*-perl-*-
 
-# $Id: validator_in_enumerated_type.t 293 2007-06-19 20:50:34Z jonasbn $
+# $Id: validator_in_enumerated_type.t 424 2008-12-21 14:18:14Z jonasbn $
 
 use strict;
 use lib 't';
 use TestUtil;
 use Test::Exception;
-use Test::More tests => 14;
+use Test::More tests => 16;
 
 require_ok( 'Workflow::Validator::InEnumeratedType' );
 
@@ -43,3 +43,7 @@ ok($validator = Workflow::Validator::InEnumeratedType->new({
 ok(@enumerated_values = $validator->get_enumerated_values());
 
 is(scalar @enumerated_values, 3);
+
+ok($validator->validator(undef, 'foo'));
+
+dies_ok { $validator->validator(undef, 'bad'); };

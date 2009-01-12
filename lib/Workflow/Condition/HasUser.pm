@@ -1,10 +1,11 @@
 package Workflow::Condition::HasUser;
 
-# $Id: HasUser.pm 317 2007-07-05 05:46:25Z jonasbn $
+# $Id: HasUser.pm 454 2009-01-12 10:04:02Z jonasbn $
 
+use warnings;
 use strict;
 use base qw( Workflow::Condition );
-use Log::Log4perl       qw( get_logger );
+use Log::Log4perl qw( get_logger );
 use Workflow::Exception qw( condition_error );
 
 $Workflow::Condition::HasUser::VERSION = '1.05';
@@ -20,12 +21,13 @@ sub _init {
 sub evaluate {
     my ( $self, $wf ) = @_;
     my $log = get_logger();
-    $log->is_debug && $log->debug( "Trying to execute condition ", ref( $self ) );
-    my $user_key = $self->param( 'user_key' );
-    my $current_user = $wf->context->param( $user_key );
+    $log->is_debug
+        && $log->debug( "Trying to execute condition ", ref $self );
+    my $user_key     = $self->param('user_key');
+    my $current_user = $wf->context->param($user_key);
     $log->debug( "Current user in the context is '$current_user' retrieved ",
-                 "using parameter key '$user_key'" );
-    unless ( $current_user ) {
+        "using parameter key '$user_key'" );
+    unless ($current_user) {
         condition_error
             "No current user available in workflow context key '$user_key'";
     }
@@ -38,6 +40,10 @@ __END__
 =head1 NAME
 
 Workflow::Condition::HasUser - Condition to determine if a user is available
+
+=head1 VERSION
+
+This documentation describes version 1.05 of this package
 
 =head1 SYNOPSIS
 

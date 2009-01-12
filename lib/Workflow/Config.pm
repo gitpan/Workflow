@@ -1,11 +1,12 @@
 package Workflow::Config;
 
-# $Id: Config.pm 362 2008-04-05 14:19:58Z jonasbn $
+# $Id: Config.pm 454 2009-01-12 10:04:02Z jonasbn $
 
+use warnings;
 use strict;
 use base qw( Class::Factory );
-use Data::Dumper        qw( Dumper );
-use Log::Log4perl       qw( get_logger );
+use Data::Dumper qw( Dumper );
+use Log::Log4perl qw( get_logger );
 use Workflow::Exception qw( configuration_error );
 
 $Workflow::Config::VERSION = '1.12';
@@ -13,16 +14,16 @@ $Workflow::Config::VERSION = '1.12';
 # Map the valid type to the top-level XML tag or data
 # structure to look for.
 my %VALID_TYPES = (
-		   action => 'actions',
-		   condition => 'conditions',
-		   persister => 'persister',
-		   validator => 'validators',
-		   workflow => 'workflow'
-		  );
+    action    => 'actions',
+    condition => 'conditions',
+    persister => 'persister',
+    validator => 'validators',
+    workflow  => 'workflow',
+);
 
 sub is_valid_config_type {
     my ( $class, $type ) = @_;
-    return $VALID_TYPES{ $type };
+    return $VALID_TYPES{$type};
 }
 
 sub get_valid_config_types {
@@ -30,8 +31,8 @@ sub get_valid_config_types {
 }
 
 sub get_config_type_tag {
-  my ( $class, $type ) = @_;
-  return $VALID_TYPES{$type};
+    my ( $class, $type ) = @_;
+    return $VALID_TYPES{$type};
 }
 
 # Class method that allows you to pass in any type of items in
@@ -49,50 +50,50 @@ sub parse_all_files {
 
     my @configurations = ();
 
-    foreach my $file ( @files ) {
-        next unless ( $file );
-        my ( $file_type ) = $file =~ /\.(\w+)$/;
-        unless ( $parse_types{ $file_type } ) {
+    foreach my $file (@files) {
+        next unless ($file);
+        my ($file_type) = $file =~ /\.(\w+)$/;
+        unless ( $parse_types{$file_type} ) {
             configuration_error
                 "Cannot parse configuration file '$file' of workflow ",
                 "type '$type'. The file has unknown configuration type ",
-                "'$file_type'; known configuration types are: ",
-                "'", join( ', ', keys %parse_types ), "'";
+                "'$file_type'; known configuration types are: ", "'",
+                join( ', ', keys %parse_types ), "'";
         }
-        unless ( $parsers{ $file_type } ) {
-            $parsers{ $file_type } = $class->new( $file_type );
+        unless ( $parsers{$file_type} ) {
+            $parsers{$file_type} = $class->new($file_type);
         }
-        push @configurations, $parsers{ $file_type }->parse( $type, $file );
+        push @configurations, $parsers{$file_type}->parse( $type, $file );
     }
     return @configurations;
 }
 
 sub parse {
     my ( $self, $type, @items ) = @_;
-    my $class = ref( $self ) || $self;
+    my $class = ref($self) || $self;
     configuration_error "Class $class must implement 'parse()'";
 }
 
 sub _check_config_type {
     my ( $class, $type ) = @_;
-    unless ( $class->is_valid_config_type( $type ) ) {
+    unless ( $class->is_valid_config_type($type) ) {
         configuration_error "When parsing a configuration file the ",
-                            "configuration type (first argument) must be ",
-                            "one of: ", join( ', ', $class->get_valid_config_types );
+            "configuration type (first argument) must be ", "one of: ",
+            join ', ', $class->get_valid_config_types;
     }
 }
 
 sub _expand_refs {
-    my ( @items ) = @_;
+    my (@items) = @_;
     my @all = ();
 
-    if (! scalar @items) {
+    if ( !scalar @items ) {
         return @all;
     }
-    
-    foreach my $item ( @items ) {
-        next unless ( $item );
-        push @all, ( ref $item eq 'ARRAY' ) ? @{ $item } : $item;
+
+    foreach my $item (@items) {
+        next unless ($item);
+        push @all, ( ref $item eq 'ARRAY' ) ? @{$item} : $item;
     }
     return @all;
 }
@@ -108,6 +109,10 @@ __END__
 =head1 NAME
 
 Workflow::Config - Parse configuration files for the workflow components
+
+=head1 VERSION
+
+This documentation describes version 1.12 of this package
 
 =head1 SYNOPSIS
 

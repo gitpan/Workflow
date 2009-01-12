@@ -1,7 +1,8 @@
 package Workflow::Validator::HasRequiredField;
 
-# $Id: HasRequiredField.pm 316 2007-07-04 19:17:50Z jonasbn $
+# $Id: HasRequiredField.pm 454 2009-01-12 10:04:02Z jonasbn $
 
+use warnings;
 use strict;
 use base qw( Workflow::Validator );
 use Workflow::Exception qw( validation_error );
@@ -10,16 +11,16 @@ $Workflow::Validator::HasRequiredField::VERSION = '1.04';
 
 sub validate {
     my ( $self, $wf, @required_fields ) = @_;
-    my $context = $wf->context;
+    my $context  = $wf->context;
     my @no_value = ();
-    foreach my $field ( @required_fields ) {
-        unless ( defined $context->param( $field ) ) {
+    foreach my $field (@required_fields) {
+        unless ( defined $context->param($field) ) {
             push @no_value, $field;
         }
     }
     if ( scalar @no_value ) {
-        validation_error "The following fields require a value: ",
-                         join( ', ', @no_value );
+        validation_error "The following fields require a value: ", join ', ',
+            @no_value;
     }
 }
 
@@ -30,6 +31,10 @@ __END__
 =head1 NAME
 
 Workflow::Validator::HasRequiredField - Validator to ensure certain data are in the context
+
+=head1 VERSION
+
+This documentation describes version 1.04 of this package
 
 =head1 SYNOPSIS
 

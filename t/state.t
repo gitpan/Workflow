@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: state.t 395 2008-12-15 15:52:54Z stocks29 $
+# $Id: state.t 425 2008-12-21 14:21:06Z jonasbn $
 
 use strict;
 use lib 't';
@@ -15,7 +15,6 @@ $factory = TestUtil->init_factory();
 TestUtil->init_mock_persister();
 
 # Run the tests with XML-based config.
-diag "Running with XML config.";
 TestUtil::run_state_tests($factory);
 
 

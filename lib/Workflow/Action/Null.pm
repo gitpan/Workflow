@@ -1,14 +1,15 @@
 package Workflow::Action::Null;
 
-# $Id: Null.pm 285 2007-06-18 19:57:58Z jonasbn $
+# $Id: Null.pm 454 2009-01-12 10:04:02Z jonasbn $
 
+use warnings;
 use strict;
 use base qw( Workflow::Action );
 
 $Workflow::Action::Null::VERSION = '1.03';
 
 sub execute {
-    my ( $self ) = @_;
+    my ($self) = @_;
     return undef;
 }
 
@@ -19,6 +20,10 @@ __END__
 =head1 NAME
 
 Workflow::Action::Null - Workflow action for the terminally lazy
+
+=head1 VERSION
+
+This documentation describes version 1.03 of this package
 
 =head1 SYNOPSIS
 

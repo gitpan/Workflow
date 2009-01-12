@@ -1,22 +1,24 @@
 package Workflow::Condition::Evaluate;
 
-# $Id: Evaluate.pm 285 2007-06-18 19:57:58Z jonasbn $
+# $Id: Evaluate.pm 454 2009-01-12 10:04:02Z jonasbn $
 
+use warnings;
 use strict;
 use base qw( Workflow::Condition );
-use Log::Log4perl       qw( get_logger );
+use Log::Log4perl qw( get_logger );
 use Safe;
 use Workflow::Exception qw( condition_error configuration_error );
+use English qw( -no_match_vars );
 
 $Workflow::Condition::Evaluate::VERSION = '1.02';
 
 my @FIELDS = qw( test );
-__PACKAGE__->mk_accessors( @FIELDS );
+__PACKAGE__->mk_accessors(@FIELDS);
 
 # These get put into the safe compartment...
 $Workflow::Condition::Evaluate::context = undef;
 
-my ( $log );
+my ($log);
 
 sub _init {
     my ( $self, $params ) = @_;
@@ -24,10 +26,11 @@ sub _init {
 
     $self->test( $params->{test} );
     unless ( $self->test ) {
-        configuration_error "The evaluate condition must be configured with 'test'";
+        configuration_error
+            "The evaluate condition must be configured with 'test'";
     }
-    $log->is_info &&
-        $log->info( "Added evaluation condition with '$params->{test}'" );
+    $log->is_info
+        && $log->info("Added evaluation condition with '$params->{test}'");
 }
 
 sub evaluate {
@@ -35,25 +38,28 @@ sub evaluate {
     $log ||= get_logger();
 
     my $to_eval = $self->test;
-    $log->is_info &&
-        $log->info( "Evaluating '$to_eval' to see if it returns true..." );
+    $log->is_info
+        && $log->info("Evaluating '$to_eval' to see if it returns true...");
 
     # Assign our local stuff to package variables...
     $Workflow::Condition::Evaluate::context = $wf->context->param;
 
     # Create the Safe compartment and safely eval the test...
     my $safe = Safe->new();
-    $safe->share( '$context' );
-    my $rv = $safe->reval( $to_eval );
-    if ( $@ ) {
-        $log->error( "Eval code '$to_eval' threw exception: $@" );
-        condition_error "Condition expressed in code threw exception: $@";
+
+    ## no critic (RequireInterpolationOfMetachars)
+    $safe->share('$context');
+    my $rv = $safe->reval($to_eval);
+    if ($EVAL_ERROR) {
+        $log->error("Eval code '$to_eval' threw exception: $EVAL_ERROR");
+        condition_error
+            "Condition expressed in code threw exception: $EVAL_ERROR";
     }
 
-    $log->is_debug && $log->debug( "Safe eval ran ok, returned: '$rv'" );
-    unless ( $rv ) {
+    $log->is_debug && $log->debug("Safe eval ran ok, returned: '$rv'");
+    unless ($rv) {
         condition_error "Condition expressed by test '$to_eval' did not ",
-                        "return a true value.";
+            "return a true value.";
     }
     return $rv;
 }
@@ -65,6 +71,10 @@ __END__
 =head1 NAME
 
 Workflow::Condition::Evaluate - Inline condition that evaluates perl code for truth
+
+=head1 VERSION
+
+This documentation describes version 1.02 of this package
 
 =head1 SYNOPSIS
 

@@ -1,14 +1,15 @@
 package Workflow::Action::Mailer;
 
-# $Id: Mailer.pm 340 2007-09-25 20:58:06Z jonasbn $
+# $Id: Mailer.pm 454 2009-01-12 10:04:02Z jonasbn $
 
+use warnings;
 use strict;
 use base qw( Workflow::Action );
 
-$Workflow::Action::Mailer::VERSION  = '1.01';
+$Workflow::Action::Mailer::VERSION = '1.01';
 
 sub execute {
-    my ( $self ) = @_;
+    my ($self) = @_;
     return 1;
 }
 
@@ -19,6 +20,10 @@ __END__
 =head1 NAME
 
 Workflow::Action::Mailer - a stub for a SMTP capable action
+
+=head1 VERSION
+
+This documentation describes version 1.01 of this package
 
 =head1 SYNOPSIS
 

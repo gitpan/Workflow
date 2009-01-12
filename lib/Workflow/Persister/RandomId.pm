@@ -1,29 +1,36 @@
 package Workflow::Persister::RandomId;
 
-# $Id: RandomId.pm 316 2007-07-04 19:17:50Z jonasbn $
+# $Id: RandomId.pm 454 2009-01-12 10:04:02Z jonasbn $
 
+use warnings;
 use strict;
 use base qw( Class::Accessor );
+
+use constant DEFAULT_ID_LENGTH  => 8;
+use constant RANDOM_SEED        => 26;
+use constant CONSTANT_INCREMENT => 65;
 
 $Workflow::Persister::RandomId::VERSION = '1.03';
 
 my @FIELDS = qw( id_length );
-__PACKAGE__->mk_accessors( @FIELDS );
+__PACKAGE__->mk_accessors(@FIELDS);
 
 sub new {
     my ( $class, $params ) = @_;
-    my $self = bless( {}, $class );
-    my $length = $params->{id_length} || 8;
-    $self->id_length( $length );
+    my $self = bless {}, $class;
+    my $length = $params->{id_length} || DEFAULT_ID_LENGTH;
+    $self->id_length($length);
     return $self;
 }
 
 sub pre_fetch_id {
     my ( $self, $dbh ) = @_;
-    return join( '', map { chr( int( rand(26) ) + 65 ) } ( 1 .. $self->id_length ) );
+    return join '',
+        map { chr int( rand RANDOM_SEED ) + CONSTANT_INCREMENT }
+        ( 1 .. $self->id_length );
 }
 
-sub post_fetch_id { return }
+sub post_fetch_id {return}
 
 1;
 
@@ -32,6 +39,10 @@ __END__
 =head1 NAME
 
 Workflow::Persister::RandomId - Persister to generate random ID
+
+=head1 VERSION
+
+This documentation describes version 1.03 of this package
 
 =head1 SYNOPSIS
 

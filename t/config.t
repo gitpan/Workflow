@@ -1,11 +1,11 @@
 # -*-perl-*-
 
-# $Id: config.t 361 2008-04-05 13:23:31Z jonasbn $
+# $Id: config.t 423 2008-12-21 14:00:47Z jonasbn $
 
 use strict;
 use lib 't';
 use TestUtil;
-use Test::More  tests => 47;
+use Test::More  tests => 48;
 use Test::Exception;
 
 my ($parser);
@@ -51,6 +51,8 @@ isa_ok($parser, 'Workflow::Config');
 dies_ok { $parser->parse( 'workflow', 'workflow_errorprone.perl' ) };
 dies_ok { $parser->parse( 'workflow', 'no_such_file.perl' ) };
 dies_ok { $parser->parse( '123_NOSUCHTYPE', 'workflow_errorprone.perl' ) };
+
+dies_ok { Workflow::Config->parse() };
 
 my @config = $parser->parse( 'workflow' );
 is(scalar(@config), 0, 'forgotten file, asserting length of array returned'); 

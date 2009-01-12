@@ -1,23 +1,25 @@
 package Workflow;
 
-# $Id: Workflow.pm 402 2008-12-17 14:05:02Z jonasbn $
+# $Id: Workflow.pm 458 2009-01-12 20:02:45Z jonasbn $
 
+use warnings;
 use strict;
-
 use base qw( Workflow::Base Class::Observable );
-use Log::Log4perl       qw( get_logger );
+use Log::Log4perl qw( get_logger );
 use Workflow::Context;
 use Workflow::Exception qw( workflow_error );
-use Workflow::Factory   qw( FACTORY );
+use Workflow::Factory qw( FACTORY );
+use Carp qw(croak carp);
+use English qw( -no_match_vars );
 
 my @FIELDS = qw( id type description state last_update time_zone );
-__PACKAGE__->mk_accessors( @FIELDS );
+__PACKAGE__->mk_accessors(@FIELDS);
 
-$Workflow::VERSION  = '1.32';
+$Workflow::VERSION = '0.32_8';
 
 use constant NO_CHANGE_VALUE => 'NOCHANGE';
 
-my ( $log );
+my ($log);
 
 ########################################
 # PUBLIC METHODS
@@ -26,15 +28,14 @@ my ( $log );
 
 sub context {
     my ( $self, $context ) = @_;
-    if ( $context ) {
+    if ($context) {
 
         # We already have a context, merge the new one with ours; (the
         # new one wins with dupes)
 
         if ( $self->{context} ) {
-            $self->{context}->merge( $context );
-        }
-        else {
+            $self->{context}->merge($context);
+        } else {
             $context->param( workflow_id => $self->id );
             $self->{context} = $context;
         }
@@ -45,32 +46,29 @@ sub context {
     return $self->{context};
 }
 
-
 sub get_current_actions {
     my ( $self, $group ) = @_;
     $log ||= get_logger();
-    $log->is_debug &&
-        $log->debug( "Getting current actions for wf '", $self->id, "'" );
+    $log->is_debug
+        && $log->debug( "Getting current actions for wf '", $self->id, "'" );
     my $wf_state = $self->_get_workflow_state;
     return $wf_state->get_available_action_names( $self, $group );
 }
 
-
 sub get_action_fields {
     my ( $self, $action_name ) = @_;
-    my $action = $self->_get_action( $action_name );
+    my $action = $self->_get_action($action_name);
     return $action->fields;
 }
 
-
 sub execute_action {
-    my ( $self, $action_name , $autorun ) = @_;
+    my ( $self, $action_name, $autorun ) = @_;
     $log ||= get_logger();
 
     # This checks the conditions behind the scenes, so there's no
     # explicit 'check conditions' step here
 
-    my $action = $self->_get_action( $action_name );
+    my $action = $self->_get_action($action_name);
 
     # Need this in case we encounter an exception after we store the
     # new state
@@ -79,16 +77,17 @@ sub execute_action {
     my ( $new_state, $action_return );
 
     eval {
-        $action->validate( $self );
-        $log->is_debug && $log->debug( "Action validated ok" );
-        $action_return = $action->execute( $self );
-        $log->is_debug && $log->debug( "Action executed ok" );
+        $action->validate($self);
+        $log->is_debug && $log->debug("Action validated ok");
+        $action_return = $action->execute($self);
+        $log->is_debug && $log->debug("Action executed ok");
 
         $new_state = $self->_get_next_state( $action_name, $action_return );
         if ( $new_state ne NO_CHANGE_VALUE ) {
-            $log->is_info &&
-                $log->info( "Set new state '$new_state' after action executed" );
-            $self->state( $new_state );
+            $log->is_info
+                && $log->info(
+                "Set new state '$new_state' after action executed");
+            $self->state($new_state);
         }
 
         # this will save the workflow histories as well as modify the
@@ -96,150 +95,154 @@ sub execute_action {
         # the workflow; if it fails we should have some means for the
         # factory to rollback other transactions...
 
-	# Update
-	# Jim Brandt 4/16/2008: Implemented transactions for DBI persisters.
-	# Implementation still depends on each persister.
+        # Update
+        # Jim Brandt 4/16/2008: Implemented transactions for DBI persisters.
+        # Implementation still depends on each persister.
 
-        FACTORY->save_workflow( $self );
-	
-	# If using a DBI persister with no autocommit, commit here.
-	FACTORY->_commit_transaction($self);
+        FACTORY->save_workflow($self);
 
-        $log->is_info &&
-            $log->info( "Saved workflow with possible new state ok" );
+        # If using a DBI persister with no autocommit, commit here.
+        FACTORY->_commit_transaction($self);
+
+        $log->is_info
+            && $log->info("Saved workflow with possible new state ok");
     };
 
     # If there's an exception, reset the state to the original one and
     # rethrow
 
-    if ( $@ ) {
-        my $error = $@;
-        $log->error( "Caught exception from action: $error; reset ",
-                     "workflow to old state '$old_state'" );
-        $self->state( $old_state );
+    if ($EVAL_ERROR) {
+        my $error = $EVAL_ERROR;
+        $log->error(
+            "Caught exception from action: $error; reset ",
+            "workflow to old state '$old_state'"
+        );
+        $self->state($old_state);
 
-	FACTORY->_rollback_transaction($self);
+        FACTORY->_rollback_transaction($self);
 
         # Don't use 'workflow_error' here since $error should already
         # be a Workflow::Exception object or subclass
 
-        die $error;
+        croak $error;
     }
 
     $self->notify_observers( 'execute', $old_state, $action_name, $autorun );
 
     my $new_state_obj = $self->_get_workflow_state;
     if ( $old_state ne $new_state ) {
-        $self->notify_observers( 'state change', $old_state,
-                                 $action_name, $autorun );
+        $self->notify_observers( 'state change', $old_state, $action_name,
+            $autorun );
+
         # clear condition cache on state change
         $new_state_obj->clear_condition_cache();
     }
 
     if ( $new_state_obj->autorun ) {
-        $log->is_info &&
-            $log->info( "State '$new_state' marked to be run ",
-                        "automatically; executing that state/action..." );
-        $self->_auto_execute_state( $new_state_obj );
+        $log->is_info
+            && $log->info(
+            "State '$new_state' marked to be run ",
+            "automatically; executing that state/action..."
+            );
+        $self->_auto_execute_state($new_state_obj);
     }
     return $self->state;
 }
-
 
 sub add_history {
     my ( $self, @items ) = @_;
     $log ||= get_logger();
 
     my @to_add = ();
-    foreach my $item ( @items ) {
+    foreach my $item (@items) {
         if ( ref $item eq 'HASH' ) {
             $item->{workflow_id} = $self->id;
-	    $item->{time_zone} = $self->time_zone();
-            push @to_add, Workflow::History->new( $item );
-            $log->is_debug && $log->debug( "Adding history from hashref" );
-        }
-        elsif ( UNIVERSAL::isa( $item, 'Workflow::History' ) ) {
+            $item->{time_zone}   = $self->time_zone();
+            push @to_add, Workflow::History->new($item);
+            $log->is_debug && $log->debug("Adding history from hashref");
+        } elsif ( ref $item and $item->isa('Workflow::History') ) {
             $item->workflow_id( $self->id );
             push @to_add, $item;
-            $log->is_debug && $log->debug( "Adding history object directly" );
+            $log->is_debug && $log->debug("Adding history object directly");
+        } else {
+            workflow_error "I don't know how to add a history of ", "type '",
+                ref($item), "'";
         }
-        else {
-            workflow_error "I don't know how to add a history of ",
-                           "type '", ref( $item ), "'";
+
+        if ($EVAL_ERROR) {
+            workflow_error "Unable to assert history object";
         }
     }
     push @{ $self->{_histories} }, @to_add;
     $self->notify_observers( 'add history', \@to_add );
 }
 
-
 sub get_history {
-    my ( $self ) = @_;
+    my ($self) = @_;
     $self->{_histories} ||= [];
     my @uniq_history = ();
-    my %seen_ids = ();
-    my @all_history = ( FACTORY->get_workflow_history( $self ),
-                        @{ $self->{_histories} } );
-    foreach my $history ( @all_history ) {
+    my %seen_ids     = ();
+    my @all_history
+        = ( FACTORY->get_workflow_history($self), @{ $self->{_histories} } );
+    foreach my $history (@all_history) {
         my $id = $history->id;
-        if ( $id ) {
-            unless ( $seen_ids{ $id } ) {
+        if ($id) {
+            unless ( $seen_ids{$id} ) {
                 push @uniq_history, $history;
             }
-            $seen_ids{ $id }++;
-        }
-        else {
+            $seen_ids{$id}++;
+        } else {
             push @uniq_history, $history;
         }
     }
     return @uniq_history;
 }
 
-
 sub get_unsaved_history {
-    my ( $self ) = @_;
-    return grep { ! $_->is_saved } @{ $self->{_histories} };
+    my ($self) = @_;
+    return grep { !$_->is_saved } @{ $self->{_histories} };
 }
-
 
 sub clear_history {
-    my ( $self ) = @_;
+    my ($self) = @_;
     $self->{_histories} = [];
 }
-
 
 ########################################
 # PRIVATE METHODS
 
 sub init {
     my ( $self, $id, $current_state, $config, $wf_state_objects ) = @_;
-    $id ||= '';
+    $id  ||= '';
     $log ||= get_logger();
-    $log->info( "Instantiating workflow of with ID '$id' and type ",
-                "'$config->{type}' with current state '$current_state'" );
+    $log->info(
+        "Instantiating workflow of with ID '$id' and type ",
+        "'$config->{type}' with current state '$current_state'"
+    );
 
-    $self->id( $id ) if ( $id );
+    $self->id($id) if ($id);
 
-    $self->state( $current_state );
+    $self->state($current_state);
     $self->type( $config->{type} );
     $self->description( $config->{description} );
-    my $time_zone = exists $config->{time_zone} ? $config->{time_zone} : 'floating';
+    my $time_zone
+        = exists $config->{time_zone} ? $config->{time_zone} : 'floating';
     $self->time_zone($time_zone);
 
     # other properties go into 'param'...
-    while ( my ( $key, $value ) = each %{ $config } ) {
+    while ( my ( $key, $value ) = each %{$config} ) {
         next if ( $key =~ /^(type|description)$/ );
         next if ( ref $value );
-        $log->is_debug &&
-            $log->debug( "Assigning parameter '$key' -> '$value'" );
+        $log->is_debug
+            && $log->debug("Assigning parameter '$key' -> '$value'");
         $self->param( $key, $value );
     }
 
     # Now set all the Workflow::State objects created and cached by the
     # factory
 
-    foreach my $wf_state ( @{ $wf_state_objects } ) {
-        $self->_set_workflow_state( $wf_state );
+    foreach my $wf_state ( @{$wf_state_objects} ) {
+        $self->_set_workflow_state($wf_state);
     }
 }
 
@@ -248,29 +251,31 @@ sub init {
 
 sub set {
     my ( $self, $prop, $value ) = @_;
-    my $calling_pkg = (caller(1))[0];
+    my $calling_pkg = ( caller 1 )[0];
     unless ( $calling_pkg =~ /^Workflow/ ) {
-        warn "Tried to set from: ", join( ', ', caller(1) );
-        workflow_error "Don't try to use my private setters from '$calling_pkg'!";
+        carp "Tried to set from: ", join ', ', caller 1;
+        workflow_error
+            "Don't try to use my private setters from '$calling_pkg'!";
     }
-    $self->{ $prop } = $value;
+    $self->{$prop} = $value;
 }
-
 
 sub _get_action {
     my ( $self, $action_name ) = @_;
     $log ||= get_logger();
 
     my $state = $self->state;
-    $log->is_debug &&
-        $log->debug( "Trying to find action '$action_name' in state '$state'" );
+    $log->is_debug
+        && $log->debug(
+        "Trying to find action '$action_name' in state '$state'");
 
     my $wf_state = $self->_get_workflow_state;
-    unless ( $wf_state->contains_action( $action_name ) ) {
-        workflow_error "State '$state' does not contain action '$action_name'";
+    unless ( $wf_state->contains_action($action_name) ) {
+        workflow_error
+            "State '$state' does not contain action '$action_name'";
     }
-    $log->is_debug &&
-        $log->debug( "Action '$action_name' exists in state '$state'" );
+    $log->is_debug
+        && $log->debug("Action '$action_name' exists in state '$state'");
 
     my $action = FACTORY->get_action( $self, $action_name );
 
@@ -280,28 +285,27 @@ sub _get_action {
     return $action;
 }
 
-
 sub _get_workflow_state {
     my ( $self, $state ) = @_;
-    $log ||= get_logger();
-    $state ||= ''; # get rid of -w...
+    $log   ||= get_logger();
+    $state ||= '';             # get rid of -w...
     my $use_state = $state || $self->state;
-    $log->is_debug &&
-        $log->debug( "Finding Workflow::State object for state [given: $use_state] ",
-                     "[internal: ", $self->state, "]" );
-    my $wf_state = $self->{_states}{ $use_state };
-    unless ( $wf_state ) {
-        workflow_error "No state '$use_state' exists in workflow '", $self->type, "'";
+    $log->is_debug
+        && $log->debug(
+        "Finding Workflow::State object for state [given: $use_state] ",
+        "[internal: ", $self->state, "]" );
+    my $wf_state = $self->{_states}{$use_state};
+    unless ($wf_state) {
+        workflow_error "No state '$use_state' exists in workflow '",
+            $self->type, "'";
     }
     return $wf_state;
 }
-
 
 sub _set_workflow_state {
     my ( $self, $wf_state ) = @_;
     $self->{_states}{ $wf_state->state } = $wf_state;
 }
-
 
 sub _get_next_state {
     my ( $self, $action_name, $action_return ) = @_;
@@ -309,28 +313,29 @@ sub _get_next_state {
     return $wf_state->get_next_state( $action_name, $action_return );
 }
 
-
 sub _auto_execute_state {
     my ( $self, $wf_state ) = @_;
     $log ||= get_logger();
     my $action_name;
-    eval {
-        $action_name = $wf_state->get_autorun_action_name( $self );
-    };
-    if ( $@ ) { # we found an error, possibly more than one or none action
-                # are available in this state
-        if ( ! $wf_state->may_stop() ) {
+    eval { $action_name = $wf_state->get_autorun_action_name($self); };
+    if ($EVAL_ERROR)
+    {    # we found an error, possibly more than one or none action
+            # are available in this state
+        if ( !$wf_state->may_stop() ) {
+
             # we are in autorun, but stopping is not allowed, so
             # rethrow
-            my $error = $@;
+            my $error = $EVAL_ERROR;
             $error->rethrow();
         }
-    }
-    else { # everything is fine, execute action
-        $log->is_debug &&
-            $log->debug( "Found action '$action_name' to execute in ",
-                         "autorun state ", $wf_state->state );
-        $self->execute_action( $action_name , 1 );
+    } else {    # everything is fine, execute action
+        $log->is_debug
+            && $log->debug(
+            "Found action '$action_name' to execute in ",
+            "autorun state ",
+            $wf_state->state
+            );
+        $self->execute_action( $action_name, 1 );
     }
 }
 
@@ -341,6 +346,10 @@ __END__
 =head1 NAME
 
 Workflow - Simple, flexible system to implement workflows
+
+=head1 VERSION
+
+This documentation describes version 0.15 of Workflow
 
 =head1 SYNOPSIS
 
@@ -473,8 +482,6 @@ Workflow - Simple, flexible system to implement workflows
  print "Current state: ", $workflow->state, "\n";
 
 =head1 DESCRIPTION
-
-This documentation is for version '0.15' of the Workflow module.
 
 =head2 Overview
 
@@ -1050,13 +1057,253 @@ Returns the name of the next state given the action
 C<$action_name>. Throws an exception if C<$action_name> not contained
 in the current state.
 
+=head1 CONFIGURATION AND ENVIRONMENT
+
+The configuration of Workflow is done using the format of your choice, currently
+XML and Perl is implemented, but additional formats can be added, please refer
+to L<Workflow::Config>, for implementation details.
+
+=head1 DEPENDENCIES
+
+=over
+
+=item L<Class::Accessor>
+
+=item L<Class::Factory>
+
+=item L<Class::Observable>
+
+=item L<DateTime>
+
+=item L<DateTime::Format::Strptime>
+
+=item L<Exception::Class>
+
+=item L<Log::Dispatch>
+
+=item L<Log::Log4perl>
+
+=item L<Safe>
+
+=item L<XML::Simple>
+
+=item L<DBI>
+
+=item L<Data::Dumper>
+
+=item L<Carp>
+
+=item L<File::Slurp>
+
+=back
+
+=head1 INCOMPATIBILITIES
+
+No special incompatibilies exist, CPAN testers reports however do demonstrate
+a problem with one of the dependencies of Workflow, namely L<XML::Simple>.
+
+The L<XML::Simple> makes use of L<Lib::XML::SAX> or L<XML::Parser>, the default.
+
+In addition an L<XML::Parser> can makes use of plugin parser and some of these
+might not be able to parse the XML utilized in Workflow. The problem have been
+observed with L<XML::SAX::RTF>.
+
+The following diagnostic points to the problem:
+
+	No _parse_* routine defined on this driver (If it is a filter, remember to
+	set the Parent property. If you call the parse() method, make sure to set a
+	Source. You may want to call parse_uri, parse_string or parse_file instead.)
+
+Your L<XML::SAX> configuration is located in the file:
+
+	XML/SAX/ParserDetails.ini
+
+=head1 BUGS AND LIMITATIONS
+
+There are no known bugs and limitations at this time.
+
+=head1 BUG REPORTING
+
+Bug reporting should be done either via Request Tracker (RT)
+
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Workflow>
+
+Or via email
+
+C<bug-test-timer at rt.cpan.org>
+
+A list of currently known issues can be seen via examining the RT queue for
+Workflow.
+
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Workflow>
+
+=head1 TEST
+
+The test suite can be run using, L<Module::Build>
+
+	% ./Build test
+
+Some of the tests are reserved for the developers and are only run of the
+environment variable TEST_AUTHOR is set to true.
+
+=head1 TEST COVERAGE
+
+This is the current test coverage of Workflow version 1.32, with the TEST_AUTHOR
+flag enabled.
+
+	---------------------------- ------ ------ ------ ------ ------ ------ ------
+	File                           stmt   bran   cond    sub    pod   time  total
+	---------------------------- ------ ------ ------ ------ ------ ------ ------
+	blib/lib/Workflow.pm           79.8   50.0   50.0   87.5  100.0    9.9   71.6
+	blib/lib/Workflow/Action.pm    90.8   66.7    n/a   88.2  100.0    4.1   89.9
+	...flow/Action/InputField.pm   97.0   92.9   87.5  100.0  100.0    5.9   95.8
+	...Workflow/Action/Mailer.pm  100.0    n/a    n/a  100.0  100.0    0.1  100.0
+	...b/Workflow/Action/Null.pm  100.0    n/a    n/a  100.0  100.0    0.2  100.0
+	blib/lib/Workflow/Base.pm      96.6   86.4  100.0  100.0  100.0    9.6   95.0
+	...lib/Workflow/Condition.pm  100.0    n/a    n/a  100.0  100.0    0.8  100.0
+	...low/Condition/Evaluate.pm   59.0   16.7   33.3   87.5  100.0    0.9   53.0
+	...flow/Condition/HasUser.pm   57.7    0.0    0.0   71.4  100.0    0.1   51.2
+	blib/lib/Workflow/Config.pm    96.2   81.2   33.3  100.0  100.0    6.1   92.2
+	...b/Workflow/Config/Perl.pm   96.8   75.0   66.7  100.0  100.0    4.1   91.0
+	...ib/Workflow/Config/XML.pm   92.3   50.0   60.0  100.0  100.0    4.9   81.4
+	blib/lib/Workflow/Context.pm  100.0    n/a    n/a  100.0  100.0    0.4  100.0
+	...lib/Workflow/Exception.pm   89.2   50.0    n/a   91.7  100.0    3.1   89.5
+	blib/lib/Workflow/Factory.pm   86.3   61.2   37.5   92.3  100.0   19.6   75.4
+	blib/lib/Workflow/History.pm  100.0   87.5    n/a  100.0  100.0    1.8   98.1
+	...lib/Workflow/Persister.pm   90.5   75.0   57.1   88.9  100.0    1.9   87.5
+	...Workflow/Persister/DBI.pm   75.3   51.2   25.0   83.3  100.0    7.4   67.5
+	...er/DBI/AutoGeneratedId.pm   77.8   40.0    n/a  100.0  100.0    0.4   70.1
+	...ersister/DBI/ExtraData.pm   25.9    0.0    0.0   71.4  100.0    0.1   22.9
+	...rsister/DBI/SequenceId.pm   56.2    0.0    0.0   75.0  100.0    0.3   53.1
+	...orkflow/Persister/File.pm   94.4   48.0   33.3  100.0  100.0    2.1   83.1
+	...low/Persister/RandomId.pm  100.0    n/a  100.0  100.0  100.0    1.8  100.0
+	...rkflow/Persister/SPOPS.pm   89.6   50.0    n/a  100.0  100.0    0.3   85.0
+	...orkflow/Persister/UUID.pm  100.0    n/a    n/a  100.0  100.0    0.2  100.0
+	blib/lib/Workflow/State.pm     74.4   44.2   25.0   91.7  100.0   11.0   64.3
+	...lib/Workflow/Validator.pm  100.0  100.0    n/a  100.0  100.0    1.1  100.0
+	...dator/HasRequiredField.pm   90.0   50.0    n/a  100.0  100.0    0.6   86.7
+	...dator/InEnumeratedType.pm  100.0  100.0    n/a  100.0  100.0    0.4  100.0
+	...ator/MatchesDateFormat.pm   93.3   70.0   66.7  100.0  100.0    0.8   88.2
+	Total                          83.9   54.7   39.7   93.0  100.0  100.0   76.8
+	---------------------------- ------ ------ ------ ------ ------ ------ ------
+
+Activities to get improved coverage are ongoing.
+
+=head1 QUALITY ASSURANCE
+
+The Workflow project utilizes L<Perl::Critic> in an attempt to avoid common
+pitfalls and programming mistakes.
+
+The static analysis performed by L<Perl::Critic> is integrated into the L</TEST>
+tool chain and is performed either by running the test suite.
+
+	% ./Build test
+
+Or by running the test file containing the L<Perl::Critic> tests explicitly.
+
+	% ./Build test --verbose 1 --test_files t/04_critic.t
+	
+Or
+
+	% perl t/critic.t
+
+The test does however require that the TEST_AUTHOR flag is set since this is
+regarded as a part of the developer tool chain and we do not want to disturb
+users and CPAN testers with this.
+
+The following policies are disabled
+
+=over
+
+=item * L<Perl::Critic::Policy::ValuesAndExpressions::ProhibitMagicNumbers>
+
+=item * L<Perl::Critic::Policy::Subroutines::ProhibitExplicitReturnUndef>
+
+=item * L<Perl::Critic::Policy::NamingConventions::ProhibitAmbiguousNames>
+
+=item * L<Perl::Critic::Policy::ValuesAndExpressions::ProhibitConstantPragma>
+
+=back
+
+The complete policy configuration can be found in t/perlcriticrc.
+
+Currently a large number other policies are disabled, but these are being
+addressed as ongoing work and they will either be listed here or changes will
+be applied, which will address the Workflow code's problematic areas from
+L<Perl::Critic> perspective.
+
+=head1 CODING STYLE
+
+Currently the code is formatted using L<Perl::Tidy>. The resource file can be
+downloaded from the central repository.
+
+	notes/perltidyrc
+
+=head1 PROJECT
+
+The Workflow project is currently hosted with SourceForge.net and is listed on
+Ohloh.
+
+=over
+
+=item SF.net: L<http://perl-workflow.sf.net>
+
+=item Ohloh: L<https://www.ohloh.net/p/perl-Workflow>
+
+=back
+
+=head2 REPOSITORY
+
+The code is kept under revision control using Subversion:
+
+=over
+
+=item L<https://perl-workflow.svn.sourceforge.net/svnroot/perl-workflow>
+
+=back
+
+=head2 MAILING LIST
+
+The Workflow project has a mailing list for discussion of issues and
+development. The list is low-traffic.
+
+=over
+
+=item L<http://sourceforge.net/mail/?group_id=177533>
+
+=back
+
+=head2 RSS FEEDS
+
+=over
+
+=item Commit log L<http://rss.gmane.org/messages/excerpts/gmane.comp.lang.perl.modules.workflow.scm>
+
+=item Ohloh news L<https://www.ohloh.net/p/perl-Workflow/messages.rss>
+
+=item CPAN testers reports L<http://cpantesters.perl.org/show/Workflow.rss>
+
+=back
+
+=head2 OTHER RESOURCES
+
+=over
+
+=item * AnnoCPAN: Annotated CPAN documentation
+
+L<http://annocpan.org/dist/Workflow>
+
+=item * CPAN Ratings
+
+L<http://cpanratings.perl.org/d/Workflow>
+
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/Workflow>
+
+=back
+
 =head1 SEE ALSO
-
-L<Workflow::Context>
-
-L<Workflow::Factory>
-
-L<Workflow::State>
 
 October 2004 talk 'Workflows in Perl' given to
 pgh.pm: L<http://www.cwinters.com/pdf/workflow_pgh_pm.pdf>
@@ -1064,7 +1311,7 @@ pgh.pm: L<http://www.cwinters.com/pdf/workflow_pgh_pm.pdf>
 =head1 COPYRIGHT
 
 Copyright (c) 2003 Chris Winters and Arvato Direct;
-Copyright (c) 2004-2007 Chris Winters. All rights reserved.
+Copyright (c) 2004-2008 Chris Winters. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
@@ -1077,6 +1324,10 @@ Chris Winters E<lt>chris@cwinters.comE<gt>, original author.
 
 The following folks have also helped out:
 
+Ivan Paponov, for patch implementing action groups, See Changes file, 0.32_7
+
+Robert Stockdale, for patch implementing dynamic names for conditions,
+See Changes file, 0.32_6
 
 Jim Brandt, for patch to Workflow::Config::XML. See Changes file, 0.27 and 0.30
 

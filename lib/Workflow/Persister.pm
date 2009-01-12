@@ -1,30 +1,33 @@
 package Workflow::Persister;
 
-# $Id: Persister.pm 375 2008-04-22 19:54:42Z jonasbn $
+# $Id: Persister.pm 454 2009-01-12 10:04:02Z jonasbn $
 
+use warnings;
 use strict;
 use base qw( Workflow::Base );
-use Log::Log4perl       qw( get_logger );
+use Log::Log4perl qw( get_logger );
 use Workflow::Exception qw( persist_error );
+
+use constant DEFAULT_ID_LENGTH => 8;
 
 $Workflow::Persister::VERSION = '1.09';
 
 my @FIELDS = qw( name class
-                 use_random use_uuid
-                 workflow_id_generator history_id_generator );
-__PACKAGE__->mk_accessors( @FIELDS );
+    use_random use_uuid
+    workflow_id_generator history_id_generator );
+__PACKAGE__->mk_accessors(@FIELDS);
 
 sub init {
     my ( $self, $params ) = @_;
     my $log = get_logger();
-    for ( @FIELDS ) {
-        $self->$_( $params->{ $_ } ) if ( $params->{ $_ } );
+    for (@FIELDS) {
+        $self->$_( $params->{$_} ) if ( $params->{$_} );
     }
     unless ( $self->use_random ) {
-        $self->use_random( 'no' );
+        $self->use_random('no');
     }
     unless ( $self->use_uuid ) {
-        $self->use_uuid( 'no' );
+        $self->use_uuid('no');
     }
     $log->info( "Initializing persister '", $self->name, "'" );
 }
@@ -40,26 +43,23 @@ sub assign_generators {
 
     my ( $wf_gen, $history_gen );
     if ( $self->use_uuid eq 'yes' ) {
-        $log->debug( "Assigning UUID generators by request" );
-        ( $wf_gen, $history_gen ) =
-            $self->init_uuid_generators( $params );
-    }
-    elsif ( $self->use_random eq 'yes' ) {
-        $log->debug( "Assigning random ID generators by request" );
-        ( $wf_gen, $history_gen ) =
-            $self->init_random_generators( $params );
+        $log->debug("Assigning UUID generators by request");
+        ( $wf_gen, $history_gen ) = $self->init_uuid_generators($params);
+    } elsif ( $self->use_random eq 'yes' ) {
+        $log->debug("Assigning random ID generators by request");
+        ( $wf_gen, $history_gen ) = $self->init_random_generators($params);
     }
     if ( $wf_gen and $history_gen ) {
-        $self->workflow_id_generator( $wf_gen );
-        $self->history_id_generator( $history_gen );
+        $self->workflow_id_generator($wf_gen);
+        $self->history_id_generator($history_gen);
     }
 }
 
 sub init_random_generators {
     my ( $self, $params ) = @_;
-    my $length = $params->{id_length} || 8;
-    my $generator =
-        Workflow::Persister::RandomId->new({ id_length => $length });
+    my $length = $params->{id_length} || DEFAULT_ID_LENGTH;
+    my $generator
+        = Workflow::Persister::RandomId->new( { id_length => $length } );
     return ( $generator, $generator );
 }
 
@@ -74,45 +74,47 @@ sub init_uuid_generators {
 
 sub create_workflow {
     my ( $self, $wf ) = @_;
-    persist_error "Persister '", ref( $self ), "' must implement ",
-                  "'create_workflow()'";
+    persist_error "Persister '", ref($self), "' must implement ",
+        "'create_workflow()'";
 }
 
 sub update_workflow {
     my ( $self, $wf ) = @_;
-    persist_error "Persister '", ref( $self ), "' must implement ",
-                  "'update_workflow()'";
+    persist_error "Persister '", ref($self), "' must implement ",
+        "'update_workflow()'";
 }
 
 sub fetch_workflow {
     my ( $self, $wf_id ) = @_;
-    persist_error "Persister '", ref( $self ), "' must implement ",
-                  "'fetch_workflow()'";
+    persist_error "Persister '", ref($self), "' must implement ",
+        "'fetch_workflow()'";
 }
 
 # This is the only one that isn't required...
 sub fetch_extra_workflow_data {
     my ( $self, $wf ) = @_;
     my $log = get_logger();
-    $log->info( "Called empty 'fetch_extra_workflow_data()' (ok)" );
-    $log->debug( "An empty implementation is not an error as you may ",
-                 "not need this extra functionality. If you do you ",
-                 "should use a perister for this purpose (e.g., ",
-                 "Workflow::Persister::DBI::ExtraData) or ",
-                 "create your own and just implement this method." );
+    $log->info("Called empty 'fetch_extra_workflow_data()' (ok)");
+    $log->debug(
+        "An empty implementation is not an error as you may ",
+        "not need this extra functionality. If you do you ",
+        "should use a perister for this purpose (e.g., ",
+        "Workflow::Persister::DBI::ExtraData) or ",
+        "create your own and just implement this method."
+    );
     return;
 }
 
 sub create_history {
     my ( $self, $wf, @history ) = @_;
-    persist_error "Persister '", ref( $self ), "' must implement ",
-                  "'create_history()'";
+    persist_error "Persister '", ref($self), "' must implement ",
+        "'create_history()'";
 }
 
 sub fetch_history {
     my ( $self, $wf ) = @_;
-    persist_error "Persister '", ref( $self ), "' must implement ",
-                  "'fetch_history()'";
+    persist_error "Persister '", ref($self), "' must implement ",
+        "'fetch_history()'";
 }
 
 # Only required for DBI persisters.
@@ -121,7 +123,7 @@ sub commit_transaction {
 }
 
 sub rollback_transaction {
-  return;
+    return;
 }
 
 1;
@@ -131,6 +133,10 @@ __END__
 =head1 NAME
 
 Workflow::Persister - Base class for workflow persistence
+
+=head1 VERSION
+
+This documentation describes version 1.09 of this package
 
 =head1 SYNOPSIS
 

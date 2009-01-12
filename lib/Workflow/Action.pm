@@ -1,22 +1,24 @@
 package Workflow::Action;
 
-# $Id: Action.pm 361 2008-04-05 13:23:31Z jonasbn $
+# $Id: Action.pm 454 2009-01-12 10:04:02Z jonasbn $
 
 # Note: we may implement a separate event mechanism so that actions
 # can trigger other code (use 'Class::Observable'? read observations
 # from database?)
 
+use warnings;
 use strict;
 use base qw( Workflow::Base );
-use Log::Log4perl     qw( get_logger );
+use Log::Log4perl qw( get_logger );
 use Workflow::Action::InputField;
 use Workflow::Validator::HasRequiredField;
 use Workflow::Factory qw( FACTORY );
+use Carp qw(croak);
 
 $Workflow::Action::VERSION = '1.09';
 
 my @FIELDS = qw( name class description );
-__PACKAGE__->mk_accessors( @FIELDS );
+__PACKAGE__->mk_accessors(@FIELDS);
 
 ####################
 # INPUT FIELDS
@@ -27,17 +29,17 @@ sub add_fields {
 }
 
 sub required_fields {
-    my ( $self ) = @_;
+    my ($self) = @_;
     return grep { $_->requirement() eq 'required' } @{ $self->{_fields} };
 }
 
 sub optional_fields {
-    my ( $self ) = @_;
+    my ($self) = @_;
     return grep { $_->requirement() eq 'optional' } @{ $self->{_fields} };
 }
 
 sub fields {
-    my ( $self ) = @_;
+    my ($self) = @_;
     return @{ $self->{_fields} };
 }
 
@@ -47,17 +49,20 @@ sub fields {
 sub add_validators {
     my ( $self, @validator_info ) = @_;
     my @validators = ();
-    foreach my $conf ( @validator_info ) {
+    foreach my $conf (@validator_info) {
         my $validator = FACTORY->get_validator( $conf->{name} );
-        my @args = $self->normalize_array( $conf->{arg} );
-        push @validators, { validator => $validator,
-                            args      => \@args };
+        my @args      = $self->normalize_array( $conf->{arg} );
+        push @validators,
+            {
+            validator => $validator,
+            args      => \@args
+            };
     }
     push @{ $self->{_validators} }, @validators;
 }
 
 sub get_validators {
-    my ( $self ) = @_;
+    my ($self) = @_;
     return @{ $self->{_validators} };
 }
 
@@ -67,27 +72,26 @@ sub validate {
     return unless ( scalar @validators );
 
     my $context = $wf->context;
-    foreach my $validator_info ( @validators ) {
-        my $validator = $validator_info->{validator};
-        my $args      = $validator_info->{args};
-        my @runtime_args = ( $wf );
-        foreach my $arg ( @{ $args } ) {
+    foreach my $validator_info (@validators) {
+        my $validator    = $validator_info->{validator};
+        my $args         = $validator_info->{args};
+        my @runtime_args = ($wf);
+        foreach my $arg ( @{$args} ) {
             if ( $arg =~ /^\$(.*)$/ ) {
-                push @runtime_args, $context->param( $1 );
-            }
-            else {
+                push @runtime_args, $context->param($1);
+            } else {
                 push @runtime_args, $arg;
             }
         }
-        $validator->validate( @runtime_args );
+        $validator->validate(@runtime_args);
     }
 }
 
 # Subclasses override...
 
-sub execute  {
+sub execute {
     my ( $self, $wf ) = @_;
-    die "Class ", ref( $self ), " must implement 'execute()'\n";
+    croak "Class ", ref($self), " must implement 'execute()'\n";
 }
 
 ########################################
@@ -97,7 +101,7 @@ sub init {
     my ( $self, $wf, $params ) = @_;
 
     # So we don't destroy the original...
-    my %copy_params = %{ $params };
+    my %copy_params = %{$params};
 
     $self->class( $copy_params{class} );
     $self->name( $copy_params{name} );
@@ -105,33 +109,33 @@ sub init {
 
     ## init normal fields
     my @fields = $self->normalize_array( $copy_params{field} );
-    foreach my $field_info ( @fields ) {
-        $self->add_fields( Workflow::Action::InputField->new( $field_info ) );
+    foreach my $field_info (@fields) {
+        $self->add_fields( Workflow::Action::InputField->new($field_info) );
     }
 
     ## establish validator for fields with is_required="yes"
     @fields = $self->required_fields();
-    my $validator = Workflow::Validator::HasRequiredField->new (
-                    {
-                        name  => 'HasRequiredField for is_required fields',
-                        class => 'Workflow::Validator::HasRequiredField'
-                    });
+    my $validator = Workflow::Validator::HasRequiredField->new(
+        {   name  => 'HasRequiredField for is_required fields',
+            class => 'Workflow::Validator::HasRequiredField'
+        }
+    );
     my @args = ();
-    foreach my $field ( @fields ) {
-        next if (not $field); ## empty @fields array
+    foreach my $field (@fields) {
+        next if ( not $field );    ## empty @fields array
         push @args, $field->name();
     }
     push @{ $self->{_validators} },
-         {
-             validator => $validator,
-             args      => \@args
-         };
+        {
+        validator => $validator,
+        args      => \@args
+        };
 
     ## init normal validators
     my @validator_info = $self->normalize_array( $copy_params{validator} );
-    $self->add_validators( @validator_info );
+    $self->add_validators(@validator_info);
 
-    delete @copy_params{ qw( class name description field validator ) };
+    delete @copy_params{qw( class name description field validator )};
 
     # everything else is just a passthru param
 
@@ -140,7 +144,6 @@ sub init {
     }
 }
 
-
 1;
 
 __END__
@@ -148,6 +151,10 @@ __END__
 =head1 NAME
 
 Workflow::Action - Base class for Workflow actions
+
+=head1 VERSION
+
+This documentation describes version 1.09 of this package
 
 =head1 SYNOPSIS
 
@@ -187,7 +194,7 @@ Workflow::Action - Base class for Workflow actions
 
      if ( $@ ) {
          workflow_error
-             "Cannot create new user with name '", $context->param( 'username' ), "': $@";
+             "Cannot create new user with name '", $context->param( 'username' ), "': $EVAL_ERROR";
      }
 
      # Set the created user in the context for the application and/or

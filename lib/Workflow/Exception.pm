@@ -1,28 +1,29 @@
 package Workflow::Exception;
 
-# $Id: Exception.pm 301 2007-07-03 14:54:01Z jonasbn $
+# $Id: Exception.pm 457 2009-01-12 20:01:50Z jonasbn $
 
+use warnings;
 use strict;
 
 # Declare some of our exceptions...
 
 use Exception::Class (
-   'Workflow::Exception::Condition' => {
-      isa         => 'Workflow::Exception',
-      description => 'Condition failed errors',
-   },
-   'Workflow::Exception::Configuration' => {
-      isa         => 'Workflow::Exception',
-      description => 'Configuration errors',
-   },
-   'Workflow::Exception::Persist' => {
-      isa         => 'Workflow::Exception',
-      description => 'Persistence errors',
-   },
-   'Workflow::Exception::Validation' => {
-      isa         => 'Workflow::Exception',
-      description => 'Validation errors',
-   },
+    'Workflow::Exception::Condition' => {
+        isa         => 'Workflow::Exception',
+        description => 'Condition failed errors',
+    },
+    'Workflow::Exception::Configuration' => {
+        isa         => 'Workflow::Exception',
+        description => 'Configuration errors',
+    },
+    'Workflow::Exception::Persist' => {
+        isa         => 'Workflow::Exception',
+        description => 'Persistence errors',
+    },
+    'Workflow::Exception::Validation' => {
+        isa         => 'Workflow::Exception',
+        description => 'Validation errors',
+    },
 );
 
 use Log::Log4perl qw( get_logger );
@@ -42,18 +43,24 @@ $Workflow::Exception::VERSION   = '1.08';
 # Exported shortcuts
 
 sub _mythrow {
-    my $type = shift @_;
-    my ( $msg, %params ) = _massage( @_ );
+    my ( $type, @items ) = @_;
+
+    my ( $msg, %params ) = _massage(@items);
     my $log = get_logger();
-    my ( $pkg, $line ) = (caller)[0,2];
-    my ( $prev_pkg, $prev_line ) = (caller(1))[0,2];
+    my ( $pkg, $line ) = (caller)[ 0, 2 ];
+    my ( $prev_pkg, $prev_line ) = ( caller 1 )[ 0, 2 ];
     $log->error( "$type exception thrown from [$pkg: $line; before: ",
-                 "$prev_pkg: $prev_line]: $msg" );
-    goto &Exception::Class::Base::throw( $TYPE_CLASSES{ $type },
-                                         message => $msg, %params );
+        "$prev_pkg: $prev_line]: $msg" );
+    goto &Exception::Class::Base::throw(
+        $TYPE_CLASSES{$type},
+        message => $msg,
+        %params
+    );
 }
 
 # Use 'goto' here to maintain the stack trace
+
+## no critic (Subroutines::RequireArgUnpacking)
 
 sub condition_error {
     unshift @_, 'condition_error';
@@ -84,16 +91,17 @@ sub workflow_error {
 # the right format for E::C
 
 sub throw {
-    my $class = shift @_;
-    my ( $msg, %params ) = _massage( @_ );
+    my ( $class, @items ) = @_;
+
+    my ( $msg, %params ) = _massage(@items);
     goto &Exception::Class::Base::throw( $class, message => $msg, %params );
 }
 
 sub _massage {
     my @items = @_;
-    my %params = ( ref $items[-1] eq 'HASH' )
-                   ? %{ pop( @items ) } : ();
-    my $msg    = join( '', @items );
+
+    my %params = ( ref $items[-1] eq 'HASH' ) ? %{ pop @items } : ();
+    my $msg = join '', @items;
     return ( $msg, %params );
 }
 
@@ -104,6 +112,10 @@ __END__
 =head1 NAME
 
 Workflow::Exception - Base class for workflow exceptions
+
+=head1 VERSION
+
+This documentation describes version 1.08 of this package
 
 =head1 SYNOPSIS
 

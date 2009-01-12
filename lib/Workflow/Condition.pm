@@ -1,27 +1,29 @@
 package Workflow::Condition;
 
-# $Id: Condition.pm 361 2008-04-05 13:23:31Z jonasbn $
+# $Id: Condition.pm 454 2009-01-12 10:04:02Z jonasbn $
 
+use warnings;
 use strict;
 use base qw( Workflow::Base );
+use Carp qw(croak);
 
 $Workflow::Condition::VERSION = '1.07';
 
 my @FIELDS = qw( name class );
-__PACKAGE__->mk_accessors( @FIELDS );
+__PACKAGE__->mk_accessors(@FIELDS);
 
 sub init {
     my ( $self, $params ) = @_;
     $self->name( $params->{name} );
     $self->class( $params->{class} );
-    $self->_init( $params );
+    $self->_init($params);
 }
 
-sub _init { return }
+sub _init {return}
 
 sub evaluate {
-    my ( $self ) = @_;
-    die "Class ", ref( $self ), " must implement 'evaluate()'!\n";
+    my ($self) = @_;
+    croak "Class ", ref($self), " must implement 'evaluate()'!\n";
 }
 
 1;
@@ -31,6 +33,10 @@ __END__
 =head1 NAME
 
 Workflow::Condition - Evaluate a condition depending on the workflow state and environment
+
+=head1 VERSION
+
+This documentation describes version 1.07 of this package
 
 =head1 SYNOPSIS
 
