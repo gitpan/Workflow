@@ -1,6 +1,6 @@
 package Workflow;
 
-# $Id: Workflow.pm 460 2009-01-26 15:07:19Z jonasbn $
+# $Id: Workflow.pm 468 2009-03-23 12:27:08Z jonasbn $
 
 use warnings;
 use strict;
@@ -15,7 +15,7 @@ use English qw( -no_match_vars );
 my @FIELDS = qw( id type description state last_update time_zone );
 __PACKAGE__->mk_accessors(@FIELDS);
 
-$Workflow::VERSION = '1.32';
+$Workflow::VERSION = '1.33_2';
 
 use constant NO_CHANGE_VALUE => 'NOCHANGE';
 

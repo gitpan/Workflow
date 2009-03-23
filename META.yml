@@ -1,6 +1,6 @@
 ---
 name: Workflow
-version: 1.32
+version: 1.33_2
 author:
   - 'Jonas B. NIelsen <jonasbn@cpan.org>'
 abstract: 'Simple, flexible system to implement workflows'
@@ -30,7 +30,7 @@ build_requires:
 provides:
   Workflow:
     file: lib/Workflow.pm
-    version: 1.32
+    version: 1.33_2
   Workflow::Action:
     file: lib/Workflow/Action.pm
     version: 1.09
@@ -72,7 +72,7 @@ provides:
     version: 1.08
   Workflow::Factory:
     file: lib/Workflow/Factory.pm
-    version: 1.18
+    version: 1.19
   Workflow::History:
     file: lib/Workflow/History.pm
     version: 1.10
@@ -122,7 +122,7 @@ no_index:
   directory:
     - eg
     - t
-generated_by: Module::Build version 0.2808
+generated_by: Module::Build version 0.280801
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
   version: 1.2
