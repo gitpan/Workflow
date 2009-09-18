@@ -1,6 +1,6 @@
 package Workflow::Factory;
 
-# $Id: Factory.pm 471 2009-04-18 20:29:51Z jonasbn $
+# $Id: Factory.pm 479 2009-07-19 19:45:30Z jonasbn $
 
 use warnings;
 use strict;
@@ -54,7 +54,8 @@ require Workflow::Persister;
 require Workflow::State;
 require Workflow::Validator;
 
-my $INITIAL_STATE = 'INITIAL';
+my $DEFAULT_INITIAL_STATE = 'INITIAL';
+
 
 my @FIELDS = qw();
 __PACKAGE__->mk_accessors(@FIELDS);
@@ -332,7 +333,8 @@ sub create_workflow {
     unless ($wf_config) {
         workflow_error "No workflow of type '$wf_type' available";
     }
-    my $wf = Workflow->new( undef, $INITIAL_STATE, $wf_config,
+    
+    my $wf = Workflow->new( undef, $wf_config->{initial_state}|| $DEFAULT_INITIAL_STATE, $wf_config,
         $self->{_workflow_state}{$wf_type} );
     $wf->context( Workflow::Context->new );
     $wf->last_update( DateTime->now( time_zone => $wf->time_zone() ) );
@@ -348,9 +350,9 @@ sub create_workflow {
         $wf,
         Workflow::History->new(
             {   workflow_id => $id,
-                action      => 'Create workflow',
-                description => 'Create new workflow',
-                user        => 'n/a',
+                action      => $persister->get_create_action($wf),
+                description => $persister->get_create_description($wf),
+                user        => $persister->get_create_user($wf),
                 state       => $wf->state,
                 date        => DateTime->now( time_zone => $wf->time_zone() ),
                 time_zone   => $wf->time_zone(),
@@ -494,20 +496,13 @@ sub _add_action_config {
     foreach my $actions (@all_action_config) {
         next unless ( ref $actions eq 'HASH' );
 
-        # TODO Handle optional type.
+        # Handle optional type.
         # Should we check here to see if this matches an existing
         # workflow type? Maybe do a type check at the end of the config
         # process?
         my $type = exists $actions->{type} ? $actions->{type} : 'default';
 
-        my $a;
-        if ( exists $actions->{action} ) {
-            $a = $actions->{action};
-        } else {
-            push @{$a}, $actions;
-        }
-
-        foreach my $action_config ( @{$a} ) {
+        foreach my $action_config ( @{ $actions->{action} } ) {
             my $name = $action_config->{name};
             $log->is_debug
                 && $log->debug(
@@ -619,14 +614,7 @@ sub _add_condition_config {
         my $type
             = exists $conditions->{type} ? $conditions->{type} : 'default';
 
-        my $c;
-        if ( exists $conditions->{condition} ) {
-            $c = $conditions->{condition};
-        } else {
-            push @{$c}, $conditions;
-        }
-
-        foreach my $condition_config ( @{$c} ) {
+        foreach my $condition_config ( @{ $conditions->{condition} } ) {
             my $name = $condition_config->{name};
             $log->is_debug
                 && $log->debug("Adding configuration for condition '$name'");
@@ -693,14 +681,7 @@ sub _add_validator_config {
     foreach my $validators (@all_validator_config) {
         next unless ( ref $validators eq 'HASH' );
 
-        my $v;
-        if ( exists $validators->{validator} ) {
-            $v = $validators->{validator};
-        } else {
-            push @{$v}, $validators;
-        }
-
-        for my $validator_config ( @{$v} ) {
+        for my $validator_config ( @{ $validators->{validator} } ) {
             my $name = $validator_config->{name};
             $log->is_debug
                 && $log->debug("Adding configuration for validator '$name'");
