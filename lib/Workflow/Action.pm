@@ -1,6 +1,6 @@
 package Workflow::Action;
 
-# $Id: Action.pm 454 2009-01-12 10:04:02Z jonasbn $
+# $Id: Action.pm 475 2009-07-19 15:31:08Z jonasbn $
 
 # Note: we may implement a separate event mechanism so that actions
 # can trigger other code (use 'Class::Observable'? read observations
@@ -15,7 +15,7 @@ use Workflow::Validator::HasRequiredField;
 use Workflow::Factory qw( FACTORY );
 use Carp qw(croak);
 
-$Workflow::Action::VERSION = '1.09';
+$Workflow::Action::VERSION = '1.10';
 
 my @FIELDS = qw( name class description );
 __PACKAGE__->mk_accessors(@FIELDS);
@@ -63,6 +63,7 @@ sub add_validators {
 
 sub get_validators {
     my ($self) = @_;
+    return () if (not defined $self->{_validators});
     return @{ $self->{_validators} };
 }
 

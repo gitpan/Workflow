@@ -1,6 +1,6 @@
 package Workflow::Factory;
 
-# $Id: Factory.pm 479 2009-07-19 19:45:30Z jonasbn $
+# $Id: Factory.pm 475 2009-07-19 15:31:08Z jonasbn $
 
 use warnings;
 use strict;
@@ -54,8 +54,7 @@ require Workflow::Persister;
 require Workflow::State;
 require Workflow::Validator;
 
-my $DEFAULT_INITIAL_STATE = 'INITIAL';
-
+my $INITIAL_STATE = 'INITIAL';
 
 my @FIELDS = qw();
 __PACKAGE__->mk_accessors(@FIELDS);
@@ -333,8 +332,7 @@ sub create_workflow {
     unless ($wf_config) {
         workflow_error "No workflow of type '$wf_type' available";
     }
-    
-    my $wf = Workflow->new( undef, $wf_config->{initial_state}|| $DEFAULT_INITIAL_STATE, $wf_config,
+    my $wf = Workflow->new( undef, $INITIAL_STATE, $wf_config,
         $self->{_workflow_state}{$wf_type} );
     $wf->context( Workflow::Context->new );
     $wf->last_update( DateTime->now( time_zone => $wf->time_zone() ) );
@@ -350,9 +348,9 @@ sub create_workflow {
         $wf,
         Workflow::History->new(
             {   workflow_id => $id,
-                action      => $persister->get_create_action($wf),
-                description => $persister->get_create_description($wf),
-                user        => $persister->get_create_user($wf),
+                action      => 'Create workflow',
+                description => 'Create new workflow',
+                user        => 'n/a',
                 state       => $wf->state,
                 date        => DateTime->now( time_zone => $wf->time_zone() ),
                 time_zone   => $wf->time_zone(),
@@ -389,7 +387,7 @@ sub fetch_workflow {
         );
     my $wf = Workflow->new( $wf_id, $wf_info->{state}, $wf_config,
         $self->{_workflow_state}{$wf_type} );
-    $wf->context( Workflow::Context->new );
+	$wf->context( Workflow::Context->new ) if (not $wf->context());
     $wf->last_update( $wf_info->{last_update} );
 
     $persister->fetch_extra_workflow_data($wf);
@@ -599,6 +597,26 @@ sub get_persister {
     return $persister;
 }
 
+sub get_persisters {
+    my $self = shift;
+    my @persisters = sort keys %{$self->{_persister}};
+
+    return @persisters;
+}
+
+sub get_persister_for_workflow_type {
+    my $self = shift;
+
+    my ($type) = @_;
+    my $wf_config = $self->_get_workflow_config($type);
+    if (not $wf_config) {
+        workflow_error "no workflow of type '$type' available";
+    }
+    my $persister = $self->get_persister( $wf_config->{'persister'} );
+
+    return $persister;
+}
+
 ########################################
 # CONDITIONS
 
@@ -722,6 +740,12 @@ sub get_validator {
         workflow_error "No validator with name '$name' available";
     }
     return $self->{_validators}{$name};
+}
+
+sub get_validators {
+    my $self = shift;
+    my @validators = sort keys %{$self->{_validators}};
+    return @validators;
 }
 
 1;
@@ -857,7 +881,19 @@ Returns: nothing; if we encounter an error trying to create the
 objects referenced in a configuration we throw a
 L<Workflow::Exception>.
 
+=head3 get_persister_for_workflow_type
+
+=head3 get_persisters
+
+#TODO
+
+=head3 get_validators
+
+#TODO
+
 =head2 Internal Methods
+
+#TODO
 
 =head3 save_workflow( $workflow )
 
