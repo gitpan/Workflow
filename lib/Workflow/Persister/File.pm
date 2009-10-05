@@ -1,6 +1,6 @@
 package Workflow::Persister::File;
 
-# $Id: File.pm 475 2009-07-19 15:31:08Z jonasbn $
+# $Id: File.pm 489 2009-09-24 09:45:17Z jonasbn $
 
 use warnings;
 use strict;
