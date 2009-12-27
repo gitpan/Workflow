@@ -1,11 +1,11 @@
 # -*-perl-*-
 
-# $Id: config.t 488 2009-09-24 09:34:27Z jonasbn $
+# $Id: config.t 423 2008-12-21 14:00:47Z jonasbn $
 
 use strict;
 use lib 't';
 use TestUtil;
-use Test::More  tests => 50;
+use Test::More  tests => 48;
 use Test::Exception;
 
 my ($parser);
@@ -58,7 +58,7 @@ my @config = $parser->parse( 'workflow' );
 is(scalar(@config), 0, 'forgotten file, asserting length of array returned'); 
 
 my %config_perl = (
-		   'workflow' => ['workflow.perl', 'workflow_type.perl', 'workflow_type_alternate_initial.perl'],
+		   'workflow' => ['workflow.perl', 'workflow_type.perl'],
 		   'action' => ['workflow_action.perl'],
 		   'condition' => ['workflow_condition.perl', 'workflow_condition_type.perl'],
 		   'validator' => ['workflow_validator.perl'],

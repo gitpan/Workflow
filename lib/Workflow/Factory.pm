@@ -1,6 +1,6 @@
 package Workflow::Factory;
 
-# $Id: Factory.pm 489 2009-09-24 09:45:17Z jonasbn $
+# $Id: Factory.pm 498 2009-12-27 13:30:26Z jonasbn $
 
 use warnings;
 use strict;
@@ -54,10 +54,9 @@ require Workflow::Persister;
 require Workflow::State;
 require Workflow::Validator;
 
-my $DEFAULT_INITIAL_STATE = 'INITIAL';
+my $INITIAL_STATE = 'INITIAL';
 
-my @FIELDS = qw(config_callback);
-
+my @FIELDS = qw();
 __PACKAGE__->mk_accessors(@FIELDS);
 
 sub new {
@@ -333,8 +332,7 @@ sub create_workflow {
     unless ($wf_config) {
         workflow_error "No workflow of type '$wf_type' available";
     }
-    
-    my $wf = Workflow->new( undef, $wf_config->{initial_state}|| $DEFAULT_INITIAL_STATE, $wf_config,
+    my $wf = Workflow->new( undef, $INITIAL_STATE, $wf_config,
         $self->{_workflow_state}{$wf_type} );
     $wf->context( Workflow::Context->new );
     $wf->last_update( DateTime->now( time_zone => $wf->time_zone() ) );
@@ -350,9 +348,9 @@ sub create_workflow {
         $wf,
         Workflow::History->new(
             {   workflow_id => $id,
-                action      => $persister->get_create_action($wf),
-                description => $persister->get_create_description($wf),
-                user        => $persister->get_create_user($wf),
+                action      => 'Create workflow',
+                description => 'Create new workflow',
+                user        => 'n/a',
                 state       => $wf->state,
                 date        => DateTime->now( time_zone => $wf->time_zone() ),
                 time_zone   => $wf->time_zone(),
@@ -389,7 +387,7 @@ sub fetch_workflow {
         );
     my $wf = Workflow->new( $wf_id, $wf_info->{state}, $wf_config,
         $self->{_workflow_state}{$wf_type} );
-	$wf->context( Workflow::Context->new ) if (not $wf->context());
+    $wf->context( Workflow::Context->new );
     $wf->last_update( $wf_info->{last_update} );
 
     $persister->fetch_extra_workflow_data($wf);
@@ -407,19 +405,8 @@ sub associate_observers_with_workflow {
     $wf->add_observer($_) for ( @{$observers} );
 }
 
-sub _initialize_workflow_config {
-    my $self = shift;
-    my $wf_type = shift;
-    $log ||= get_logger();
-    if ( ref($self->config_callback) eq 'CODE' ) {
-        my $args = &{ $self->config_callback }( $wf_type );
-        $self->add_config_from_file( %$args ) if $args && %$args;
-    }
-}
-
 sub _get_workflow_config {
     my ( $self, $wf_type ) = @_;
-    $self->_initialize_workflow_config( $wf_type ) unless $self->{_workflow_config}{ $wf_type };
     return $self->{_workflow_config}{$wf_type};
 }
 
@@ -507,20 +494,13 @@ sub _add_action_config {
     foreach my $actions (@all_action_config) {
         next unless ( ref $actions eq 'HASH' );
 
-        # TODO Handle optional type.
+        # Handle optional type.
         # Should we check here to see if this matches an existing
         # workflow type? Maybe do a type check at the end of the config
         # process?
         my $type = exists $actions->{type} ? $actions->{type} : 'default';
 
-        my $a;
-        if ( exists $actions->{action} ) {
-            $a = $actions->{action};
-        } else {
-            push @{$a}, $actions;
-        }
-
-        foreach my $action_config ( @{$a} ) {
+        foreach my $action_config ( @{ $actions->{action} } ) {
             my $name = $action_config->{name};
             $log->is_debug
                 && $log->debug(
@@ -556,7 +536,7 @@ sub get_action {
 
     # Check for a default if no type is available.
     $config = $self->{_action_config}{default}{$action_name}
-        if not defined $config;
+        if not keys %{$config};
 
     unless ($config) {
         workflow_error "No action with name '$action_name' available";
@@ -617,26 +597,6 @@ sub get_persister {
     return $persister;
 }
 
-sub get_persisters {
-    my $self = shift;
-    my @persisters = sort keys %{$self->{_persister}};
-
-    return @persisters;
-}
-
-sub get_persister_for_workflow_type {
-    my $self = shift;
-
-    my ($type) = @_;
-    my $wf_config = $self->_get_workflow_config($type);
-    if (not $wf_config) {
-        workflow_error "no workflow of type '$type' available";
-    }
-    my $persister = $self->get_persister( $wf_config->{'persister'} );
-
-    return $persister;
-}
-
 ########################################
 # CONDITIONS
 
@@ -652,14 +612,7 @@ sub _add_condition_config {
         my $type
             = exists $conditions->{type} ? $conditions->{type} : 'default';
 
-        my $c;
-        if ( exists $conditions->{condition} ) {
-            $c = $conditions->{condition};
-        } else {
-            push @{$c}, $conditions;
-        }
-
-        foreach my $condition_config ( @{$c} ) {
+        foreach my $condition_config ( @{ $conditions->{condition} } ) {
             my $name = $condition_config->{name};
             $log->is_debug
                 && $log->debug("Adding configuration for condition '$name'");
@@ -726,14 +679,7 @@ sub _add_validator_config {
     foreach my $validators (@all_validator_config) {
         next unless ( ref $validators eq 'HASH' );
 
-        my $v;
-        if ( exists $validators->{validator} ) {
-            $v = $validators->{validator};
-        } else {
-            push @{$v}, $validators;
-        }
-
-        for my $validator_config ( @{$v} ) {
+        for my $validator_config ( @{ $validators->{validator} } ) {
             my $name = $validator_config->{name};
             $log->is_debug
                 && $log->debug("Adding configuration for validator '$name'");
@@ -774,12 +720,6 @@ sub get_validator {
         workflow_error "No validator with name '$name' available";
     }
     return $self->{_validators}{$name};
-}
-
-sub get_validators {
-    my $self = shift;
-    my @validators = sort keys %{$self->{_validators}};
-    return @validators;
 }
 
 1;
@@ -915,19 +855,7 @@ Returns: nothing; if we encounter an error trying to create the
 objects referenced in a configuration we throw a
 L<Workflow::Exception>.
 
-=head3 get_persister_for_workflow_type
-
-=head3 get_persisters
-
-#TODO
-
-=head3 get_validators
-
-#TODO
-
 =head2 Internal Methods
-
-#TODO
 
 =head3 save_workflow( $workflow )
 
@@ -1072,44 +1000,6 @@ The new method is a dummy constructor, since we are using a factory it makes
 no sense to call new - and calling new will result in a L<Workflow::Exception>
 
 L</instance> should be called or the imported 'FACTORY' should be utilized.
-
-=head1 DYNAMIC CONFIG LOADING
-
-If you have either a large set of config files or a set of very large
-config files then you may not want to incur the overhead of loading
-each and every one on startup if you cannot predict which set you will
-use in that instance of your application.
-
-This approach doesn't make much sense in a persistent environment such
-as mod_perl but it may lower startup costs if you have regularly
-scheduled scripts that may not need to touch all possible types of
-workflow.
-
-To do this you can specify a callback that the factory will use to
-retrieve batched hashes of config declarations. Whenever an unknown
-workflow name is encountered the factory will first try to load your
-config declarations then continue.
-
-The callback takes one argument which is the workflow type. It should
-return a reference to a hash of arguments in a form suitable for
-C<add_config_from_file>.
-
-For example:
-
- use Workflow::Factory qw(FACTORY);
- use My::Config::System;
-
- sub init {
-   my $self = shift;
-
-   FACTORY->config_callback(
-     sub {
-       my $wf_type = shift;
-       my %ret = My::Config::System->get_files_for_wf( $wf_type ) || ();
-       return \%ret;
-     }
-   );
- }
 
 =head1 SUBCLASSING
 

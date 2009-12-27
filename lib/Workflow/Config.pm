@@ -1,6 +1,6 @@
 package Workflow::Config;
 
-# $Id: Config.pm 488 2009-09-24 09:34:27Z jonasbn $
+# $Id: Config.pm 454 2009-01-12 10:04:02Z jonasbn $
 
 use warnings;
 use strict;
@@ -9,7 +9,7 @@ use Data::Dumper qw( Dumper );
 use Log::Log4perl qw( get_logger );
 use Workflow::Exception qw( configuration_error );
 
-$Workflow::Config::VERSION = '1.13';
+$Workflow::Config::VERSION = '1.12';
 
 # Map the valid type to the top-level XML tag or data
 # structure to look for.
@@ -296,10 +296,9 @@ workflow pieces:
 =head2 workflow
 
    workflow
-      type          $
-      description   $
-      persister     $
-      initial_state $
+      type        $
+      description $
+      persister   $
       observer    \@
           sub           $
           class         $
@@ -323,16 +322,10 @@ the 'type' and 'description' keys are at the top level
 the 'extra_data' key holds an array of zero or more hashrefs with
 'table', 'field', 'class' and 'context' keys
 
-
-=item *
-
-'initial_state' key holds a string declaring the name of the initial state.
-by default, this value is 'INIITAL'.
-
 =item *
 
 'state' key holds array of one or more 'state' declarations; one of
-them must be 'INITIAL' (or the value of initial_state, if it's defined)
+them must be 'INITIAL'
 
 =item *
 
