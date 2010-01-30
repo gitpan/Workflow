@@ -1,6 +1,6 @@
 package Workflow::Persister::DBI;
 
-# $Id: DBI.pm 454 2009-01-12 10:04:02Z jonasbn $
+# $Id: DBI.pm 517 2010-01-30 13:43:30Z jonasbn $
 
 use warnings;
 use strict;
@@ -266,7 +266,6 @@ sub fetch_workflow {
     my $row = $sth->fetchrow_arrayref;
     return undef unless ($row);
 
-    ## no critic (ProhibitCommaSeparatedStatements)
     return {
         state       => $row->[0],
         last_update => $self->parser->parse_datetime( $row->[1] ),

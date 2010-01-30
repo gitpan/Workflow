@@ -1,6 +1,6 @@
 package Workflow::Action;
 
-# $Id: Action.pm 501 2009-12-27 14:31:51Z jonasbn $
+# $Id: Action.pm 516 2010-01-30 13:41:38Z jonasbn $
 
 # Note: we may implement a separate event mechanism so that actions
 # can trigger other code (use 'Class::Observable'? read observations
@@ -19,7 +19,6 @@ $Workflow::Action::VERSION = '1.10';
 
 my @PROPS = qw( name class description );
 __PACKAGE__->mk_accessors(@PROPS);
-
 
 ####################
 # INPUT FIELDS
@@ -64,7 +63,7 @@ sub add_validators {
 
 sub get_validators {
     my ($self) = @_;
-    return () if (not defined $self->{_validators});
+    return () if ( not defined $self->{_validators} );
     return @{ $self->{_validators} };
 }
 
@@ -114,14 +113,14 @@ sub init {
     ## init normal fields
     my @fields = $self->normalize_array( $copy_params{field} );
     foreach my $field_info (@fields) {
-      if(my $field_class = $field_info->{class}){
-        $log->debug("Using custom field class $field_class");
-        $self->add_fields( $field_class->new($field_info) );
-      }
-      else{
-        $log->debug("Using standard field class");
-        $self->add_fields( Workflow::Action::InputField->new($field_info) );
-      }
+        if ( my $field_class = $field_info->{class} ) {
+            $log->debug("Using custom field class $field_class");
+            $self->add_fields( $field_class->new($field_info) );
+        } else {
+            $log->debug("Using standard field class");
+            $self->add_fields(
+                Workflow::Action::InputField->new($field_info) );
+        }
     }
 
     ## establish validator for fields with is_required="yes"

@@ -1,6 +1,6 @@
 package Workflow::Config;
 
-# $Id: Config.pm 488 2009-09-24 09:34:27Z jonasbn $
+# $Id: Config.pm 516 2010-01-30 13:41:38Z jonasbn $
 
 use warnings;
 use strict;
@@ -27,7 +27,9 @@ sub is_valid_config_type {
 }
 
 sub get_valid_config_types {
-    return sort keys %VALID_TYPES;
+    my @keys = sort keys %VALID_TYPES;
+
+    return @keys;
 }
 
 sub get_config_type_tag {

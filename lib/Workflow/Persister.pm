@@ -1,6 +1,6 @@
 package Workflow::Persister;
 
-# $Id: Persister.pm 488 2009-09-24 09:34:27Z jonasbn $
+# $Id: Persister.pm 516 2010-01-30 13:41:38Z jonasbn $
 
 use warnings;
 use strict;
@@ -117,19 +117,18 @@ sub fetch_history {
         "'fetch_history()'";
 }
 
-
-sub get_create_user{
-    my($self, $wf ) = @_;
+sub get_create_user {
+    my ( $self, $wf ) = @_;
     return 'n/a';
 }
 
-sub get_create_description(){
-    my($self, $wf ) = @_;
+sub get_create_description {
+    my ( $self, $wf ) = @_;
     return 'Create new workflow';
 }
 
-sub get_create_action{
-    my($self, $wf ) = @_;
+sub get_create_action {
+    my ( $self, $wf ) = @_;
     return 'Create workflow';
 }
 

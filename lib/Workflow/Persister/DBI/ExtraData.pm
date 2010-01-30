@@ -1,6 +1,6 @@
 package Workflow::Persister::DBI::ExtraData;
 
-# $Id: ExtraData.pm 454 2009-01-12 10:04:02Z jonasbn $
+# $Id: ExtraData.pm 516 2010-01-30 13:41:38Z jonasbn $
 
 use warnings;
 use strict;
@@ -61,8 +61,8 @@ sub fetch_extra_workflow_data {
         WHERE workflow_id = ?
     };
     my $data_field = $self->data_field;
-    my $select_data_fields =
-        ( ref $data_field )
+    my $select_data_fields
+        = ( ref $data_field )
         ? join( ', ', @{$data_field} )
         : $data_field;
     $sql = sprintf $sql, $select_data_fields, $self->table;

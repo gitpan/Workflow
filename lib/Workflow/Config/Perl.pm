@@ -1,6 +1,6 @@
 package Workflow::Config::Perl;
 
-# $Id: Perl.pm 454 2009-01-12 10:04:02Z jonasbn $
+# $Id: Perl.pm 510 2010-01-30 12:33:14Z jonasbn $
 
 use warnings;
 use strict;
@@ -12,11 +12,9 @@ use English qw( -no_match_vars );
 
 $Workflow::Config::Perl::VERSION = '1.03';
 
-my ($log);
-
 sub parse {
     my ( $self, $type, @items ) = @_;
-    $log ||= get_logger();
+    my $log ||= get_logger();
 
     $self->_check_config_type($type);
 
