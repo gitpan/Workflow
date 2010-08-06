@@ -22,7 +22,7 @@ no_index:
 provides:
   Workflow:
     file: lib/Workflow.pm
-    version: 1.33
+    version: 1.34
   Workflow::Action:
     file: lib/Workflow/Action.pm
     version: 1.10
@@ -127,4 +127,4 @@ requires:
   XML::Simple: 2
 resources:
   license: http://dev.perl.org/licenses/
-version: 1.33
+version: 1.34
