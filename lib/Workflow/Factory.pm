@@ -1,6 +1,6 @@
 package Workflow::Factory;
 
-# $Id: Factory.pm 516 2010-01-30 13:41:38Z jonasbn $
+# $Id: Factory.pm 536 2010-11-14 18:53:30Z jonasbn $
 
 use warnings;
 use strict;
@@ -11,7 +11,7 @@ use Workflow::Exception qw( configuration_error workflow_error );
 use Carp qw(croak);
 use English qw( -no_match_vars );
 
-$Workflow::Factory::VERSION = '1.19';
+$Workflow::Factory::VERSION = '1.20';
 
 my ($log);
 my (%INSTANCES);
@@ -326,7 +326,7 @@ sub _load_class {
 }
 
 sub create_workflow {
-    my ( $self, $wf_type ) = @_;
+    my ( $self, $wf_type, $context ) = @_;
     $log ||= get_logger();
 
     my $wf_config = $self->_get_workflow_config($wf_type);
@@ -338,7 +338,7 @@ sub create_workflow {
         = Workflow->new( undef,
         $wf_config->{initial_state} || $DEFAULT_INITIAL_STATE,
         $wf_config, $self->{_workflow_state}{$wf_type} );
-    $wf->context( Workflow::Context->new );
+    $wf->context( $context || Workflow::Context->new );
     $wf->last_update( DateTime->now( time_zone => $wf->time_zone() ) );
     $log->is_info
         && $log->info("Instantiated workflow object properly, persisting...");
@@ -365,6 +365,13 @@ sub create_workflow {
 
     $self->_commit_transaction($wf);
 
+    my $state = $wf->_get_workflow_state();
+    if ( $state->autorun ) {
+        $log->is_info && $log->info( "State '$state' marked to be run ",
+            "automatically; executing that state/action..." );
+        $wf->_auto_execute_state($state);
+    }
+
     $self->associate_observers_with_workflow($wf);
     $wf->notify_observers('create');
 
@@ -372,7 +379,7 @@ sub create_workflow {
 }
 
 sub fetch_workflow {
-    my ( $self, $wf_type, $wf_id ) = @_;
+    my ( $self, $wf_type, $wf_id, $context ) = @_;
     $log ||= get_logger();
 
     my $wf_config = $self->_get_workflow_config($wf_type);
@@ -391,7 +398,8 @@ sub fetch_workflow {
         );
     my $wf = Workflow->new( $wf_id, $wf_info->{state}, $wf_config,
         $self->{_workflow_state}{$wf_type} );
-    $wf->context( Workflow::Context->new ) if ( not $wf->context() );
+    $wf->context( $context || Workflow::Context->new )
+        if ( not $wf->context() );
     $wf->last_update( $wf_info->{last_update} );
 
     $persister->fetch_extra_workflow_data($wf);
@@ -1164,7 +1172,7 @@ L<Workflow::Validator>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2003-2007 Chris Winters. All rights reserved.
+Copyright (c) 2003-2010 Chris Winters. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
@@ -1173,6 +1181,6 @@ it under the same terms as Perl itself.
 
 Jonas B. Nielsen (jonasbn) E<lt>jonasbn@cpan.orgE<gt> is the current maintainer.
 
-Chris Winters E<lt>chris@cwinters.comE<gt>, original author.
+Chris Winters E <lt> chris @cwinters . comE <gt>, original author .
 
 =cut

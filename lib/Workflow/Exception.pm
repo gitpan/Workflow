@@ -1,6 +1,6 @@
 package Workflow::Exception;
 
-# $Id: Exception.pm 457 2009-01-12 20:01:50Z jonasbn $
+# $Id: Exception.pm 535 2010-11-14 18:49:25Z jonasbn $
 
 use warnings;
 use strict;
@@ -23,6 +23,7 @@ use Exception::Class (
     'Workflow::Exception::Validation' => {
         isa         => 'Workflow::Exception',
         description => 'Validation errors',
+        fields      => 'invalid_fields',
     },
 );
 
@@ -36,7 +37,7 @@ my %TYPE_CLASSES = (
     workflow_error      => 'Workflow::Exception',
 );
 
-$Workflow::Exception::VERSION   = '1.08';
+$Workflow::Exception::VERSION   = '1.09';
 @Workflow::Exception::ISA       = qw( Exporter Exception::Class::Base );
 @Workflow::Exception::EXPORT_OK = keys %TYPE_CLASSES;
 
@@ -224,11 +225,15 @@ L<Exception::Class|Exception::Class>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2003-2004 Chris Winters. All rights reserved.
+Copyright (c) 2003-2010 Chris Winters. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =head1 AUTHORS
 
-Chris Winters E<lt>chris@cwinters.comE<gt>
+Jonas B. Nielsen (jonasbn) E<lt>jonasbn@cpan.orgE<gt> is the current maintainer.
+
+Chris Winters E<lt>chris@cwinters.comE<gt>, original author.
+
+=cut

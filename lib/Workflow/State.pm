@@ -1,6 +1,6 @@
 package Workflow::State;
 
-# $Id: State.pm 516 2010-01-30 13:41:38Z jonasbn $
+# $Id: State.pm 530 2010-08-07 18:06:03Z jonasbn $
 
 use warnings;
 use strict;
@@ -48,8 +48,6 @@ sub get_available_action_names {
     $self->clear_condition_cache();
 
     foreach my $action_name (@all_actions) {
-
-        #my $action_group = FACTORY->{_action_config}{$action_name}{'group'};
 
         #From Ivan Paponov
         my $action_group
