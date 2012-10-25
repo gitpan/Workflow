@@ -1,4 +1,4 @@
-# $Id: 02_pod.t 283 2007-03-14 20:39:23Z jonasbn $ 
+# $Id: 02_pod.t 539 2012-10-25 16:19:14Z jonasbn $ 
 
 use Test::More;
 

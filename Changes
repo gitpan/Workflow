@@ -1,6 +1,11 @@
 Revision history for Perl extension Workflow
 
-# $Id: Changes 535 2010-11-14 18:49:25Z jonasbn $
+# $Id: Changes 544 2012-10-25 16:52:25Z jonasbn $
+
+1.34_2
+
+- Added patch from Scott Hardin implementing nested conditions
+
 
 1.34_1
 

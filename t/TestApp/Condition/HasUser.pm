@@ -1,6 +1,6 @@
 package TestApp::Condition::HasUser;
 
-# $Id: HasUser.pm 290 2007-06-18 21:46:48Z jonasbn $
+# $Id: HasUser.pm 539 2012-10-25 16:19:14Z jonasbn $
 
 use strict;
 use base qw( Workflow::Condition );

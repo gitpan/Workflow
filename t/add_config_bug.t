@@ -1,6 +1,6 @@
 #!/usr/bin/perl 
 
-# $Id: add_config_bug.t 487 2009-09-24 09:21:10Z jonasbn $
+# $Id: add_config_bug.t 539 2012-10-25 16:19:14Z jonasbn $
 
 use strict;
 use lib 't';
