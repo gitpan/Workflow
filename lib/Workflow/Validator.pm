@@ -1,6 +1,6 @@
 package Workflow::Validator;
 
-# $Id: Validator.pm 539 2012-10-25 16:19:14Z jonasbn $
+# $Id: Validator.pm 552 2012-10-26 18:35:11Z jonasbn $
 
 use warnings;
 use strict;
@@ -14,6 +14,9 @@ __PACKAGE__->mk_accessors(@FIELDS);
 
 sub init {
     my ( $self, $params ) = @_;
+    
+    $params->{class} = ref $self unless($params->{class});
+        
     if ( $params->{name} ) {
         $self->name( $params->{name} );
     } else {

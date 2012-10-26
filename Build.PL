@@ -1,6 +1,6 @@
 use Module::Build;
 
-# $Id: Build.PL 539 2012-10-25 16:19:14Z jonasbn $
+# $Id: Build.PL 540 2012-10-25 16:19:57Z jonasbn $
 
 Module::Build->new(
     dist_author       => 'Jonas B. NIelsen <jonasbn@cpan.org>',

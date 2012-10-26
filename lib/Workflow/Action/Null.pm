@@ -1,6 +1,6 @@
 package Workflow::Action::Null;
 
-# $Id: Null.pm 539 2012-10-25 16:19:14Z jonasbn $
+# $Id: Null.pm 540 2012-10-25 16:19:57Z jonasbn $
 
 use warnings;
 use strict;

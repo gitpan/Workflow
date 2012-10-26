@@ -1,6 +1,15 @@
 Revision history for Perl extension Workflow
 
-# $Id: Changes 544 2012-10-25 16:52:25Z jonasbn $
+# $Id: Changes 552 2012-10-26 18:35:11Z jonasbn $
+
+1.34_3
+
+- Applied patch from Oliver Welter implementing support for multiple factories
+
+- Added patch from Oliver Welter implementing the feature of creating custom 
+  workflow classes, in addition a patch to silence some warning emitted during test
+  from Workflow::Validator
+
 
 1.34_2
 

@@ -1,6 +1,6 @@
 package Workflow::Persister::RandomId;
 
-# $Id: RandomId.pm 539 2012-10-25 16:19:14Z jonasbn $
+# $Id: RandomId.pm 540 2012-10-25 16:19:57Z jonasbn $
 
 use warnings;
 use strict;

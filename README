@@ -90,7 +90,7 @@ SYNOPSIS
 
      # Stock the factory with the configurations; we can add more later if
      # we want
-     FACTORY->add_config_from_file(
+     $self->_factory()->add_config_from_file(
          workflow   => $workflow_conf,
          action     => $action_conf,
          condition  => $condition_conf,
@@ -98,7 +98,7 @@ SYNOPSIS
      );
  
      # Instantiate a new workflow...
-     my $workflow = FACTORY->create_workflow( 'myworkflow' );
+     my $workflow = $self->_factory()->create_workflow( 'myworkflow' );
      print "Workflow ", $workflow->id, " ",
            "currently at state ", $workflow->state, "\n";
  
@@ -130,7 +130,7 @@ SYNOPSIS
  
      # Later.... fetch an existing workflow
      my $id = get_workflow_id_from_user( ... );
-     my $workflow = FACTORY->fetch_workflow( 'myworkflow', $id );
+     my $workflow = $self->_factory()->fetch_workflow( 'myworkflow', $id );
      print "Current state: ", $workflow->state, "\n";
 
 QUICK START
@@ -275,7 +275,7 @@ WORKFLOW BASICS
     on. So to use our ticket example we can do this, creating the workflow
     and asking it what actions we can execute right now:
 
-     my $wf = Workflow::Factory->create_workflow( 'Ticket' );
+     my $wf = Workflow::$self->_factory()->create_workflow( 'Ticket' );
      my @actions = $wf->get_current_actions;
 
     We can also interrogate the workflow about what fields are necessary to

@@ -1,27 +1,24 @@
 package Workflow::Base;
 
-# $Id: Base.pm 539 2012-10-25 16:19:14Z jonasbn $
+# $Id: Base.pm 542 2012-10-25 16:39:01Z jonasbn $
 
 use warnings;
 use strict;
 use base qw( Class::Accessor );
 use Log::Log4perl;
-
 $Workflow::Base::VERSION = '1.08';
 
 sub new {
     my ( $class, @params ) = @_;
     my $self = bless { PARAMS => {} }, $class;
 
-    # always automatically pull out the name/value pairs from 'param'
-
     if ( ref $params[0] eq 'HASH' && ref $params[0]->{param} eq 'ARRAY' ) {
-        foreach my $declared ( @{ $params[0]->{param} } ) {
+        foreach my $declared ( @{ $params[0]->{param} } ) {            
             $params[0]->{ $declared->{name} } = $declared->{value};
         }
         delete $params[0]->{param};
-    }
-    $self->init(@params);
+    }    
+    $self->init(@params);    
     return $self;
 }
 

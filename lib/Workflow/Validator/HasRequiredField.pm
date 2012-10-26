@@ -1,6 +1,6 @@
 package Workflow::Validator::HasRequiredField;
 
-# $Id: HasRequiredField.pm 539 2012-10-25 16:19:14Z jonasbn $
+# $Id: HasRequiredField.pm 540 2012-10-25 16:19:57Z jonasbn $
 
 use warnings;
 use strict;
