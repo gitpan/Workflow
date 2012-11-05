@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: workflow.t 540 2012-10-25 16:19:57Z jonasbn $
+# $Id: workflow.t 526 2010-08-06 06:25:51Z jonasbn $
 
 use strict;
 use lib 't';

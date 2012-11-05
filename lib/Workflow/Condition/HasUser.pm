@@ -1,6 +1,6 @@
 package Workflow::Condition::HasUser;
 
-# $Id: HasUser.pm 540 2012-10-25 16:19:57Z jonasbn $
+# $Id: HasUser.pm 454 2009-01-12 10:04:02Z jonasbn $
 
 use warnings;
 use strict;

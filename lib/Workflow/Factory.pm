@@ -1,6 +1,6 @@
 package Workflow::Factory;
 
-# $Id: Factory.pm 552 2012-10-26 18:35:11Z jonasbn $
+# $Id: Factory.pm 554 2012-10-26 18:39:09Z jonasbn $
 
 use warnings;
 use strict;

@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: condition.t 540 2012-10-25 16:19:57Z jonasbn $
+# $Id: condition.t 361 2008-04-05 13:23:31Z jonasbn $
 
 use strict;
 use lib 't';

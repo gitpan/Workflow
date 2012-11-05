@@ -1,6 +1,6 @@
 package Workflow::Action::Mailer;
 
-# $Id: Mailer.pm 540 2012-10-25 16:19:57Z jonasbn $
+# $Id: Mailer.pm 454 2009-01-12 10:04:02Z jonasbn $
 
 use warnings;
 use strict;

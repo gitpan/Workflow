@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: validator.t 540 2012-10-25 16:19:57Z jonasbn $
+# $Id: validator.t 330 2007-08-12 11:01:58Z jonasbn $
 
 use strict;
 use lib 't';

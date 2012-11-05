@@ -1,6 +1,6 @@
 INSTALL file for Workflow
 
-$Id: INSTALL 540 2012-10-25 16:19:57Z jonasbn $
+$Id: INSTALL 554 2012-10-26 18:39:09Z jonasbn $
 
 perl Makefile.PL  or   perl Build.PL
 make                   ./Build

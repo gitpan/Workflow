@@ -1,6 +1,6 @@
 package Workflow::Condition::Evaluate;
 
-# $Id: Evaluate.pm 540 2012-10-25 16:19:57Z jonasbn $
+# $Id: Evaluate.pm 556 2012-11-04 21:18:19Z jonasbn $
 
 use warnings;
 use strict;
@@ -56,7 +56,7 @@ sub evaluate {
             "Condition expressed in code threw exception: $EVAL_ERROR";
     }
 
-    $log->is_debug && $log->debug("Safe eval ran ok, returned: '$rv'");
+    $log->is_debug && $log->debug("Safe eval ran ok, returned: '" . (defined $rv ? $rv : '<undef>') . "'");
     unless ($rv) {
         condition_error "Condition expressed by test '$to_eval' did not ",
             "return a true value.";

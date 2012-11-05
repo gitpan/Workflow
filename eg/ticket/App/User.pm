@@ -1,6 +1,6 @@
 package App::User;
 
-# $Id: User.pm 540 2012-10-25 16:19:57Z jonasbn $
+# $Id: User.pm 289 2007-06-18 21:45:56Z jonasbn $
 
 use strict;
 

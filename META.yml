@@ -10,7 +10,7 @@ build_requires:
 configure_requires:
   Module::Build: 0.40
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921'
+generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.112150'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -23,7 +23,7 @@ no_index:
 provides:
   Workflow:
     file: lib/Workflow.pm
-    version: 1.34_3
+    version: 1.34_4
   Workflow::Action:
     file: lib/Workflow/Action.pm
     version: 1.10
@@ -54,6 +54,12 @@ provides:
   Workflow::Condition::HasUser:
     file: lib/Workflow/Condition/HasUser.pm
     version: 1.05
+  Workflow::Condition::LazyAND:
+    file: lib/Workflow/Condition/LazyAND.pm
+    version: 0
+  Workflow::Condition::LazyOR:
+    file: lib/Workflow/Condition/LazyOR.pm
+    version: 0
   Workflow::Condition::Nested:
     file: lib/Workflow/Condition/Nested.pm
     version: 0
@@ -137,4 +143,4 @@ requires:
   XML::Simple: 2
 resources:
   license: http://dev.perl.org/licenses/
-version: 1.34_3
+version: 1.34_4
