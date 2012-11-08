@@ -1,6 +1,6 @@
 package Workflow;
 
-# $Id: Workflow.pm 558 2012-11-05 08:03:23Z jonasbn $
+# $Id: Workflow.pm 570 2012-11-08 21:53:22Z jonasbn $
 
 use warnings;
 use strict;
@@ -16,8 +16,7 @@ my @FIELDS = qw( id type description state last_update time_zone );
 my @INTERNAL = qw( _factory );
 __PACKAGE__->mk_accessors( @FIELDS, @INTERNAL );
 
-$Workflow::VERSION = '1.34_4';
-
+$Workflow::VERSION = '1.35';
 
 use constant NO_CHANGE_VALUE => 'NOCHANGE';
 
@@ -1404,6 +1403,14 @@ Jonas B. Nielsen (jonasbn) E<lt>jonasbn@cpan.orgE<gt>, current maintainer.
 Chris Winters E<lt>chris@cwinters.comE<gt>, original author.
 
 The following folks have also helped out:
+
+Scott Harding, for lazy evaluation of conditions, see Changes file: 1.35
+
+Oliver Welter, patch implementing custom workflows, see Changes file: 1.35
+
+Oliver Welter, patch implementing factory subclassing, see Changes file: 1.35
+
+Scott Harding, for nested conditions, see Changes file: 1.35
 
 Steven van der Vegt, patch for autorun in initial state and improved exception
 handling for validators, see Changes file: 1.34_1

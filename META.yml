@@ -1,29 +1,44 @@
 ---
-abstract: 'Simple, flexible system to implement workflows'
+name: Workflow
+version: 1.35
 author:
   - 'Jonas B. NIelsen <jonasbn@cpan.org>'
+abstract: Simple, flexible system to implement workflows
+license: perl
 build_requires:
   DBD::Mock: 0.1
   List::MoreUtils: 0
   Test::Exception: 0
   Test::More: 0.41
+requires:
+  Carp: 0
+  Class::Accessor: 0.18
+  Class::Factory: 1
+  Class::Observable: 1.04
+  DBI: 0
+  Data::Dumper: 0
+  DateTime: 0.15
+  DateTime::Format::Strptime: 1
+  Exception::Class: 1.1
+  File::Slurp: 0
+  Log::Dispatch: 2
+  Log::Log4perl: 0.34
+  Safe: 0
+  XML::Simple: 2
 configure_requires:
-  Module::Build: 0.40
-dynamic_config: 1
-generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.112150'
-license: perl
-meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
-name: Workflow
+  Module::Build: 0.340201
 no_index:
   directory:
     - eg
     - t
+generated_by: Module::Build version 0.340201
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
 provides:
   Workflow:
     file: lib/Workflow.pm
-    version: 1.34_4
+    version: 1.35
   Workflow::Action:
     file: lib/Workflow/Action.pm
     version: 1.10
@@ -44,25 +59,20 @@ provides:
     version: 1.07
   Workflow::Condition::CheckReturn:
     file: lib/Workflow/Condition/CheckReturn.pm
-    version: 0
   Workflow::Condition::Evaluate:
     file: lib/Workflow/Condition/Evaluate.pm
     version: 1.02
   Workflow::Condition::GreedyOR:
     file: lib/Workflow/Condition/GreedyOR.pm
-    version: 0
   Workflow::Condition::HasUser:
     file: lib/Workflow/Condition/HasUser.pm
     version: 1.05
   Workflow::Condition::LazyAND:
     file: lib/Workflow/Condition/LazyAND.pm
-    version: 0
   Workflow::Condition::LazyOR:
     file: lib/Workflow/Condition/LazyOR.pm
-    version: 0
   Workflow::Condition::Nested:
     file: lib/Workflow/Condition/Nested.pm
-    version: 0
   Workflow::Config:
     file: lib/Workflow/Config.pm
     version: 1.13
@@ -126,21 +136,5 @@ provides:
   Workflow::Validator::MatchesDateFormat:
     file: lib/Workflow/Validator/MatchesDateFormat.pm
     version: 1.06
-requires:
-  Carp: 0
-  Class::Accessor: 0.18
-  Class::Factory: 1
-  Class::Observable: 1.04
-  DBI: 0
-  Data::Dumper: 0
-  DateTime: 0.15
-  DateTime::Format::Strptime: 1
-  Exception::Class: 1.1
-  File::Slurp: 0
-  Log::Dispatch: 2
-  Log::Log4perl: 0.34
-  Safe: 0
-  XML::Simple: 2
 resources:
   license: http://dev.perl.org/licenses/
-version: 1.34_4

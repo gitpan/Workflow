@@ -1,6 +1,6 @@
 package Workflow::Condition::Evaluate;
 
-# $Id: Evaluate.pm 556 2012-11-04 21:18:19Z jonasbn $
+# $Id: Evaluate.pm 567 2012-11-08 21:42:43Z jonasbn $
 
 use warnings;
 use strict;

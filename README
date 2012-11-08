@@ -866,6 +866,16 @@ AUTHORS
 
     The following folks have also helped out:
 
+    Scott Harding, for lazy evaluation of conditions, see Changes file: 1.35
+
+    Oliver Welter, patch implementing custom workflows, see Changes file:
+    1.35
+
+    Oliver Welter, patch implementing factory subclassing, see Changes file:
+    1.35
+
+    Scott Harding, for nested conditions, see Changes file: 1.35
+
     Steven van der Vegt, patch for autorun in initial state and improved
     exception handling for validators, see Changes file: 1.34_1
 

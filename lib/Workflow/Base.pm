@@ -1,6 +1,6 @@
 package Workflow::Base;
 
-# $Id: Base.pm 542 2012-10-25 16:39:01Z jonasbn $
+# $Id: Base.pm 566 2012-11-08 21:22:56Z jonasbn $
 
 use warnings;
 use strict;

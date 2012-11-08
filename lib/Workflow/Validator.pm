@@ -1,6 +1,6 @@
 package Workflow::Validator;
 
-# $Id: Validator.pm 554 2012-10-26 18:39:09Z jonasbn $
+# $Id: Validator.pm 566 2012-11-08 21:22:56Z jonasbn $
 
 use warnings;
 use strict;
