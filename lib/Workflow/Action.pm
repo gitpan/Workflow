@@ -1,6 +1,6 @@
 package Workflow::Action;
 
-# $Id: Action.pm 566 2012-11-08 21:22:56Z jonasbn $
+# $Id: Action.pm 589 2012-11-11 14:08:25Z jonasbn $
 
 # Note: we may implement a separate event mechanism so that actions
 # can trigger other code (use 'Class::Observable'? read observations
@@ -15,11 +15,11 @@ use Workflow::Validator::HasRequiredField;
 use Workflow::Factory qw( FACTORY );
 use Carp qw(croak);
 
-$Workflow::Action::VERSION = '1.10';
+$Workflow::Action::VERSION = '1.11';
 
-my @PROPS = qw( name class description );
+my @PROPS    = qw( name class description );
 my @INTERNAL = qw( _factory );
-__PACKAGE__->mk_accessors(@PROPS, @INTERNAL);
+__PACKAGE__->mk_accessors( @PROPS, @INTERNAL );
 
 ####################
 # INPUT FIELDS

@@ -1,26 +1,26 @@
 package Workflow::Validator;
 
-# $Id: Validator.pm 566 2012-11-08 21:22:56Z jonasbn $
+# $Id: Validator.pm 590 2012-11-11 14:48:28Z jonasbn $
 
 use warnings;
 use strict;
 use base qw( Workflow::Base );
 use Carp qw(croak);
 
-$Workflow::Validator::VERSION = '1.05';
+$Workflow::Validator::VERSION = '1.07';
 
 my @FIELDS = qw( name class );
 __PACKAGE__->mk_accessors(@FIELDS);
 
 sub init {
     my ( $self, $params ) = @_;
-    
-    $params->{class} = ref $self unless($params->{class});
-        
+
+    $params->{class} = ref $self unless ( $params->{class} );
+
     if ( $params->{name} ) {
         $self->name( $params->{name} );
     } else {
-        $self->name("$params->{class} (init in Action)");
+        $self->name((ref $self ? ref $self : $self) . " (init in Action)");
     }
     $self->class( $params->{class} );
     $self->_init($params);

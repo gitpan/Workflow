@@ -1,6 +1,6 @@
 package Workflow::Condition::Evaluate;
 
-# $Id: Evaluate.pm 567 2012-11-08 21:42:43Z jonasbn $
+# $Id: Evaluate.pm 589 2012-11-11 14:08:25Z jonasbn $
 
 use warnings;
 use strict;
@@ -10,7 +10,7 @@ use Safe;
 use Workflow::Exception qw( condition_error configuration_error );
 use English qw( -no_match_vars );
 
-$Workflow::Condition::Evaluate::VERSION = '1.02';
+$Workflow::Condition::Evaluate::VERSION = '1.03';
 
 my @FIELDS = qw( test );
 __PACKAGE__->mk_accessors(@FIELDS);
@@ -56,7 +56,10 @@ sub evaluate {
             "Condition expressed in code threw exception: $EVAL_ERROR";
     }
 
-    $log->is_debug && $log->debug("Safe eval ran ok, returned: '" . (defined $rv ? $rv : '<undef>') . "'");
+    $log->is_debug
+        && $log->debug( "Safe eval ran ok, returned: '"
+            . ( defined $rv ? $rv : '<undef>' )
+            . "'" );
     unless ($rv) {
         condition_error "Condition expressed by test '$to_eval' did not ",
             "return a true value.";

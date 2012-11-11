@@ -1,5 +1,91 @@
 package Workflow::Condition::CheckReturn;
 
+# $Id: CheckReturn.pm 581 2012-11-10 13:42:38Z jonasbn $
+
+use strict;
+use warnings;
+
+our $VERSION = '1.0';
+
+use base qw( Workflow::Condition::Nested );
+use Workflow::Exception qw( condition_error configuration_error );
+use English qw( -no_match_vars );
+
+__PACKAGE__->mk_accessors( 'condition', 'operator', 'argument' );
+
+my %supported_ops = (
+    eq => '==',
+    lt => '<',
+    gt => '>',
+    le => '<=',
+    ge => '>=',
+    ne => '!=',
+);
+
+sub _init {
+    my ( $self, $params ) = @_;
+
+    unless ( defined $params->{condition} ) {
+        configuration_error
+            "You must specify the name of the nested condition in the parameter 'condition' for ",
+            $self->name;
+    }
+    $self->condition( $params->{condition} );
+
+    unless ( defined $params->{operator} ) {
+        configuration_error "You must define the value for 'operator' in ",
+            "declaration of condition ", $self->name;
+    }
+    $self->operator( $params->{operator} );
+
+    unless ( defined $params->{argument} ) {
+        configuration_error "You must define the value for 'argument' in ",
+            "declaration of condition ", $self->name;
+    }
+    $self->argument( $params->{argument} );
+}
+
+sub evaluate {
+    my ( $self, $wf ) = @_;
+    my $cond = $self->condition;
+    my $op   = $self->operator;
+    my $arg  = $self->argument;
+
+    #    warn "DEBUG: evaluating operator '$op'";
+
+    my $numop = $supported_ops{$op};
+    if ( not $numop ) {
+        configuration_error "Unsupported operator '$op'";
+    }
+
+    # Fetch argument from context or eval, if necessary
+    my $argval;
+    if ( $arg =~ /^[-]?\d+$/ ) {    # numeric
+        $argval = $arg;
+    } elsif ( $arg =~ /^[a-zA-Z0-9_]+$/ ) {    # alpha-numeric, plus '_'
+        $argval = $wf->context->param($arg);
+    } else {
+        $argval = eval $arg;
+    }
+
+    my $condval = $self->evaluate_condition( $wf, $cond );
+
+    if ( eval "\$condval $op \$argval" ) {
+        return 1;
+    } else {
+        condition_error "Condition failed: '$condval' $op '$argval'";
+    }
+
+    configuration_error
+        "Unknown error in CheckReturn.pm: cond=$cond, op=$op, arg=$arg";
+}
+
+1;
+
+__END__
+
+=pod
+
 =head1 NAME
 
 Workflow::Condition::CheckReturn
@@ -32,15 +118,6 @@ In workflow.xml:
     </state>
 
 =cut
-
-use strict;
-use warnings;
-
-use base qw( Workflow::Condition::Nested );
-use Workflow::Exception qw( condition_error configuration_error );
-use English qw( -no_match_vars );
-
-__PACKAGE__->mk_accessors( 'condition', 'operator', 'argument' );
 
 =head1 PARAMETERS
 
@@ -83,78 +160,13 @@ above strings map to the following numeric operators internally:
 
     '==', '<', '>', '<=', '>=', !=
 
+=head1 AUTHORS
+
+See L<Workflow>
+
+=head1 COPYRIGHT
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
 =cut
-
-my %supported_ops = (
-    eq => '==',
-    lt => '<',
-    gt => '>',
-    le => '<=',
-    ge => '>=',
-    ne => '!=',
-);
-
-sub _init {
-    my ( $self, $params ) = @_;
-
-    unless ( defined $params->{condition} ) {
-        configuration_error
-            "You must specify the name of the nested condition in the parameter 'condition' for ",
-            $self->name;
-    }
-    $self->condition( $params->{condition} );
-
-    unless ( defined $params->{operator} ) {
-        configuration_error
-            "You must define the value for 'operator' in ",
-            "declaration of condition ", $self->name;
-    }
-    $self->operator( $params->{operator} );
-
-    unless ( defined $params->{argument} ) {
-        configuration_error
-            "You must define the value for 'argument' in ",
-            "declaration of condition ", $self->name;
-    }
-    $self->argument( $params->{argument} );
-}
-
-sub evaluate {
-    my ( $self, $wf ) = @_;
-    my $cond = $self->condition;
-    my $op   = $self->operator;
-    my $arg  = $self->argument;
-
-#    warn "DEBUG: evaluating operator '$op'";
-
-    my $numop = $supported_ops{$op};
-    if ( not $numop ) {
-        configuration_error "Unsupported operator '$op'";
-    }
-
-    # Fetch argument from context or eval, if necessary
-    my $argval;
-    if ( $arg =~ /^[-]?\d+$/ ) {    # numeric
-        $argval = $arg;
-    }
-    elsif ( $arg =~ /^[a-zA-Z0-9_]+$/ ) {    # alpha-numeric, plus '_'
-        $argval = $wf->context->param($arg);
-    }
-    else {
-        $argval = eval $arg;
-    }
-
-    my $condval = $self->evaluate_condition( $wf, $cond );
-
-    if ( eval "\$condval $op \$argval" ) {
-        return 1;
-    }
-    else {
-        condition_error "Condition failed: '$condval' $op '$argval'";
-    }
-
-    configuration_error
-        "Unknown error in CheckReturn.pm: cond=$cond, op=$op, arg=$arg";
-}
-
-1;

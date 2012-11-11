@@ -1,6 +1,6 @@
 package Workflow;
 
-# $Id: Workflow.pm 570 2012-11-08 21:53:22Z jonasbn $
+# $Id: Workflow.pm 591 2012-11-11 14:53:56Z jonasbn $
 
 use warnings;
 use strict;
@@ -12,11 +12,11 @@ use Workflow::Factory qw( FACTORY );
 use Carp qw(croak carp);
 use English qw( -no_match_vars );
 
-my @FIELDS = qw( id type description state last_update time_zone );
+my @FIELDS   = qw( id type description state last_update time_zone );
 my @INTERNAL = qw( _factory );
 __PACKAGE__->mk_accessors( @FIELDS, @INTERNAL );
 
-$Workflow::VERSION = '1.35';
+$Workflow::VERSION = '1.35_1';
 
 use constant NO_CHANGE_VALUE => 'NOCHANGE';
 
@@ -183,8 +183,10 @@ sub get_history {
     $self->{_histories} ||= [];
     my @uniq_history = ();
     my %seen_ids     = ();
-    my @all_history
-        = ( $self->_factory()->get_workflow_history($self), @{ $self->{_histories} } );
+    my @all_history  = (
+        $self->_factory()->get_workflow_history($self),
+        @{ $self->{_histories} }
+    );
     foreach my $history (@all_history) {
         my $id = $history->id;
         if ($id) {
@@ -213,9 +215,10 @@ sub clear_history {
 # PRIVATE METHODS
 
 sub init {
-    my ( $self, $id, $current_state, $config, $wf_state_objects, $factory ) = @_;
-    $id  ||= '';
-    $log ||= get_logger();
+    my ( $self, $id, $current_state, $config, $wf_state_objects, $factory )
+        = @_;
+    $id      ||= '';
+    $log     ||= get_logger();
     $factory ||= FACTORY;
     $log->info(
         "Instantiating workflow of with ID '$id' and type ",
@@ -223,8 +226,8 @@ sub init {
     );
 
     $self->id($id) if ($id);
-    $self->_factory( $factory );    
-    
+    $self->_factory($factory);
+
     $self->state($current_state);
     $self->type( $config->{type} );
     $self->description( $config->{description} );
@@ -1163,7 +1166,11 @@ to L<Workflow::Config>, for implementation details.
 For Win32 systems you can get the Template Toolkit and DBD::SQLite
 PPDs from TheoryX:
 
-	L<http://theoryx5.uwinnipeg.ca/cgi-bin/ppmserver?urn:/PPMServer58>
+=over
+
+=item * L<http://theoryx5.uwinnipeg.ca/cgi-bin/ppmserver?urn:/PPMServer58>
+
+=back
 
 =head1 INCOMPATIBILITIES
 
@@ -1376,14 +1383,14 @@ L<http://search.cpan.org/dist/Workflow>
 
 =over
 
-* November 2010 talk 'Workflow' given at Nordic Perl Workshop 2010 in Reykjavik,
+=item * November 2010 talk 'Workflow' given at Nordic Perl Workshop 2010 in Reykjavik,
 Iceland by jonasbn 
 L<http://www.slideshare.net/jonasbn/workflow-npw2010>
 
-* August 2010 talk 'Workflow' given at YAPC::Europe 2010 in Pisa, Italy by jonasbn 
+=item * August 2010 talk 'Workflow' given at YAPC::Europe 2010 in Pisa, Italy by jonasbn 
 L<http://www.slideshare.net/jonasbn/workflow-yapceu2010>
 
-* October 2004 talk 'Workflows in Perl' given to
+=item * October 2004 talk 'Workflows in Perl' given to
 pgh.pm by Chris Winters: L<http://www.cwinters.com/pdf/workflow_pgh_pm.pdf>
 
 =back

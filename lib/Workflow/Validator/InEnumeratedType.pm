@@ -1,6 +1,6 @@
 package Workflow::Validator::InEnumeratedType;
 
-# $Id: InEnumeratedType.pm 516 2010-01-30 13:41:38Z jonasbn $
+# $Id: InEnumeratedType.pm 538 2011-01-29 17:01:04Z jonasbn $
 
 use warnings;
 use strict;

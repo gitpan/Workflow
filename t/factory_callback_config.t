@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: factory_callback_config.t 486 2009-09-24 09:11:14Z jonasbn $
+# $Id: factory_callback_config.t 538 2011-01-29 17:01:04Z jonasbn $
 
 use strict;
 use lib 't';

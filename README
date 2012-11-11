@@ -666,7 +666,7 @@ DEPENDENCIES
     For Win32 systems you can get the Template Toolkit and DBD::SQLite PPDs
     from TheoryX:
 
-            L<http://theoryx5.uwinnipeg.ca/cgi-bin/ppmserver?urn:/PPMServer58>
+    *   <http://theoryx5.uwinnipeg.ca/cgi-bin/ppmserver?urn:/PPMServer58>
 
 INCOMPATIBILITIES
     No special incompatibilies exist, CPAN testers reports however do
@@ -841,15 +841,15 @@ PROJECT
         <http://search.cpan.org/dist/Workflow>
 
 SEE ALSO
-        * November 2010 talk 'Workflow' given at Nordic Perl Workshop 2010
-        in Reykjavik, Iceland by jonasbn
+    *   November 2010 talk 'Workflow' given at Nordic Perl Workshop 2010 in
+        Reykjavik, Iceland by jonasbn
         <http://www.slideshare.net/jonasbn/workflow-npw2010>
 
-        * August 2010 talk 'Workflow' given at YAPC::Europe 2010 in Pisa,
+    *   August 2010 talk 'Workflow' given at YAPC::Europe 2010 in Pisa,
         Italy by jonasbn
         <http://www.slideshare.net/jonasbn/workflow-yapceu2010>
 
-        * October 2004 talk 'Workflows in Perl' given to pgh.pm by Chris
+    *   October 2004 talk 'Workflows in Perl' given to pgh.pm by Chris
         Winters: <http://www.cwinters.com/pdf/workflow_pgh_pm.pdf>
 
 COPYRIGHT
