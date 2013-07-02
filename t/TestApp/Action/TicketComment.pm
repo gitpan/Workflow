@@ -1,6 +1,6 @@
 package TestApp::Action::TicketComment;
 
-# $Id: TicketComment.pm 538 2011-01-29 17:01:04Z jonasbn $
+# $Id: TicketComment.pm 290 2007-06-18 21:46:48Z jonasbn $
 
 use strict;
 use base qw( Workflow::Action );

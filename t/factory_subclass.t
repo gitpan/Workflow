@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: factory_subclass.t 538 2011-01-29 17:01:04Z jonasbn $
+# $Id: factory_subclass.t 213 2004-10-17 15:22:26Z cwinters $
 
 use strict;
 use lib 't';

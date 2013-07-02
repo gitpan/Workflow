@@ -1,6 +1,6 @@
 package Workflow::Persister;
 
-# $Id: Persister.pm 586 2012-11-11 13:46:22Z jonasbn $
+# $Id: Persister.pm 516 2010-01-30 13:41:38Z jonasbn $
 
 use warnings;
 use strict;
@@ -98,7 +98,7 @@ sub fetch_extra_workflow_data {
     $log->debug(
         "An empty implementation is not an error as you may ",
         "not need this extra functionality. If you do you ",
-        "should use a persister for this purpose (e.g., ",
+        "should use a perister for this purpose (e.g., ",
         "Workflow::Persister::DBI::ExtraData) or ",
         "create your own and just implement this method."
     );

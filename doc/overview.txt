@@ -1,6 +1,6 @@
 Basics of Workflows
 ----------------------------------------
-$Id: overview.txt 538 2011-01-29 17:01:04Z jonasbn $
+$Id: overview.txt 234 2006-07-07 12:40:31Z jonasbn $
 
  - A Workflow is an object of a particular type (even if no code exists)
 

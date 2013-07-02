@@ -1,6 +1,6 @@
 package Workflow::Condition::GreedyOR;
 
-# $Id: GreedyOR.pm 581 2012-11-10 13:42:38Z jonasbn $
+# $Id: GreedyOR.pm 579 2012-11-10 11:32:51Z jonasbn $
 
 use strict;
 use warnings;

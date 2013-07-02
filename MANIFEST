@@ -75,7 +75,7 @@ lib/Workflow/Validator/MatchesDateFormat.pm
 Makefile.PL
 MANIFEST			This list of files
 META.yml
-rt64940.patch
+README
 struct/README
 struct/workflow_csv.sql
 struct/workflow_mysql.sql
@@ -101,7 +101,6 @@ t/cached_conditions.t
 t/condition.t
 t/condition_evaluate.t
 t/config.t
-t/context-persists.t
 t/context.t
 t/exception.t
 t/factory.t
@@ -168,4 +167,4 @@ t/workflow_type_alternate_initial.perl
 t/workflow_validator.perl
 t/workflow_validator.xml
 TODO
-README
+META.json

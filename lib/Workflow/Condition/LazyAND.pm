@@ -1,6 +1,6 @@
 package Workflow::Condition::LazyAND;
 
-# $Id: LazyAND.pm 581 2012-11-10 13:42:38Z jonasbn $
+# $Id: LazyAND.pm 574 2012-11-10 10:03:15Z jonasbn $
 
 use strict;
 use warnings;

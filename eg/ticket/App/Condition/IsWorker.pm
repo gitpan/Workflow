@@ -1,6 +1,6 @@
 package App::Condition::IsWorker;
 
-# $Id: IsWorker.pm 538 2011-01-29 17:01:04Z jonasbn $
+# $Id: IsWorker.pm 375 2008-04-22 19:54:42Z jonasbn $
 
 use strict;
 use base qw( Workflow::Condition );

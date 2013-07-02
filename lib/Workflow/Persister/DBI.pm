@@ -1,6 +1,6 @@
 package Workflow::Persister::DBI;
 
-# $Id: DBI.pm 538 2011-01-29 17:01:04Z jonasbn $
+# $Id: DBI.pm 517 2010-01-30 13:43:30Z jonasbn $
 
 use warnings;
 use strict;

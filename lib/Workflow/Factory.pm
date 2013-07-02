@@ -1,6 +1,6 @@
 package Workflow::Factory;
 
-# $Id: Factory.pm 590 2012-11-11 14:48:28Z jonasbn $
+# $Id: Factory.pm 595 2013-07-02 06:54:58Z jonasbn $
 
 use warnings;
 use strict;
@@ -399,10 +399,11 @@ sub fetch_workflow {
         "[State: $wf_info->{state}] ",
         "[Last update: $wf_info->{last_update}]"
         );
-    my $wf = Workflow->new( $wf_id, $wf_info->{state}, $wf_config,
+    my $wf = $wf_class->new( $wf_id, $wf_info->{state}, $wf_config,
         $self->{_workflow_state}{$wf_type}, $self );
 
-    $wf->context( $wf_info->{context} || Workflow::Context->new ); #if ( not $wf->context() );
+    $wf->context( $context || Workflow::Context->new )
+        if ( not $wf->context() );
     $wf->last_update( $wf_info->{last_update} );
 
     $persister->fetch_extra_workflow_data($wf);

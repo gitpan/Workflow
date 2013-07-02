@@ -1,6 +1,6 @@
 package Workflow::Config::XML;
 
-# $Id: XML.pm 538 2011-01-29 17:01:04Z jonasbn $
+# $Id: XML.pm 454 2009-01-12 10:04:02Z jonasbn $
 
 use warnings;
 use strict;

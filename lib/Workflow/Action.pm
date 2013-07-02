@@ -1,6 +1,6 @@
 package Workflow::Action;
 
-# $Id: Action.pm 589 2012-11-11 14:08:25Z jonasbn $
+# $Id: Action.pm 588 2012-11-11 14:01:45Z jonasbn $
 
 # Note: we may implement a separate event mechanism so that actions
 # can trigger other code (use 'Class::Observable'? read observations

@@ -1,6 +1,6 @@
 package Workflow::State;
 
-# $Id: State.pm 589 2012-11-11 14:08:25Z jonasbn $
+# $Id: State.pm 588 2012-11-11 14:01:45Z jonasbn $
 
 use warnings;
 use strict;
