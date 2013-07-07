@@ -1,6 +1,6 @@
 package Workflow::Condition::GreedyOR;
 
-# $Id: GreedyOR.pm 579 2012-11-10 11:32:51Z jonasbn $
+# $Id: GreedyOR.pm 605 2013-07-07 15:48:14Z jonasbn $
 
 use strict;
 use warnings;
@@ -107,12 +107,12 @@ condition in the XML configuration:
 =head2 condition, conditionN
 
 The condition parameter may be specified as either a list of repeating
-entries E<or> with a unique integer appended to the E<condition> string:
+entries B<or> with a unique integer appended to the I<condition> string:
 
     <param name="condition" value="first_condition_to_test" />
     <param name="condition" value="second_condition_to_test" />
 
-E<or>
+B<or>
 
     <param name="condition1" value="first_condition_to_test" />
     <param name="condition2" value="second_condition_to_test" />

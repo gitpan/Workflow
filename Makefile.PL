@@ -2,30 +2,30 @@
 use ExtUtils::MakeMaker;
 WriteMakefile
 (
-          'NAME' => 'Workflow',
-          'VERSION_FROM' => 'lib/Workflow.pm',
-          'PREREQ_PM' => {
-                           'Carp' => 0,
-                           'Class::Accessor' => '0.18',
-                           'Class::Factory' => '1',
-                           'Class::Observable' => '1.04',
-                           'DBD::Mock' => '0.1',
-                           'DBI' => 0,
-                           'Data::Dumper' => 0,
-                           'DateTime' => '0.15',
-                           'DateTime::Format::Strptime' => '1',
-                           'Exception::Class' => '1.1',
-                           'File::Slurp' => 0,
-                           'List::MoreUtils' => 0,
-                           'Log::Dispatch' => '2',
-                           'Log::Log4perl' => '0.34',
-                           'Safe' => 0,
-                           'Test::Exception' => 0,
-                           'Test::More' => '0.41',
-                           'XML::Simple' => '2'
-                         },
-          'INSTALLDIRS' => 'site',
-          'EXE_FILES' => [],
-          'PL_FILES' => {}
-        )
+  'NAME' => 'Workflow',
+  'VERSION_FROM' => 'lib/Workflow.pm',
+  'PREREQ_PM' => {
+                   'Carp' => 0,
+                   'Class::Accessor' => '0.18',
+                   'Class::Factory' => '1',
+                   'Class::Observable' => '1.04',
+                   'DBD::Mock' => '0.1',
+                   'DBI' => 0,
+                   'Data::Dumper' => 0,
+                   'DateTime' => '0.15',
+                   'DateTime::Format::Strptime' => '1',
+                   'Exception::Class' => '1.1',
+                   'File::Slurp' => 0,
+                   'List::MoreUtils' => 0,
+                   'Log::Dispatch' => '2',
+                   'Log::Log4perl' => '0.34',
+                   'Safe' => 0,
+                   'Test::Exception' => 0,
+                   'Test::More' => '0.41',
+                   'XML::Simple' => '2'
+                 },
+  'INSTALLDIRS' => 'site',
+  'EXE_FILES' => [],
+  'PL_FILES' => {}
+)
 ;
