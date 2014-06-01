@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: persister_dbi.t 340 2007-09-25 20:58:06Z jonasbn $
+# $Id$
 
 use strict;
 use lib 't';

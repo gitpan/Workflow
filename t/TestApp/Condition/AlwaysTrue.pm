@@ -1,6 +1,6 @@
 package TestApp::Condition::AlwaysTrue;
 
-# $Id: AlwaysTrue.pm 486 2009-09-24 09:11:14Z jonasbn $
+# $Id$
 
 use strict;
 use base qw( Workflow::Condition );

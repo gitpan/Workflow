@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: validator_matches_date_format.t 326 2007-08-10 19:50:28Z jonasbn $
+# $Id$
 
 use strict;
 use lib 't';

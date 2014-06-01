@@ -1,6 +1,6 @@
 package Workflow::Persister::SPOPS;
 
-# $Id: SPOPS.pm 454 2009-01-12 10:04:02Z jonasbn $
+# $Id$
 
 use warnings;
 use strict;

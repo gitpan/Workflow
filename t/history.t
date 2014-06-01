@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: history.t 448 2009-01-12 09:35:23Z jonasbn $
+# $Id$
 
 use strict;
 use lib 't';

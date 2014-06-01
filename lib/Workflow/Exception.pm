@@ -1,6 +1,6 @@
 package Workflow::Exception;
 
-# $Id: Exception.pm 535 2010-11-14 18:49:25Z jonasbn $
+# $Id$
 
 use warnings;
 use strict;

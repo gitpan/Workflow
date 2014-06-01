@@ -1,5 +1,5 @@
 
-# $Id: 03_pod-coverage.t 283 2007-03-14 20:39:23Z jonasbn $
+# $Id$
 
 #pod test courtesy of petdance
 #http://use.perl.org/~petdance/journal/17412

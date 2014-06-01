@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# $Id: ticket_web.pl 172 2004-09-12 17:00:19Z cwinters $
+# $Id$
 
 use strict;
 use App::Web;

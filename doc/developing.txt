@@ -1,6 +1,6 @@
 Developing/Maintaining of the Workflow distribution 
 ------------------------------------------------------
-$Id: developing.txt 322 2007-07-06 14:41:41Z jonasbn $
+$Id$
 
 This is intended as a developer handbook for developers and maintainers of the
 Workflow distribution.

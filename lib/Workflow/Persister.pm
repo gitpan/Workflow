@@ -1,6 +1,6 @@
 package Workflow::Persister;
 
-# $Id: Persister.pm 598 2013-07-03 09:52:32Z jonasbn $
+# $Id$
 
 use warnings;
 use strict;

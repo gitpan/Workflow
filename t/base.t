@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: base.t 267 2006-09-12 18:02:00Z jonasbn $
+# $Id$
 
 use strict;
 use lib 't';

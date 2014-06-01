@@ -1,6 +1,6 @@
 package TestUtil;
 
-# $Id: TestUtil.pm 400 2008-12-17 13:43:29Z jonasbn $
+# $Id$
 
 use strict;
 use vars qw($VERSION);

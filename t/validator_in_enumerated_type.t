@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: validator_in_enumerated_type.t 424 2008-12-21 14:18:14Z jonasbn $
+# $Id$
 
 use strict;
 use lib 't';

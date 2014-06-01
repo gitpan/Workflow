@@ -1,6 +1,6 @@
 package Workflow::Condition::Nested;
 
-# $Id: Nested.pm 574 2012-11-10 10:03:15Z jonasbn $
+# $Id$
 
 use strict;
 use warnings;

@@ -1,6 +1,6 @@
 package App::Action::TicketUpdate;
 
-# $Id: TicketUpdate.pm 289 2007-06-18 21:45:56Z jonasbn $
+# $Id$
 
 use strict;
 use base qw( Workflow::Action );

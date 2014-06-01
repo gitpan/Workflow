@@ -1,6 +1,6 @@
 package Workflow::Config::Perl;
 
-# $Id: Perl.pm 510 2010-01-30 12:33:14Z jonasbn $
+# $Id$
 
 use warnings;
 use strict;

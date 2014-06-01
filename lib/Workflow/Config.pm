@@ -1,6 +1,6 @@
 package Workflow::Config;
 
-# $Id: Config.pm 516 2010-01-30 13:41:38Z jonasbn $
+# $Id$
 
 use warnings;
 use strict;

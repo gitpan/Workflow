@@ -2,11 +2,7 @@
 abstract: 'Simple, flexible system to implement workflows'
 author:
   - 'Jonas B. NIelsen <jonasbn@cpan.org>'
-build_requires:
-  DBD::Mock: 0.1
-  List::MoreUtils: 0
-  Test::Exception: 0
-  Test::More: 0.41
+build_requires: {}
 configure_requires:
   Module::Build: 0.40
 dynamic_config: 1
@@ -23,7 +19,7 @@ no_index:
 provides:
   Workflow:
     file: lib/Workflow.pm
-    version: 1.39
+    version: 1.40
   Workflow::Action:
     file: lib/Workflow/Action.pm
     version: 1.11
@@ -126,21 +122,33 @@ provides:
   Workflow::Validator::MatchesDateFormat:
     file: lib/Workflow/Validator/MatchesDateFormat.pm
     version: 1.06
+recommends:
+  Data::UUID: 0
+  SPOPS: 0
 requires:
   Carp: 0
   Class::Accessor: 0.18
-  Class::Factory: 1
+  Class::Factory: 1.00
   Class::Observable: 1.04
   DBI: 0
   Data::Dumper: 0
   DateTime: 0.15
-  DateTime::Format::Strptime: 1
-  Exception::Class: 1.1
+  DateTime::Format::Strptime: 1.00
+  Exception::Class: 1.10
   File::Slurp: 0
-  Log::Dispatch: 2
+  Log::Dispatch: 2.00
   Log::Log4perl: 0.34
   Safe: 0
-  XML::Simple: 2
+  XML::Simple: 2.00
+  perl: v5.6.0
 resources:
+  bugtracker: http://rt.cpan.org/NoAuth/Bugs.html?Dist=Workflow
+  homepage: https://github.com/jonasbn/perl-workflow
   license: http://dev.perl.org/licenses/
-version: 1.39
+  repository: https://github.com/jonasbn/perl-workflow
+version: 1.40
+x_test_requires:
+  DBD::Mock: 0.10
+  List::MoreUtils: 0
+  Test::Exception: 0
+  Test::More: 0.41

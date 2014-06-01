@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: state.t 425 2008-12-21 14:21:06Z jonasbn $
+# $Id$
 
 use strict;
 use lib 't';

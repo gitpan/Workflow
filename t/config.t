@@ -1,6 +1,6 @@
 # -*-perl-*-
 
-# $Id: config.t 488 2009-09-24 09:34:27Z jonasbn $
+# $Id$
 
 use strict;
 use lib 't';

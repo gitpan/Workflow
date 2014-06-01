@@ -96,6 +96,7 @@ t/action.t
 t/action_field.t
 t/action_mailer.t
 t/action_null.t
+t/action_validate.t
 t/add_config_bug.t
 t/base.t
 t/cached_conditions.t

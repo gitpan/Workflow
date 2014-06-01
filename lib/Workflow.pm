@@ -1,9 +1,10 @@
 package Workflow;
 
-# $Id: Workflow.pm 607 2013-08-02 10:30:29Z jonasbn $
+# $Id$
 
 use warnings;
 use strict;
+use 5.006; # warnings
 use base qw( Workflow::Base Class::Observable );
 use Log::Log4perl qw( get_logger );
 use Workflow::Context;
@@ -16,7 +17,7 @@ my @FIELDS   = qw( id type description state last_update time_zone );
 my @INTERNAL = qw( _factory );
 __PACKAGE__->mk_accessors( @FIELDS, @INTERNAL );
 
-$Workflow::VERSION = '1.39';
+$Workflow::VERSION = '1.40';
 
 use constant NO_CHANGE_VALUE => 'NOCHANGE';
 
@@ -1434,6 +1435,8 @@ Jonas B. Nielsen (jonasbn) E<lt>jonasbn@cpan.orgE<gt>, current maintainer.
 Chris Winters E<lt>chris@cwinters.comE<gt>, original author.
 
 The following folks have also helped out (listed here in no particular order):
+
+Feature and bug fix by dtikhonov resulting in 1.40 (first pull request on Github)
 
 Sérgio Alves, patch to timezone handling for workflow history deserialized using
 DBI persister resulting in 1.38
