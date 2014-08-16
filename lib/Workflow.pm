@@ -1,7 +1,5 @@
 package Workflow;
 
-# $Id$
-
 use warnings;
 use strict;
 use 5.006; # warnings
@@ -17,7 +15,7 @@ my @FIELDS   = qw( id type description state last_update time_zone );
 my @INTERNAL = qw( _factory );
 __PACKAGE__->mk_accessors( @FIELDS, @INTERNAL );
 
-$Workflow::VERSION = '1.40';
+$Workflow::VERSION = '1.41';
 
 use constant NO_CHANGE_VALUE => 'NOCHANGE';
 
@@ -1429,6 +1427,8 @@ This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =head1 AUTHORS
+
+=encoding utf8
 
 Jonas B. Nielsen (jonasbn) E<lt>jonasbn@cpan.orgE<gt>, current maintainer.
 

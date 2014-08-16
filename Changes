@@ -1,5 +1,14 @@
 Revision history for Perl extension Workflow
 
+1.41 2014-08-15, maintenance release, update not necessary
+
+- Fixed POD issue with encoding, so we now support UTF-8 for authors names
+
+- Minor POD fix by dtikhonov to POD introduced in 1.40
+
+- Adjusted permissions on some files, which were executable for no apparent reason
+
+
 1.40 2014-06-01
 
 - Update recommended due to bug fix by dtikhonov in observer handling
